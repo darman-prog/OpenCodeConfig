@@ -23,6 +23,10 @@ $cases = @(
   @{ prompt = "retomar un cambio auditable en docs/features";    skill = "documentacion" },
   @{ prompt = "necesito correr los tests unitarios";                 skill = "testing" },
   @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "ui-ux" },
+  # Ruteo UI por intencion: crear no debe cargar el veredicto; revisar y ajustar tienen skills distintas.
+  @{ prompt = "crea una landing para un producto SaaS"; skill = "ui-ux"; notSkill = @("frontend-design-review") },
+  @{ prompt = "revisa el diseno de esta pantalla contra el design system"; skill = "frontend-design-review" },
+  @{ prompt = "ajusta el espaciado de un boton existente"; skill = "ui-ux" },
   # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.
   @{ prompt = "revisa la calidad del codigo de este modulo";       skill = "code-quality" },
   @{ prompt = "refactoriza este modulo con logica duplicada";      skill = "refactoring" },
@@ -57,8 +61,20 @@ foreach ($c in $cases) {
   }
   # El nombre de la skill debe aparecer entre las declaradas (acepta backticks y coma).
   if ($out -match [regex]::Escape($c.skill)) {
-    Write-Host "  PASS ($($c.skill) declarado)"
-    $pass++
+    # La no-activacion tambien es contrato: crear UI no debe cargar el veredicto de review.
+    $forbidden = @()
+    if ($c.ContainsKey('notSkill')) {
+      foreach ($n in @($c.notSkill)) {
+        if ($out -match [regex]::Escape($n)) { $forbidden += $n }
+      }
+    }
+    if ($forbidden.Count -eq 0) {
+      Write-Host "  PASS ($($c.skill) declarado)"
+      $pass++
+    } else {
+      Write-Host "  FAIL (no esperado: $($forbidden -join ', '))"
+      $fail += "$($c.skill) + $($forbidden -join ', ')"
+    }
   } else {
     Write-Host "  FAIL (esperado: $($c.skill))"
     $fail += $c.skill

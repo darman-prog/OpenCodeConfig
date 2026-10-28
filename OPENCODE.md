@@ -14,7 +14,9 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Documentación, README, ADR, guía o cambio auditable (backlog, spec, tarjeta) | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
 | Backend, dominio, API, jobs, esquema o migraciones | `arquitectura`, `api-backend`, `base-datos` | `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
-| Diseñar, crear, pulir o revisar UI visible/interactiva | `ui-ux`, `impeccable`, `impeccable-doctrina`, `frontend-design-review` | `convenciones-frontend`, `accesibilidad` |
+| Crear, rediseñar o pulir UI visible/interactiva | `ui-ux`, `impeccable-doctrina`, `impeccable`, `accesibilidad` | `convenciones-frontend`; `frontend-design-review` solo si pides veredicto |
+| Ajustar UI existente sin rediseño | `ui-ux`, `accesibilidad` | `convenciones-frontend`, `impeccable-doctrina` (detector), `impeccable` (si hay problema de sistema) |
+| Revisar o auditar UI existente (veredicto) | `frontend-design-review`, `accesibilidad` | `ui-ux`, `impeccable-doctrina` (detector), `impeccable` (solo /audit y /critique si hay que ejecutar) |
 | Medir UX con métricas (SUS, UMUX-Lite, ISO/IEC 25010/SQuaRE) | `evaluacion-experiencia` | `analisis-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing` |
 | Refactor, deuda, code smells, tests o TDD | `refactoring`, `code-quality`, `testing`, `tdd` | — |
@@ -24,6 +26,8 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Onboarding, estado del proyecto, cierre o cerebro (`docs/project-brain/`) | `inicio-proyecto`, `contexto-proyecto`, `calidad-cierre` | `testing`, `seguridad` |
 | Editar `.opencode/`, auditar el harness, commits o PRs | `customize-opencode`, `workflow` | `testing` |
 | Manuales, solo por petición explícita | `habilidades-ofimaticas`, `informe-docx` | — |
+
+UI nueva o rediseño sin `DESIGN.md`: no implementar hasta `document --seed`, `document` (scan) o bypass aprobado (`impeccable-doctrina`).
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.
 
@@ -44,6 +48,6 @@ La compactacion automatica esta activa (prune: true, reserved: 8000): midela ant
 
 ## Agentes
 - Primarios (Tab): `build`, `plan`.
-- Subagentes (Task/@): `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica), `auditor`, `tester`, `quality`, `debugger`, `explore`. No invocan a nadie: reportan y quien los delego decide.
+- Subagentes (Task/@): `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica), `auditor`, `tester`, `quality`, `debugger`, `explore`, `impeccable-finish-reviewer`, `impeccable-documenter`. Salvo `ui-ux`, no invocan a nadie: reportan y quien los delego decide.
 - `calidad-cierre` es el gate de cierre (delegable); no sustituye `testing`, `seguridad`, `auditor` ni las skills de diseño.
 - Modelos se asignan manualmente por agente.

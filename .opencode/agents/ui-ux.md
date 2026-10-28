@@ -6,7 +6,7 @@ permission:
   bash:
     "*": ask
     "git diff*": allow
-  task: { "*": deny, "explore": allow }
+  task: { "*": deny, "explore": allow, "general": allow, "impeccable-finish-reviewer": allow, "impeccable-documenter": allow }
   skill: allow
 color: accent
 ---
@@ -36,7 +36,8 @@ Antes de terminar, verifica la interfaz en viewport movil y escritorio, revisa e
 
 ## Flujo de diseño (impeccable-doctrina + impeccable)
 
-1. Creacion visual: carga `impeccable-doctrina` (flujo) y `impeccable` (ejecucion) para el comando que aplique; sin `PRODUCT.md`/`DESIGN.md` propone `/impeccable init` (en superficies desechables: demo/spike, justifica el bypass).
+1. Creacion visual: carga `impeccable-doctrina` e `impeccable`; ejecuta `context` desde la base dir de `impeccable` antes del primer comando. Sin `DESIGN.md`: `document` (scan) si hay codigo; `document --seed` si no hay autoridad visual. No edites hasta resolverlo o aprobar un bypass demo/spike.
 2. Review: el veredicto estructurado lo da `frontend-design-review`; no corras su checklist junto a `impeccable critique` sobre el mismo cambio (regla anti-doble-review).
-3. Detector: una pasada al cerrar, con el launcher local (`.opencode/skills/impeccable/scripts/impeccable.cmd detect <archivo-tocado>` en Windows sin `sh`); exit 2 = resuelve o justifica con el ignore mas estrecho; bloquea el cierre.
-4. Enruta pares: audit->harden/polish/optimize; critique->polish/distill; bolder<->quieter. `polish` nunca sobre TODOs.
+3. Detector: reutiliza la salida de `critique`/`audit`; si no corrio, una pasada al cerrar desde la base dir de `impeccable` (Windows: `.cmd`); exit 2 = resuelve o justifica con el ignore mas estrecho; en nativo no hay detector, aplica la revision de plataforma.
+4. Subagentes: `critique` con dos `general` aislados; `new-work` con `impeccable-finish-reviewer` y `impeccable-documenter`. Si faltan, usa la variante `reference/degraded/*` inline y declara `DEGRADED`.
+5. Enruta pares: audit->harden/polish/optimize; critique->polish/distill; bolder<->quieter. `polish` nunca sobre TODOs.

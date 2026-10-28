@@ -2,6 +2,8 @@
 
 Usa esta estructura para generar el `DESIGN.md` del proyecto, reemplazando los placeholders con las respuestas del usuario.
 
+> Camino canonico: `document --seed` (workshop de `new-work` + eleccion del usuario). Este template es un fallback manual; no inventes un sistema final ni tokens que el usuario no aprobo.
+
 ```markdown
 # Diseno — {Nombre del proyecto}
 

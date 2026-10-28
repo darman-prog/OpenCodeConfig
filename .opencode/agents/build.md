@@ -8,7 +8,7 @@ permission:
     "git diff*": allow
     "git log*": allow
     "git status*": allow
-  task: { "*": deny, "ui-ux": allow, "backend-expert": allow, "quality": allow, "debugger": allow, "auditor": allow, "tester": allow, "explore": allow }
+  task: { "*": deny, "ui-ux": allow, "backend-expert": allow, "quality": allow, "debugger": allow, "auditor": allow, "tester": allow, "explore": allow, "general": allow, "impeccable-finish-reviewer": allow, "impeccable-documenter": allow }
   skill: allow
 color: success
 ---

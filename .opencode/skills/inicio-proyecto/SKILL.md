@@ -23,8 +23,8 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
 3. **Generar docs**:
    - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el `OPENCODE.md`/`AGENTS.md` del proyecto.
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
-   - `PRODUCT.md` y `DESIGN.md` desde templates en `references/` con las respuestas.
-  - Si el usuario lo pide, `DESIGN.md` arranca desde el preset High-Craft (`impeccable-doctrina/references/PRESET-LINEAR.md`); es opcional, nunca default.
+   - `PRODUCT.md` desde su template. Para `DESIGN.md`, pregunta si define la direccion visual ahora: si sí, ejecuta `document --seed` (workshop + 3 direcciones); si no, dejalo pendiente y el gate lo pedira en la primera tarea UI.
+   - Si pide el preset High-Craft (`impeccable-doctrina/references/PRESET-LINEAR.md`), pasalo como restriccion al workshop de `document --seed`; es opcional, nunca default.
    - `OPENCODE.md` + `AGENTS.md`: merge por secciones (Stack/Comandos del agnóstico se actualizan con lo descubierto; resto se preserva). Si no existen, copia el template y aplica el merge.
    - `docs/project-brain/`: antes de sembrar, detecta si ya existe `NAVIGATION.md` en `docs/project-brain/` (o variante `Docs/project-brain/`, o el nombre anterior `INDEX.md`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.

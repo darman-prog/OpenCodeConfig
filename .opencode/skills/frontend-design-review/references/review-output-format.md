@@ -12,15 +12,18 @@
 [Pass/Needs Work/Blocked] - [One-line assessment]
 
 ### Design System Compliance (if applicable)
-- [ ] Component exists in [Your Figma Design System]
-- [ ] Component usage verified in [Your Component Library]
-- [ ] Implementation matches Figma specs (spacing, colors, typography)
-- [ ] Uses design tokens (not hardcoded values) - verified in code
-- [ ] All variants match design system options
-- [ ] Spacing verified against Figma Dev Mode
-- [ ] Documented exception if deviating from design system
+- [ ] Fuente de verdad: Figma/Storybook si existe; si no, tokens y componentes del repo
+- [ ] Componentes y variantes del sistema reutilizados
+- [ ] Tokens usados (no valores hardcodeados) - verificado en codigo
+- [ ] Espaciado, color y tipografia coinciden con la fuente aplicable
+- [ ] Excepciones documentadas con su motivo
 
-### Aesthetic Quality (especially for new designs)
+### States & Responsive
+- [ ] loading, empty, error, success, disabled y permisos cuando aplican
+- [ ] Mobile-first: sin scroll horizontal y con reflow a 200% de zoom
+- [ ] Touch targets y texto ampliado verificados
+
+### Aesthetic Quality (especially for redesigns)
 - [ ] Clear conceptual direction (not generic AI aesthetic)
 - [ ] Distinctive typography choices
 - [ ] Cohesive color palette with CSS variables
@@ -33,8 +36,8 @@
 | Pillar | Status | Notes |
 |--------|--------|-------|
 | Frictionless | 🟢/🟠/⚫ | Task completion efficient, primary action clear |
-| Quality Craft | 🟢/🟠/⚫ | Design system compliant, aesthetic distinctive, accessible |
-| Trustworthy | 🟢/🟠/⚫ | AI disclaimers present, errors actionable |
+| Quality Craft | 🟢/🟠/⚫ | System compliant, states/responsive covered, accessible (canon `accesibilidad`) |
+| Trustworthy | 🟢/🟠/⚫ | AI disclaimer solo si aplica, errors actionable |
 
 **Legend:** 🟢 Pass | 🟠 Needs attention | ⚫ Blocking issue
 
@@ -64,5 +67,5 @@
 - [Specific code change with design token reference]
 - [Typography recommendation for better aesthetic direction]
 - [Motion/animation suggestion]
-- [Link to design system in Figma]
+- [Link to design system source: Figma/Storybook or repo tokens]
 ```

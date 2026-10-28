@@ -30,7 +30,7 @@ description: Accesibilidad WCAG 2.2 AA: semantica, teclado, lectores de pantalla
 
 - Todo interactivo alcanzable y operable con teclado; orden de foco sigue el orden visual.
 - Focus visible siempre: `outline: none` solo con reemplazo equivalente; nada de eliminarlo globalmente.
-- Modales: focus trap dentro, `Esc` cierra y el foco vuelve al trigger al cerrar (regla ya en `ui-ux`; aca se implementa).
+- Modales: focus trap dentro, `Esc` cierra y el foco vuelve al trigger al cerrar.
 - Skip link al contenido principal en paginas con navegacion larga.
 
 ## Lectores de pantalla y contenido dinamico
@@ -50,4 +50,4 @@ description: Accesibilidad WCAG 2.2 AA: semantica, teclado, lectores de pantalla
 - Pasar la pagina usando SOLO teclado antes de mirar el mouse.
 - Un lector de pantalla real (NVDA/VoiceOver) en los flujos criticos, no solo en el componente aislado.
 - `axe` o Lighthouse en CI para lo automatico; lo que axe no ve (orden de foco, sentido del alt, jerarquia) se revisa manual (agente `tester`).
-- `prefers-reduced-motion` respetado en toda animacion (regla de `ui-ux`).
+- `prefers-reduced-motion` respetado en toda animacion.

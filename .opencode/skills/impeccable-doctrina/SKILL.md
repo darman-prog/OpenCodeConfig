@@ -5,54 +5,41 @@ description: Flujo de comandos UI visible con impeccable, detector local y regla
 
 # Impeccable (wrapper para OpenCode)
 
-Wrapper propio sobre el CLI oficial (launcher local `.opencode/skills/impeccable/scripts/impeccable`, sin red). Contexto: OpenCode no recibe hook
-automatico post-edicion (solo Claude Code, Cursor, Copilot, Codex, Grok), por eso este
-wrapper obliga al detector manual y integra los comandos en el flujo del proyecto.
+Wrapper propio sobre el CLI oficial. El launcher vive en la base dir de la skill `impeccable` (en este repo `.opencode/skills/impeccable`; en global `~/.config/opencode/skills/impeccable`). OpenCode no recibe hook automatico post-edicion; este wrapper obliga al detector manual y fija el flujo del proyecto.
 
-> **Relacion con `impeccable`**: esta skill define el **flujo** del proyecto (cuando correr
-> cada comando y en que orden). La skill `impeccable` (oficial, con `reference/`) define
-> **como ejecutar** el diseno de cada comando. En tareas de UI cargalas juntas: `impeccable-doctrina`
-> para el flujo, `impeccable` para la ejecucion.
+> **Relacion con `impeccable`**: esta skill define el **flujo** (cuando y en que orden). La skill `impeccable` (oficial) define **como ejecutar** cada comando. Cargalas juntas.
 
 ## Reglas no negociables
 
-1. **Detector manual obligatorio**: OpenCode no tiene hook auto. Antes de dar por terminado
-   cualquier cambio de UI, una sola pasada de `detect` con el launcher local
-   (`.opencode/skills/impeccable/scripts/impeccable.cmd detect <archivo>` en Windows sin `sh`).
-   Exit `0` = limpio; exit `2` = hallazgos, NO terminar sin resolverlos o dejarlos justificados.
-2. **Contexto primero**: si el proyecto no tiene `PRODUCT.md` y `DESIGN.md`, proponer
-   `/impeccable init` antes de cualquier comando de diseno. Sin contexto, los comandos caen
-   en patrones genericos de SaaS.
-3. **polish solo sobre features terminadas** (sin TODOs). Si el pase reestructura layout,
-   el comando correcto era `critique` o `layout`.
+1. **Contexto primero**: antes del primer comando de la sesion, ejecuta `<base-dir>/scripts/impeccable context` (Windows: `impeccable.cmd`) y sigue sus directivas. No lo repitas.
+2. **Detector reutilizado**: `critique` y `audit` ya corren el detector; reutiliza esa salida. Si ningun comando lo corrio, una sola pasada al cerrar: `detect <archivo>`; exit 0 limpio, exit 2 = resuelve o justifica con el ignore mas estrecho. En nativo no hay detector: aplica la revision de plataforma.
+3. **Autoridad visual**: si falta `DESIGN.md`, no inventes un mundo. Con codigo/tokens, `document` (scan). Sin nada, `document --seed` (workshop + eleccion del usuario). Sin seed, scan o bypass demo/spike justificado, no se edita UI nueva.
+4. **polish solo sobre features terminadas** (sin TODOs). Si el pase reestructura layout, el comando correcto era `critique` o `layout`.
 
-## Enrutamiento (usar el par correcto, nunca uno solo)
+## Subagentes en OpenCode
 
-- `audit` -> `harden` / `polish` / `optimize` (segun hallazgos P0-P3).
-- `critique` -> `polish` / `distill` (segun veredicto).
-- `bolder` <-> `quieter` (par de "volumen"; decidir rumbo, no quedar neutro).
-- `init` -> `shape` (capturar producto, luego planear la superficie).
+- `critique`: dos `general` aislados para A/B; nunca inline si el Task existe.
+- `new-work`: `impeccable-finish-reviewer` y `impeccable-documenter`.
+- `live`: `impeccable-manual-edit-applier`; imagenes: `impeccable-asset-producer` (solo si aplica).
+- Si un agente no esta disponible, ejecuta su variante `reference/degraded/*` inline y declara `DEGRADED` en el informe.
 
-## Comandos (23, via `/impeccable <comando> [objetivo]`)
+## Enrutamiento
 
-- Crear: `impeccable` (sin args = siguiente mejor accion; con texto = creacion directa), `shape` (brief antes de construir).
-- Evaluar: `audit` (tecnico, 5 dimensiones, P0-P3), `critique` (perceptual + detector).
-- Refinar: `animate`, `bolder`, `colorize`, `delight`, `layout`, `overdrive`, `quieter`, `typeset`.
-- Simplificar: `adapt`, `clarify`, `distill`.
-- Endurecer: `harden`, `onboard`, `optimize`, `polish`.
-- Sistema: `document` (genera DESIGN.md), `extract`, `init`, `live` (alpha, app en localhost).
+- `audit` -> `harden` / `polish` / `optimize` (P0-P3).
+- `critique` -> `polish` / `distill`.
+- `bolder` <-> `quieter`; decide rumbo, no quedes neutro.
+- `init` -> `shape`; `document` (scan) para sistemas existentes, `document --seed` para nuevos.
 
-## Detector, excepciones y mantenimiento
+## Comandos
 
-Sintaxis exacta de `detect`, `ignores`, config y mantenimiento del CLI: `references/CLI.md`.
+Catalogo y sintaxis: `impeccable` (oficial). Este wrapper solo fija el orden y los gates de arriba.
+
+## Detector y red
+
+El launcher es local; si falta el binario, `impeccable.cmd` lo descarga con verificacion SHA256 (requiere red). En este repo el binario esta en `scripts/bin/windows-x64`.
 
 ## Integracion con este repo
 
-- Convive con `convenciones-frontend` (estructura/features/WCAG) y con el checklist anti-patrones
-  de `ui-ux`: Impeccable cubre lo perceptual y los anti-patrones de AI-slop, no reemplaza esas reglas.
-- Mantenimiento (`check`, `update`, `doctor`) y atajos (`pin`): `references/CLI.md`.
-
-## Preset de partida (opcional)
-
-Arquetipo High-Craft para `DESIGN.md`, con tokens y prohibiciones: `references/PRESET-LINEAR.md`.
-Es opcional: se adopta pidiendolo y se adapta por tokens al dominio; nunca se impone por defecto.
+- Convive con `convenciones-frontend`, `accesibilidad` y el checklist de `ui-ux`; no reemplaza esas reglas.
+- Mantenimiento y atajos: `references/CLI.md`.
+- Preset High-Craft opcional: `references/PRESET-LINEAR.md` (se adopta pidiendolo; nunca es default).

@@ -181,7 +181,7 @@ flowchart LR
     G --> H["Commit con tu si"]
 ```
 
-- DoD canonica: skill `workflow` §Definition of Done (incluye el detector local `.opencode/skills/impeccable/scripts/impeccable.cmd detect` si tocaste UI).
+- DoD canonica: skill `workflow` §Definition of Done (incluye el detector local de `impeccable`, resuelto desde la base dir de la skill, si tocaste UI web; en nativo aplica la revision de plataforma).
 - Gate: `APROBADO`/`BLOQUEADO` con evidencia — orden de revision en `calidad-cierre/references/GATE-FINAL.md`; los criterios vienen de la feature-spec vigente, del plan o de la entrada de changelog (no hay spec numerada que exigir).
 - Cerebro: si existe `docs/project-brain/NAVIGATION.md`, el mapeo cambio → documentos sale de la skill `contexto-proyecto` §Actualizacion; nunca se inventan decisiones (`confidence: supuesto` si falta evidencia).
 - Registro: cada cambio deja su fila en [changelog.md](changelog.md) (append-only); si es auditable (umbral canonico: `documentacion` §docs/features), la intencion vive en su spec de `docs/features/` y la fila del changelog queda como resumen y registro historico.
@@ -191,7 +191,7 @@ flowchart LR
 
 | Nivel | Agentes | Que editan | Referencia |
 | --- | --- | --- | --- |
-| Base (todo agente) | los 8 | `edit` segun rol, `bash: ask` + git read `allow`, `skill: allow`, `task` segun rol | frontmatter de cada `.md` |
+| Base (todo agente) | los 10 | `edit` segun rol, `bash: ask` + git read `allow`, `skill: allow`, `task` segun rol | frontmatter de cada `.md` |
 | Implementan codigo | `build`, `quality`, `debugger` | codigo ✓ | frontmatter de `build.md`, `quality.md`, `debugger.md` |
 | Solo frontend | `ui-ux` | codigo frontend ✓ | frontmatter de `ui-ux.md` |
 | Solo docs | `auditor` | solo `*.md` | frontmatter de `auditor.md` |

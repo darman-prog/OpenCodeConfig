@@ -7,7 +7,7 @@
 | --- | --- | --- |
 | `MAX_OPENCODE_MD_TOTAL` | 75 líneas | `OPENCODE.md`: Skill Gate, estilo y roster; se inyecta en **cada** sesión |
 | `MAX_AGENTS_MD` | 35 líneas | `AGENTS.md` agnóstico: contexto, stack y comandos |
-| `MAX_AGENTS_TOTAL` | 350 líneas | Los 8 archivos de `.opencode/agents/` en total |
+| `MAX_AGENTS_TOTAL` | 400 líneas | Los 10 archivos de `.opencode/agents/` en total |
 | `MAX_AGENT` | 45 líneas | Un agente individual |
 | `MAX_SKILL` | 65 líneas | Una skill que se auto-activa |
 | `MAX_SKILL_EXENTA` | 180 líneas | Exentas: vendor o manuales (se cargan bajo demanda) |
@@ -30,6 +30,7 @@
 - 2026-10-14: `MAX_AGENTS_MD_TOTAL` 70→75 para dar cabida a la fila del Skill Gate del ciclo DDR (feature-spec multi-sesión). Holgura de 4 líneas; cada línea extra se paga en cada sesión.
 - 2026-10-18: `AGENTS.md` se parte en agnostico (≤35) + `OPENCODE.md` (≤75, hereda el tope; el antiguo `MAX_AGENTS_MD_TOTAL` pasa a `MAX_OPENCODE_MD_TOTAL`). La tabla del Skill Gate vive en `OPENCODE.md`; el guardarrail la valida ahi. Se retira el `GEMINI.md` (no es de este harness) y con el las skills compartidas vuelven a `.opencode/skills/`.
 - 2026-10-19: recorte de bajo riesgo, sin fusionar ni borrar skills: las 37 `description` locales bajan a ~110 caracteres y la tabla del Skill Gate pasa de 31 a 18 filas agrupadas por dominio. Coste fijo 3719 → 2228 (−40%); `MAX_TOKENS_INSTRUCCIONES` sigue en 4250.
+- 2026-10-28: `MAX_AGENTS_TOTAL` 350→400 para los subagentes vendor de impeccable (`impeccable-finish-reviewer` y `impeccable-documenter`). `MAX_AGENT` sigue en 45: el cupo agregado no autoriza prompts largos.
 
 ## Verificar
 

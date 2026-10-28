@@ -26,7 +26,7 @@ $MAX_AGENTS_MD         = 35
 # Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 38 descripciones.
 # Tope con holgura sobre la medicion 2026-10-19 (2228 tokens).
 $MAX_TOKENS_INSTRUCCIONES = 4250
-$MAX_AGENTS_TOTAL = 350
+$MAX_AGENTS_TOTAL = 400
 $MAX_AGENT        = 45
 $MAX_SKILL        = 65
 $MAX_SKILL_EXENTA = 180   # vendor o manuales (carga bajo demanda)

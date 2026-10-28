@@ -23,9 +23,11 @@ Un subagent no está en `Tab`: se lanza con `@` (manual) o lo delega un primario
 
 | Agente | Modo | Color | Puede lanzar (Task) | Edita | Líneas | Cuándo |
 | --- | --- | --- | --- | --- | --- | --- |
-| `build` | primary | `success` | los 7 subagents | código | 37 | Implementar features y bugs; orquesta |
+| `build` | primary | `success` | los 10 subagents | código | 38 | Implementar features y bugs; orquesta |
 | `plan` | primary | `info` | `backend-expert`, `auditor`, `explore` | nada | 40 | Planificar; pre-flight con `auditor` |
-| `ui-ux` | subagent | `accent` | `explore` | solo frontend | 42 | UI visible: implementar, pulir, revisar |
+| `ui-ux` | subagent | `accent` | `explore`, `general`, 2 vendor | solo frontend | 43 | UI visible: criterios, implementar, revisar |
+| `impeccable-finish-reviewer` | subagent | — | nadie | nada | 30 | Review final de UI; no edita |
+| `impeccable-documenter` | subagent | — | nadie | `DESIGN.md` y sidecar | 26 | Documentar el mundo visual |
 | `backend-expert` | subagent | — | `explore` | nada | 31 | Dominio, invariantes y contratos (no da el plan) |
 | `auditor` | subagent | — | nadie | solo `*.md` | 41 | Revisión pre-merge y pre-flight de seguridad |
 | `quality` | subagent | — | nadie | código | 42 | Deuda, refactors, hotspots medidos |
@@ -33,7 +35,7 @@ Un subagent no está en `Tab`: se lanza con `@` (manual) o lo delega un primario
 | `tester` | subagent | — | nadie | nada | 45 | E2E de las webs del proyecto |
 | `explore` | built-in | — | — | nada | del harness | Búsquedas amplias (no tiene `.md` aquí) |
 
-`bash` en todos: `"*": ask` con `git diff/log/status` en `allow`. `auditor` además deniega `*--output*`, `git apply/checkout/restore/stash` porque es de solo lectura. Por eso ves prompts de aprobación al ejecutar comandos.
+`bash` en todos: `"*": ask` con `git diff/log/status` en `allow`. `auditor` e `impeccable-finish-reviewer` además deniegan `*--output*`, `git apply/checkout/restore/stash` porque son de solo lectura. Por eso ves prompts de aprobación al ejecutar comandos.
 
 <a id="sec-3"></a>
 ## 3. Índice de skills
@@ -47,7 +49,7 @@ Fuente única: la tabla del Skill Gate en `OPENCODE.md` (no se copia aquí, por 
 | Manuales | 2 | `habilidades-ofimaticas`, `informe-docx` | §Skill Gate, fila "Manuales" |
 | **Total** | **38** | | Lo cuenta `harness-budget.ps1` |
 
-las descripciones y 47 probes comprueban el ruteo literal del 100% de las skills (37 locales + `customize-opencode`)
+las descripciones y 49 probes comprueban el ruteo literal del 100% de las skills (37 locales + `customize-opencode`)
 El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), cobertura 100% de probes de gatillo (bloque 6), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 <a id="sec-4"></a>
@@ -142,14 +144,15 @@ git status --short                                                              
 | Verificado (hasta 2026-10-17) | Evidencia |
 | --- | --- |
 | Recorte de tokens (2026-10-19) | 37 descripciones a ~110 caracteres y tabla del Skill Gate 31→18 filas sin perder nombres: coste fijo 3719 → 2228 (−40%), guardarraíl exit 0 y smokes 16/16 PASS |
-| Gate anti-slop (2026-10-19) | Punto 7 en la DoD de `workflow`; `calidad-cierre` emite BLOQUEADO por `impeccable detect` exit 2 sin ignore; preset High-Craft opcional en `impeccable-doctrina/references/PRESET-LINEAR.md` |
+| Gate anti-slop y autoridad visual (2026-10-28) | Punto 7 en la DoD de `workflow`; `calidad-cierre` emite BLOQUEADO por `impeccable detect` exit 2 sin ignore; UI nueva sin `DESIGN.md` seed/scan ni bypass tambien bloquea; preset High-Craft opcional en `impeccable-doctrina/references/PRESET-LINEAR.md` |
+| Auditoría de skills UI (2026-10-28) | Ruteo en 3 filas, `ui-ux` alineado a criterios, review con WCAG, `impeccable context`/base dir, gate de autoridad visual, 2 subagentes vendor y ADR-005/006; guardarraíl 10 agentes/377 líneas |
 | Stitch MCP (2026-10-17) | Config global con enabled:false + perfil de activación: sin perfil `opencode mcp list` lo muestra deshabilitado; con `OPENCODE_CONFIG` conecta; smoke de routing declara `activacion-mcp`; sync identidad OK; smoke funcional `List my Stitch projects` pendiente de la `STITCH_API_KEY` del usuario |
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
-| Guardarraíl en verde | `OPENCODE.md` 62/75 + `AGENTS.md` 18/35 · agentes 317/350 · skills 38 (una sola raiz) · 47 probes |
+| Guardarraíl en verde | `OPENCODE.md` 53/75 + `AGENTS.md` 18/35 · agentes 377/400 · skills 38 (una sola raiz) · 49 probes |
 | Simplificación OpenCode-only (2026-10-18) | una sola raiz de skills (`.opencode/skills`, 38); sin `skills.paths` ni espejo `~/.agents/skills`; el deny de `GEMINI.md` queda como defensa; A/B de tokens no concluyente (medición descartada) |
-| Probes de routing | 47 casos definidos; cobertura 100% validada por el guardarraíl (bloque 6); incluyen producto, code-clue, investigación web, datos, automatización, MCP (Notion, Playwright, Stitch), protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS) y feature-spec DDR |
+| Probes de routing | 49 casos definidos; cobertura 100% validada por el guardarraíl (bloque 6); incluyen producto, code-clue, investigación web, datos, automatización, MCP (Notion, Playwright, Stitch), protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS), ruteo UI por intención y feature-spec DDR |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |
 | Smoke de invocación de tests | **S5 CERRADO (2026-10-15)**: `uso-eficiente` prioriza cargar `testing` y liderar con runner directo; probe nueva; smoke `opencode run` PASS (`testing`) |
 | Check 11: integridad de codificación | Fixture con la firma de mojibake → exit 1 nombrándolo; revertido → exit 0. Escaneo: `.opencode` + `docs` + `scripts` limpios, y 10 `AGENTS.md` de proyectos sin firma |
@@ -178,7 +181,7 @@ git status --short                                                              
 | Pendiente | Detalle |
 | --- | --- |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
-| Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software`): 16/16 PASS |
+| Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` y 3 de UI): 19/19 PASS |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
 | Reinicio de TUI tras la simplificación | La config (`instructions`, deny) no es hot-reload: reiniciar para que apliquen `OPENCODE.md` y el deny de `GEMINI.md` |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |

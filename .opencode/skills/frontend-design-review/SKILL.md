@@ -29,23 +29,17 @@ Fuera de alcance de esta skill: la direccion estetica, tipografia, color, motion
 
 ## Design Review
 
-### Design System Workflow
+### Design System Context
 
-**Before implementing:**
-1. Review component in your Storybook / component library for API and usage
-2. Use Figma Dev Mode to get exact specs (spacing, tokens, properties)
-3. Implement using design system components + design tokens
+1. Si existe Figma/Storybook, usalo como especificacion; si no, la fuente es el codigo: tokens, componentes y patrones reales.
+2. Verifica que se usen tokens (no valores hardcodeados) y que existan las variantes y estados del sistema.
+3. Si falta un componente, comprueba si uno existente se adapta; documenta la excepcion y su motivo.
+4. Si no hay `DESIGN.md` ni tokens/componentes, no inventes criterios: reporta "no visual system" y redirige a `document` o `document --seed`.
 
-**During review:**
-1. Compare implementation to Figma design
-2. Verify design tokens are used (not hardcoded values)
-3. Check all variants/states are implemented correctly
-4. Flag deviations (needs design approval)
-
-**If component doesn't exist:**
-1. Check if existing component can be adapted
-2. Reach out to design for new component creation
-3. Document exception and rationale in code
+**Durante el review:**
+1. Compara con la fuente de verdad aplicable (Figma/Storybook o repo).
+2. Verifica tokens, estados (loading, empty, error, success, disabled/permisos) y responsive.
+3. Marca desviaciones; no las implementes en esta skill.
 
 ### Review Process
 
@@ -77,19 +71,20 @@ Fuera de alcance de esta skill: la direccion estetica, tipografia, color, motion
 ### 2. Quality is Craft
 
 **Evaluate:**
-- Design system compliance: matches Figma specs, uses design tokens
-- Aesthetic direction: distinctive typography, cohesive colors, intentional motion
+- Design system compliance: matches the source of truth (Figma/Storybook or repo tokens), uses design tokens.
+- Aesthetic direction: distinctive typography, cohesive colors, intentional motion.
+- States and responsive: loading, empty, error, success, disabled/permisos; mobile-first, sin scroll horizontal y reflow a 200% de zoom.
 - Accessibility: cumple el checklist canonico de la skill `accesibilidad` (WCAG 2.2 AA).
 
-**Red flags:** Generic AI aesthetics, hardcoded values, implementation doesn't match Figma, broken reflow, missing focus indicators.
+**Red flags:** Generic AI aesthetics, hardcoded values, implementation doesn't match the system, broken reflow, missing states, missing focus indicators.
 
 ### 3. Trustworthy Building
 
 **Evaluate:**
-- AI transparency: disclaimer on AI-generated content
-- Error transparency: actionable error messages
+- AI transparency: solo si el producto genera o presenta contenido AI; en ese caso, disclaimer visible.
+- Error transparency: actionable error messages.
 
-**Red flags:** Missing AI disclaimers, opaque errors without guidance.
+**Red flags:** Falta el disclaimer AI cuando aplica, errores opacos sin guia.
 
 ---
 
@@ -103,7 +98,7 @@ See [references/review-type-modifiers.md](references/review-type-modifiers.md) f
 
 ## Quick Checklist
 
-See [references/quick-checklist.md](references/quick-checklist.md) for the pre-approval checklist covering design system compliance, aesthetic quality, frictionless, quality craft, and trustworthy pillars.
+See [references/quick-checklist.md](references/quick-checklist.md) for the pre-approval checklist covering design system compliance, states, responsive, aesthetic quality, frictionless and trustworthy pillars.
 
 ## Pattern Examples
 

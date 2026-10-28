@@ -41,6 +41,7 @@ Cuando ejecutes un plan numerado:
 4. Tests actualizados junto al cambio (ver skill `testing`).
 5. No crea documentacion ni archivos no pedidos; si el stack cambia, propon actualizar `AGENTS.md` o un ADR.
 6. Si cambia un contrato de API, actualiza `api-backend` o el ADR antes de cerrar.
-7. Si el cambio toca UI: `impeccable detect` sin hallazgos, o cada ignore justificado con su razón más estrecha.
+7. Si el cambio toca UI web: reutiliza la salida del detector de `impeccable` si `critique`/`audit` ya corrio; si no, una pasada desde la base dir de la skill. Sin hallazgos, o cada ignore justificado con la razon mas estrecha. En nativo no hay detector: aplica la revision de plataforma.
+8. Si creas una superficie nueva o rediseno y no hay `DESIGN.md` (seed o scan) ni bypass aprobado: no cierres.
 
 Adapta comandos y nombres a los scripts existentes del repositorio. No incluye tutoriales de Git ni sintaxis de testing.

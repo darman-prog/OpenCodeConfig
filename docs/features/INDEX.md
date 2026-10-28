@@ -13,6 +13,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 
 | Fecha | Cambio | Estado | Área | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|---|
+| 2026-10-28 | Auditoria de skills UI | en-curso | harness | Ruteo 3 filas, gate de estilo, 2 subagentes vendor | [013-auditoria-skills-ui.md](013-auditoria-skills-ui.md) | criterios en curso |
 
 ## Cerradas
 
@@ -38,6 +39,9 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-09-28 | RTK como dependencia de máquina | vigente | Rendimiento/costes del harness | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) |
 | 2026-10-18 | OpenCode V1.19.3 (la V2 rompe los plugins) | vigente | Versión del runtime | [ADR-002](../adr/002-Version1-opencode.md) |
 | 2026-10-19 | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | vigente | Persistencia local y privacidad | [ADR-003](../adr/003-retencion-respaldos-opencode.md) |
+| 2026-10-22 | Trazabilidad portable: backlog, expediente y bitácora mecánica | vigente | Documentación y auditoría | [ADR-004](../adr/004-trazabilidad-portable.md) |
+| 2026-10-28 | Subagentes vendor de impeccable en OpenCode | vigente | UI y orquestación | [ADR-005](../adr/005-subagentes-vendor-impeccable.md) |
+| 2026-10-28 | Gate de autoridad visual antes de UI nueva | vigente | UI y proceso | [ADR-006](../adr/006-gate-autoridad-visual.md) |
 
 ## Reglas
 
