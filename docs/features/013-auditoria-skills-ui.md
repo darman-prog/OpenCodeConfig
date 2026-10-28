@@ -51,7 +51,7 @@ La fila UI obligaba a cuatro skills que se declaran incompatibles; el launcher d
 | 8 | 2026-10-28 | powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 | 0 | 2491a2e |
 
 ## Rollback
-`git revert` de 2491a2e y del commit de cierre. Sin cambios de esquema ni datos.
+`git revert` de 2491a2e, 5b79329 y 8ee70ec. Sin cambios de esquema ni datos.
 `.\sync-global.ps1` para restaurar el global y reiniciar la TUI.
 
 ## Cierre
