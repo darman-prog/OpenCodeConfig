@@ -64,12 +64,12 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Flujos MCP | `.opencode/skills/activacion-mcp/` + `docs/harness/notion.md` + `docs/harness/stitch.md` | Playwright/Notion opt-in; Stitch global deshabilitado + activación por sesión; ambos flujos son documentales, no una skill manual |
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto (topes, contratos, probes y codificación) |
 | Verificación completa | `scripts/verify.ps1` | Guardarraíl + identidad repo/global + smokes de ruteo en un comando |
-| Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
+| Smokes de ruteo | `scripts/smoke-routing.ps1` | 19 casos en runtime: 10 de gatillo + 9 adyacentes/UI; 19/19 PASS |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Wrapper de `trace.py start`: crea el expediente y su fila en `INDEX.md` |
 | Trazabilidad | `.opencode/skills/documentacion/scripts/trace.py` | Cola, expedientes y registro; evidencia mecánica por criterio; viaja con `sync-global` |
 | Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
-| Probes de gatillo | `scripts/trigger-probes.json` | 47 casos (cubre las 38 skills + `customize-opencode`) |
-| Smokes de ruteo | `scripts/smoke-routing.ps1` | 16 casos en runtime: 10 de gatillo + 6 adyacentes; 16/16 PASS |
+| Probes de gatillo | `scripts/trigger-probes.json` | 49 casos (cubre las 38 skills + `customize-opencode`) |
+| Smokes de ruteo | `scripts/smoke-routing.ps1` | 19 casos en runtime: 10 de gatillo + 9 adyacentes/UI; 19/19 PASS |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate`, el MCP global de Stitch (declarado deshabilitado; se activa por sesión) y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
@@ -184,6 +184,7 @@ git status --short                                                              
 | Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` y 3 de UI): 19/19 PASS |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
 | Reinicio de TUI tras la simplificación | La config (`instructions`, deny) no es hot-reload: reiniciar para que apliquen `OPENCODE.md` y el deny de `GEMINI.md` |
+| Reinicio de TUI tras la auditoría UI | La config no es hot-reload: reiniciar para cargar el ruteo, el gate y los 2 agentes nuevos |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
 | Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |

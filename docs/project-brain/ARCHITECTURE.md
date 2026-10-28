@@ -27,7 +27,7 @@ Si uno cae, el harness se pudre en silencio. Los verifica `harness-budget.ps1` (
 
 1. **Presupuesto**: todo lo de arriba dentro de los topes de `presupuestos.md`; manda el guardarraíl, no el criterio.
 2. **Espejo**: `~/.config/opencode/{skills,agents,commands}` es copia exacta del repo — el sync compara texto normalizado y número de archivos.
-3. **Permisos**: `plan`, `backend-expert` y `tester` nunca editan; `auditor` solo `*.md`; los subagents no se invocan entre sí; `external_directory` no puede abrir `*`.
+3. **Permisos**: `plan`, `backend-expert` y `tester` nunca editan; `auditor` solo `*.md`; `impeccable-finish-reviewer` nada; `impeccable-documenter` solo `DESIGN.md` y su sidecar; salvo `ui-ux` (explore/general/vendor), los subagents no invocan a otros agentes; `external_directory` no puede abrir `*`.
 4. **Fail-closed**: sin `name`/`description` en el frontmatter la skill no se anuncia; sin guardarraíl el sync no copia.
 5. **Sin hot-reload**: todo lo anterior se carga al arrancar; tras editar, reiniciar opencode.
 6. **Un dato, un lugar**: los topes en `presupuestos.md`, el ruteo en `OPENCODE.md`, la política de permisos en el global, los criterios de un cambio auditable en su spec (`docs/features/`) y el resto de cambios en el changelog.

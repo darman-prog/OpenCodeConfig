@@ -32,6 +32,9 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo 
 | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
 | [ADR-002](../adr/002-Version1-opencode.md) | OpenCode V1.19.3 (la V2 rompe los plugins) | subir/bajar de versión de OpenCode | vigente |
 | [ADR-003](../adr/003-retencion-respaldos-opencode.md) | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | archivar o restaurar el historial de sesiones | vigente |
+| [ADR-004](../adr/004-trazabilidad-portable.md) | Trazabilidad portable: backlog, expediente y bitácora mecánica | reanudar o auditar un cambio | vigente |
+| [ADR-005](../adr/005-subagentes-vendor-impeccable.md) | Subagentes vendor de impeccable en OpenCode | tocar `critique`, `new-work` o el roster | vigente |
+| [ADR-006](../adr/006-gate-autoridad-visual.md) | Gate de autoridad visual antes de UI nueva | crear o rediseñar UI sin `DESIGN.md` | vigente |
 
 ## Reglas del cerebro
 
