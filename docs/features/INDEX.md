@@ -13,7 +13,6 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 
 | Fecha | Cambio | Estado | Área | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|---|
-| 2026-10-28 | Auditoria de skills UI | en-curso | harness | Ruteo 3 filas, gate de estilo, 2 subagentes vendor | [013-auditoria-skills-ui.md](013-auditoria-skills-ui.md) | criterios en curso |
 
 ## Cerradas
 
@@ -31,6 +30,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-19 | Gate anti-slop en el cierre | cerrada | harness | DoD, `calidad-cierre` y preset High-Craft | [010-gate-anti-slop.md](010-gate-anti-slop.md) | guardarraíl exit 0 |
 | 2026-10-22 | Trazabilidad portable y auditoria | cerrada | harness | Pendiente de detallar | [011-trazabilidad-portable.md](011-trazabilidad-portable.md) | - |
 | 2026-10-22 | Alineación de la doctrina con el umbral auditable | cerrada | docs | OPENCODE, skills, probe y smoke + Python en AGENTS | [012-alineacion-doctrina-auditable.md](012-alineacion-doctrina-auditable.md) | guardarraíl exit 0; smokes 16/16 |
+| 2026-10-28 | Auditoria de skills UI | cerrada | harness | Ruteo 3 filas, gate de estilo, 2 subagentes vendor | [013-auditoria-skills-ui.md](013-auditoria-skills-ui.md) | 8/8 criterios exit 0; verify 19/19 |
 
 ## Decisiones (ADR)
 
