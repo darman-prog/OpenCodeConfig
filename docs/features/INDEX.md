@@ -13,7 +13,6 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 
 | Fecha | Cambio | Estado | Área | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|---|
-| 2026-10-28 | Adopcion de better-ui | en-curso | harness | Vendor, adaptador, ruteo opcional y pilot Teiba | [014-adopcion-better-ui.md](014-adopcion-better-ui.md) | criterios en curso |
 
 ## Cerradas
 
@@ -33,6 +32,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-22 | Alineación de la doctrina con el umbral auditable | cerrada | docs | OPENCODE, skills, probe y smoke + Python en AGENTS | [012-alineacion-doctrina-auditable.md](012-alineacion-doctrina-auditable.md) | guardarraíl exit 0; smokes 16/16 |
 | 2026-10-28 | Auditoria de skills UI | cerrada | harness | Ruteo 3 filas, gate de estilo, 2 subagentes vendor | [013-auditoria-skills-ui.md](013-auditoria-skills-ui.md) | 8/8 criterios exit 0; verify 19/19 |
 | 2026-10-28 | Pilot better-ui en Teiba | cerrada | ui | Press/transición en Composer; sombras/radio/icono rechazados | [015-pilot-better-ui-teiba.md](015-pilot-better-ui-teiba.md) | PASS; tests 32/32; detect `[]` |
+| 2026-10-28 | Adopcion de better-ui | cerrada | harness | Vendor, adaptador, ruteo opcional y pilot Teiba | [014-adopcion-better-ui.md](014-adopcion-better-ui.md) | 6/6 criterios exit 0; verify 20/20 |
 
 ## Decisiones (ADR)
 

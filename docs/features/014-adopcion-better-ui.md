@@ -1,6 +1,6 @@
 ---
 id: 014
-status: en-curso
+status: cerrada
 area: harness
 tarea: -
 created: 2026-10-28
@@ -40,6 +40,12 @@ La skill externa (`jakubkrehel/skills`, MIT, commit `592aedc`) aporta valores co
 ## Bitácora
 | Criterio | Fecha | Comando | Exit | Commit |
 |---|---|---|---|---|
+| 1 | 2026-10-28 | powershell -NoProfile -Command "$d='.opencode\skills\better-ui'; $ok=(Test-Path (Join-Path $d 'SKILL.md')) -and (Test-Path (Join-Path $d 'LICENSE')) -and (Select-String -Path (Join-Path $d 'LICENSE') -Pattern 'MIT License' -Quiet) -and (Select-String -Path (Join-Path $d 'LICENSE') -Pattern 'Jakub Krehel' -Quiet) -and (Select-String -Path (Join-Path $d 'SOURCE.md') -Pattern '592aedc' -Quiet); if ($ok) { exit 0 } else { exit 1 }" | 0 | 7e7cbf6 |
+| 2 | 2026-10-28 | powershell -NoProfile -Command "$p='.opencode\skills\better-ui\SKILL.md'; $ok=(Select-String -Path $p -Pattern 'DESIGN.md' -Quiet) -and (Select-String -Path $p -Pattern 'accesibilidad' -Quiet) -and (Select-String -Path $p -Pattern 'frontend-design-review' -Quiet) -and (Select-String -Path $p -Pattern 'no es un segundo gate' -Quiet); if ($ok) { exit 0 } else { exit 1 }" | 0 | 7e7cbf6 |
+| 3 | 2026-10-28 | powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\harness-budget.ps1 | 0 | 7e7cbf6 |
+| 4 | 2026-10-28 | powershell -NoProfile -Command "$p='docs\features\015-pilot-better-ui-teiba.md'; $ok=(Test-Path $p) -and (Select-String -Path $p -Pattern 'PASS' -Quiet) -and (Select-String -Path $p -Pattern 'Composer.tsx' -Quiet) -and (Select-String -Path $p -Pattern 'motion-safe' -Quiet); if ($ok) { exit 0 } else { exit 1 }" | 0 | 7e7cbf6 |
+| 5 | 2026-10-28 | powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\verify.ps1 | 0 | 7e7cbf6 |
+| 6 | 2026-10-28 | python .opencode\skills\documentacion\scripts\trace.py check | 0 | 7e7cbf6 |
 
 ## Rollback
 `git revert` de los commits de la adopción; `.\sync-global.ps1`; reiniciar la TUI.
