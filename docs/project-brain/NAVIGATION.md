@@ -35,6 +35,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo 
 | [ADR-004](../adr/004-trazabilidad-portable.md) | Trazabilidad portable: backlog, expediente y bitácora mecánica | reanudar o auditar un cambio | vigente |
 | [ADR-005](../adr/005-subagentes-vendor-impeccable.md) | Subagentes vendor de impeccable en OpenCode | tocar `critique`, `new-work` o el roster | vigente |
 | [ADR-006](../adr/006-gate-autoridad-visual.md) | Gate de autoridad visual antes de UI nueva | crear o rediseñar UI sin `DESIGN.md` | vigente |
+| [ADR-007](../adr/007-adopcion-better-ui.md) | better-ui como capa de pulido opcional | pulir UI con recetas externas | vigente |
 
 ## Reglas del cerebro
 

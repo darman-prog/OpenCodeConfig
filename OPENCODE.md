@@ -14,8 +14,8 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Documentación, README, ADR, guía o cambio auditable (backlog, spec, tarjeta) | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
 | Backend, dominio, API, jobs, esquema o migraciones | `arquitectura`, `api-backend`, `base-datos` | `microservicios` |
 | Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
-| Crear, rediseñar o pulir UI visible/interactiva | `ui-ux`, `impeccable-doctrina`, `impeccable`, `accesibilidad` | `convenciones-frontend`; `frontend-design-review` solo si pides veredicto |
-| Ajustar UI existente sin rediseño | `ui-ux`, `accesibilidad` | `convenciones-frontend`, `impeccable-doctrina` (detector), `impeccable` (si hay problema de sistema) |
+| Crear, rediseñar o pulir UI visible/interactiva | `ui-ux`, `impeccable-doctrina`, `impeccable`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido) |
+| Ajustar UI existente sin rediseño | `ui-ux`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido), `impeccable-doctrina` (detector), `impeccable` (si hay problema de sistema) |
 | Revisar o auditar UI existente (veredicto) | `frontend-design-review`, `accesibilidad` | `ui-ux`, `impeccable-doctrina` (detector), `impeccable` (solo /audit y /critique si hay que ejecutar) |
 | Medir UX con métricas (SUS, UMUX-Lite, ISO/IEC 25010/SQuaRE) | `evaluacion-experiencia` | `analisis-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing` |

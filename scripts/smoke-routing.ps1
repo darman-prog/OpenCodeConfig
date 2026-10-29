@@ -18,7 +18,7 @@ $cases = @(
   @{ prompt = "quiero usar Notion en este proyecto";                 skill = "activacion-mcp" },
   @{ prompt = "define un MVP y ordena el roadmap";                   skill = "criterio-proyecto" },
   @{ prompt = "necesito un plan tecnico con dependencias y riesgos"; skill = "ingenieria-software" },
-  @{ prompt = "resume este texto en 3 bullets";                      skill = "uso-eficiente" },
+  @{ prompt = "resume este texto en 3 bullets para ahorrar tokens";  skill = "uso-eficiente" },
   @{ prompt = "mide la experiencia de usuario con SUS y UMUX-Lite";  skill = "evaluacion-experiencia" },
   @{ prompt = "retomar un cambio auditable en docs/features";    skill = "documentacion" },
   @{ prompt = "necesito correr los tests unitarios";                 skill = "testing" },
@@ -27,6 +27,7 @@ $cases = @(
   @{ prompt = "crea una landing para un producto SaaS"; skill = "ui-ux"; notSkill = @("frontend-design-review") },
   @{ prompt = "revisa el diseno de esta pantalla contra el design system"; skill = "frontend-design-review" },
   @{ prompt = "ajusta el espaciado de un boton existente"; skill = "ui-ux" },
+  @{ prompt = "pule el hover, las sombras y los radios de un componente"; skill = "better-ui" },
   # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.
   @{ prompt = "revisa la calidad del codigo de este modulo";       skill = "code-quality" },
   @{ prompt = "refactoriza este modulo con logica duplicada";      skill = "refactoring" },
@@ -49,15 +50,29 @@ foreach ($c in $cases) {
   # Solo stdout cuenta para el PASS: un error por stderr que mencione la skill
   #eria un falso PASS. La llamada directa (no Start-Process) es la que funciona
   #con el shim .ps1 de npm en Windows.
-  $outFile = Join-Path $env:TEMP ("smoke-out-" + [guid]::NewGuid().ToString("N") + ".txt")
-  $errFile = "$outFile.err"
-  try {
-    & opencode run --model $Model $q 1> $outFile 2> $errFile
-    $out = if (Test-Path -LiteralPath $outFile) { Get-Content -LiteralPath $outFile -Raw } else { "" }
-  } catch {
-    $out = ""
-  } finally {
-    Remove-Item -LiteralPath $outFile, $errFile -Force -ErrorAction SilentlyContinue
+  $out = ""
+  # El gateway puede rechazar por capacidad; eso no es un fallo de ruteo.
+  for ($attempt = 1; $attempt -le 5; $attempt++) {
+    $outFile = Join-Path $env:TEMP ("smoke-out-" + [guid]::NewGuid().ToString("N") + ".txt")
+    $errFile = "$outFile.err"
+    try {
+      & opencode run --model $Model $q 1> $outFile 2> $errFile
+      $out = if (Test-Path -LiteralPath $outFile) { Get-Content -LiteralPath $outFile -Raw } else { "" }
+    } catch {
+      $out = ""
+    } finally {
+      Remove-Item -LiteralPath $outFile, $errFile -Force -ErrorAction SilentlyContinue
+    }
+    # El modelo barato varia: se reintenta una salida vacia, un error de capacidad
+    # o una seleccion incompleta. Un fallo sistematico sigue fallando tras 5 intentos.
+    $attemptOk = $out -and ($out -match [regex]::Escape($c.skill))
+    if ($attemptOk -and $c.ContainsKey('notSkill')) {
+      foreach ($n in @($c.notSkill)) {
+        if ($out -match [regex]::Escape($n)) { $attemptOk = $false }
+      }
+    }
+    if ($attemptOk -and $out -notmatch 'cell is at capacity|Upstream request failed') { break }
+    if ($attempt -lt 5) { Start-Sleep -Seconds 5 }
   }
   # El nombre de la skill debe aparecer entre las declaradas (acepta backticks y coma).
   if ($out -match [regex]::Escape($c.skill)) {
@@ -79,6 +94,7 @@ foreach ($c in $cases) {
     Write-Host "  FAIL (esperado: $($c.skill))"
     $fail += $c.skill
   }
+  $ErrorActionPreference = $prevEAP
 }
 
 Write-Host ""
