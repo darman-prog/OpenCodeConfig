@@ -17,7 +17,7 @@ updated: 2026-10-28
 ## Evidencia
 - Baseline y post: lint 0, typecheck 0, test 32/32, build 0, detect `[]` 0.
 - CSS: `scale:.96` bajo `@media (prefers-reduced-motion:no-preference)`; `transition-property:background-color,scale`; `hover:hover`.
-- Sin cambios en `Docs/DESIGN.md` ni `frontend/package.json`.
+- El pilot no tocó `Docs/DESIGN.md` ni `frontend/package.json`; el working tree ya traía cambios previos.
 ## Resultado
 **PASS**. Sin commit en Teiba: la UI completa sigue sin trackear; el cambio queda en la rama.
 ## Rollback
