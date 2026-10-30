@@ -1,7 +1,7 @@
 # evaluacion-experiencia: contexto para agentes
 
 ## Por que existe
-Llena el hueco de medicion cuantitativa: el harness tenia evaluacion cualitativa (ui-ux, frontend-design-review, impeccable), no escalas ni vocabulario de factores de calidad.
+Llena el hueco de medicion cuantitativa: el harness tenia evaluacion cualitativa (frontend-build, frontend-design-review, impeccable), no escalas ni vocabulario de factores de calidad.
 
 ## Estructura
 SKILL.md (flujo y gate) + 5 referencias: INSTRUMENTOS, ISO-25010, PROTOCOLO-SESION, ANALISIS-ESTADISTICO, PLANTILLA-INFORME.
@@ -13,7 +13,7 @@ SKILL.md (flujo y gate) + 5 referencias: INSTRUMENTOS, ISO-25010, PROTOCOLO-SESI
 Skill Gate de OPENCODE.md, invocacion explicita por nombre o instrumento, y post-condicion tras calidad-cierre en releases con UI o en metricas de exito de inicio-proyecto.
 
 ## Relaciones (anti-duplicacion)
-ui-ux criterios cualitativos; accesibilidad canon WCAG; impeccable/impeccable-doctrina UI estable; frontend-design-review heuristica barata redirige; criterio-proyecto alcance; calidad-cierre gate; performance percepcion no objetivo.
+frontend-build criterios cualitativos; accesibilidad canon WCAG; impeccable/impeccable-doctrina UI estable; frontend-design-review heuristica barata redirige; criterio-proyecto alcance; calidad-cierre gate; performance percepcion no objetivo.
 
 ## Decisiones de diseño
 - SQuaRE como vocabulario, no articulado copiado ni certificacion (vocabulario adaptado).

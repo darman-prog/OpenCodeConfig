@@ -13,12 +13,10 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Producto, alcance, MVP, roadmap, plan técnico o spike | `criterio-proyecto`, `ingenieria-software` | `arquitectura` |
 | Documentación, README, ADR, guía o cambio auditable (backlog, spec, tarjeta) | `documentacion` | `contexto-proyecto`, `ingenieria-software` |
 | Backend, dominio, API, jobs, esquema o migraciones | `arquitectura`, `api-backend`, `base-datos` | `microservicios` |
-| Código frontend sin cambio visual | `convenciones-frontend` | `accesibilidad` |
-| Crear, rediseñar o pulir UI visible/interactiva | `ui-ux`, `impeccable-doctrina`, `impeccable`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido) |
-| Ajustar UI existente sin rediseño | `ui-ux`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido), `impeccable-doctrina` (detector), `impeccable` (si hay problema de sistema) |
-| Revisar o auditar UI existente (veredicto) | `frontend-design-review`, `accesibilidad` | `ui-ux`, `impeccable-doctrina` (detector), `impeccable` (solo /audit y /critique si hay que ejecutar) |
-| Dirección visual frontend (experimental) | `frontend-direction`, `accesibilidad` | `investigacion-web`, `impeccable` |
-| Construcción frontend con sistema (experimental) | `frontend-build`, `accesibilidad` | `convenciones-frontend`, `better-ui`, `impeccable` |
+| Código frontend sin cambio visual | `frontend-build`, `accesibilidad` | — |
+| Crear o rediseñar UI visible/interactiva | `frontend-direction`, `frontend-build`, `accesibilidad` | `impeccable-doctrina`, `impeccable` (mundo nuevo/rediseño) |
+| Ajustar o pulir UI existente | `frontend-build`, `accesibilidad` | `impeccable` (si hay problema de sistema) |
+| Revisar o auditar UI existente (veredicto) | `frontend-design-review`, `accesibilidad` | `frontend-build`, `impeccable` (solo /audit y /critique) |
 | Medir UX con métricas (SUS, UMUX-Lite, ISO/IEC 25010/SQuaRE) | `evaluacion-experiencia` | `analisis-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing` |
 | Refactor, deuda, code smells, tests o TDD | `refactoring`, `code-quality`, `testing`, `tdd` | — |
@@ -29,7 +27,7 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Editar `.opencode/`, auditar el harness, commits o PRs | `customize-opencode`, `workflow` | `testing` |
 | Manuales, solo por petición explícita | `habilidades-ofimaticas`, `informe-docx` | — |
 
-UI nueva o rediseño sin `DESIGN.md`: no implementar hasta `document --seed`, `document` (scan) o bypass aprobado (`impeccable-doctrina`).
+UI nueva o rediseño sin `DESIGN.md`: no implementar hasta `frontend-direction` (brief/seed), `document` (scan) o bypass aprobado.
 
 Regla anti-omision: si la `description` de una skill menciona un verbo o dominio presente en la tarea, cargala aunque creas conocerla o este resumida aqui.
 

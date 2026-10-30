@@ -22,12 +22,11 @@ $cases = @(
   @{ prompt = "mide la experiencia de usuario con SUS y UMUX-Lite";  skill = "evaluacion-experiencia" },
   @{ prompt = "retomar un cambio auditable en docs/features";    skill = "documentacion" },
   @{ prompt = "necesito correr los tests unitarios";                 skill = "testing" },
-  @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "ui-ux" },
+  @{ prompt = "disena un formulario de registro moderno y accesible"; skill = "frontend-build" },
   # Ruteo UI por intencion: crear no debe cargar el veredicto; revisar y ajustar tienen skills distintas.
-  @{ prompt = "crea una landing para un producto SaaS"; skill = "ui-ux"; notSkill = @("frontend-design-review") },
+  @{ prompt = "crea una landing para un producto SaaS"; skill = "frontend-build"; notSkill = @("frontend-design-review") },
   @{ prompt = "revisa el diseno de esta pantalla contra el design system"; skill = "frontend-design-review" },
-  @{ prompt = "ajusta el espaciado de un boton existente"; skill = "ui-ux" },
-  @{ prompt = "pule el hover, las sombras y los radios de un componente"; skill = "better-ui" },
+  @{ prompt = "ajusta el espaciado de un boton existente"; skill = "frontend-build" },
   @{ prompt = "define la direccion visual de una UI nueva"; skill = "frontend-direction" },
   @{ prompt = "construye una pantalla usando tokens y primitivas"; skill = "frontend-build" },
   # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.

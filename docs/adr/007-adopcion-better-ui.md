@@ -1,5 +1,7 @@
 # ADR 007: better-ui como capa de pulido opcional
 
+> Actualización 2026-10-29: `better-ui` deja de ser skill y pasa a referencia de `frontend-build/references/BETTER-UI.md`; la decisión de fondo (capa opcional, licencia MIT y precedencia del proyecto) sigue vigente. Ver ADR 008.
+
 ## Contexto
 `better-ui` (`jakubkrehel/skills`, MIT, commit `592aedc`) aporta valores exactos de radios, sombras, iconos y motion que no están completos en `impeccable`. Asume la familia `better-*`, que no tenemos, y compite con `accesibilidad` en motion y con `frontend-design-review` en el veredicto. Teiba probó el subconjunto compatible con su `Docs/DESIGN.md`.
 

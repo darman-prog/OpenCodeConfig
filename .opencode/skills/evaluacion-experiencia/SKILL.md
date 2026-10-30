@@ -6,7 +6,7 @@ description: UX cuantitativa: SUS, UMUX-Lite, factores de calidad ISO 25010 e in
 # Evaluacion de experiencia
 - No usar cuando: pides medir el rendimiento tecnico (eso es `performance`) o analizar un dataset (eso es `analisis-datos`).
 
-Canon unico del harness para medir UX y calidad percibida. Cierra el ciclo de ui-ux/impeccable (cualitativo) con numeros defendibles y un gate en calidad-cierre. Orden estricto: nunca mezclar percepcion con ejecucion.
+Canon unico del harness para medir UX y calidad percibida. Cierra el ciclo de frontend-build/impeccable (cualitativo) con numeros defendibles y un gate en calidad-cierre. Orden estricto: nunca mezclar percepcion con ejecucion.
 
 ## Flujo (6 etapas, confirmacion explicita entre cada una; nunca Q&A aleatoria)
 1. Encuadre: decision (comparar diseños, validar MVP, detectar deuda), recursos (n, tiempo) y umbrales de bloqueo (ej. SUS >= 68). Sin objetivo decisional no hay cuestionario.
@@ -18,7 +18,7 @@ Canon unico del harness para medir UX y calidad percibida. Cierra el ciclo de ui
 
 ## Reglas de delegacion (anti-duplicacion)
 | Skill | Relacion |
-| ui-ux | ella define criterios cualitativos; esta skill los mide numericamente |
+| frontend-build | el define criterios y construye; esta skill los mide numericamente |
 | accesibilidad | canon WCAG sigue alli; items de percepcion accesibilidad, sin re-auditar |
 | impeccable / impeccable-doctrina | crean la UI; esta skill mide sobre UI estable (post-impeccable) |
 | frontend-design-review | si se resuelve con inspeccion heuristica barata, redirige alli; aqui hace falta numero defendible o evidencia de usuarios |

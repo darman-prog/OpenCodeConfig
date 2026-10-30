@@ -5,8 +5,8 @@ Este archivo es el índice de lo que **no** tiene canon en otra skill. Cada crit
 - **Jerarquía:** el foco visual debe coincidir con la tarea. El resto del análisis → `frontend-design-review` (pilares) e `impeccable`.
 - **Accesibilidad:** checklist completo en `accesibilidad` (WCAG 2.2 AA es el canon). No lo dupliques aquí.
 - **Responsive:** define por capacidades y tamaños, no por nombres de dispositivos → `impeccable` (guía adapt).
-- **Estados:** carga, vacío, error, éxito, deshabilitado → `convenciones-frontend` e `impeccable` (guía harden).
-- **Tokens:** reutiliza color, tipografía, espaciado y foco existentes → `convenciones-frontend` y `frontend-design-review`.
+- **Estados:** carga, vacío, error, éxito, deshabilitado → `frontend-build` e `impeccable` (guía harden).
+- **Tokens:** reutiliza color, tipografía, espaciado y foco existentes → `frontend-build` y `frontend-design-review`.
 - **Feedback:** los errores se señalan cerca de su causa y se respeta `prefers-reduced-motion` → `accesibilidad` e `impeccable` (guía animate).
 
 ## Lo único que no está en otra skill

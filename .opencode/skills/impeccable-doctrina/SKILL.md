@@ -40,6 +40,6 @@ El launcher es local; si falta el binario, `impeccable.cmd` lo descarga con veri
 
 ## Integracion con este repo
 
-- Convive con `convenciones-frontend`, `accesibilidad` y el checklist de `ui-ux`; no reemplaza esas reglas.
+- Convive con `frontend-build` y `accesibilidad`; no reemplaza esas reglas.
 - Mantenimiento y atajos: `references/CLI.md`.
 - Preset High-Craft opcional: `references/PRESET-LINEAR.md` (se adopta pidiendolo; nunca es default).

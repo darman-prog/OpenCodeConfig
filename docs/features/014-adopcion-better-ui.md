@@ -8,6 +8,8 @@ updated: 2026-10-28
 ---
 # Feature 014 — Adopción de better-ui
 
+> Actualización 2026-10-29: la skill se retiró y su contenido vive como referencia en `frontend-build/references/BETTER-UI.md`; se conserva la licencia MIT y la fuente. Ver feature 016 y ADR 008.
+
 > Incorporar `better-ui` como capa opcional de pulido, con adaptador, licencia y pilot real en Teiba.
 
 ## Objetivo

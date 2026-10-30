@@ -1,9 +1,4 @@
----
-name: convenciones-frontend
-description: Estructura frontend: features/core/shared, singleton, interceptores, responsive. UI visible la trata ui-ux.
----
-
-# Convenciones Frontend
+# Estructura frontend
 
 - Organiza la aplicacion por `features/`, con carga diferida cuando aplique.
 - Reserva `core/` para servicios singleton, configuracion e interceptores; usa `shared/` para componentes y utilidades reutilizables sin logica de negocio.
@@ -17,7 +12,5 @@ description: Estructura frontend: features/core/shared, singleton, interceptores
 - Mobile-first y responsive en los flujos principales.
 - Define estados loading, error, empty, disabled y success cuando correspondan.
 - Usa tokens consistentes de spacing 4/8, tipografia, color y radius; prioriza el sistema visual existente.
-- Accesibilidad: cumple el checklist base de `accesibilidad` (WCAG 2.2 AA); aqui solo se cubren layout, estados y tokens.
-- Cambio visible o interactivo: aplica ademas los criterios de `ui-ux`.
-
-No incluye tutoriales de sintaxis Angular, Tailwind ni otras tecnologias frontend.
+- Accesibilidad: cumple el checklist base de `accesibilidad` (WCAG 2.2 AA).
+- Cambio visible o interactivo: aplica los criterios de [CRITERIOS-UI-UX.md](CRITERIOS-UI-UX.md).

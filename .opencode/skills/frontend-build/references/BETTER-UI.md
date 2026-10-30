@@ -1,11 +1,11 @@
 ---
 name: better-ui
-description: Pulido visual: radios, sombras, iconos, hover y motion con valores exactos; usar tras ui-ux; no da direccion ni veredicto.
+description: Pulido visual: radios, sombras, iconos, hover y motion con valores exactos; usar tras frontend-build; no da direccion ni veredicto.
 ---
 
 # Better UI (capa de pulido)
 
-> Adaptacion de `jakubkrehel/skills` (`better-ui`), MIT, commit `592aedc` (2026-10-25). Texto completo: [PRINCIPLES.md](references/PRINCIPLES.md). Licencia: `LICENSE`.
+> Adaptacion de `jakubkrehel/skills` (`better-ui`), MIT, commit `592aedc` (2026-10-25). Texto completo: [PRINCIPLES.md](better-ui/PRINCIPLES.md). Licencia: `better-ui/LICENSE`.
 
 ## Cuando
 
@@ -52,4 +52,4 @@ El veredicto es de `frontend-design-review`; el gate de cierre, de `calidad-cier
 - El `Reporting` upstream (HIGH/MEDIUM/LOW, Block/Approve) es insumo para `frontend-design-review`; no es un segundo gate.
 - Sin browser, reporta `Not verified`; no inventes evidencia.
 
-Recetas completas: [PRINCIPLES.md](references/PRINCIPLES.md), [surfaces.md](references/surfaces.md), [animations.md](references/animations.md), [enter-exit.md](references/enter-exit.md), [icon-transitions.md](references/icon-transitions.md), [performance.md](references/performance.md), [icons.md](references/icons.md).
+Recetas completas: [PRINCIPLES.md](better-ui/PRINCIPLES.md), [surfaces.md](better-ui/surfaces.md), [animations.md](better-ui/animations.md), [enter-exit.md](better-ui/enter-exit.md), [icon-transitions.md](better-ui/icon-transitions.md), [performance.md](better-ui/performance.md), [icons.md](better-ui/icons.md).

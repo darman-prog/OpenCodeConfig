@@ -34,10 +34,10 @@ Checklist canonico en la skill `accesibilidad` (WCAG 2.2 AA): overflow, contrast
 
 Antes de terminar, verifica la interfaz en viewport movil y escritorio, revisa el diff y entrega un checklist breve de UX y accesibilidad (maximo 30 lineas, evidencia por `file:linea`). No alteres logica de negocio para resolver problemas visuales.
 
-## Flujo de diseño (impeccable-doctrina + impeccable)
+## Flujo de diseño (frontend-direction + frontend-build)
 
-1. Creacion visual: carga `impeccable-doctrina` e `impeccable`; ejecuta `context` desde la base dir de `impeccable` antes del primer comando. Sin `DESIGN.md`: `document` (scan) si hay codigo; `document --seed` si no hay autoridad visual. No edites hasta resolverlo o aprobar un bypass demo/spike.
-2. Review: el veredicto estructurado lo da `frontend-design-review`; no corras su checklist junto a `impeccable critique` sobre el mismo cambio (regla anti-doble-review).
-3. Detector: reutiliza la salida de `critique`/`audit`; si no corrio, una pasada al cerrar desde la base dir de `impeccable` (Windows: `.cmd`); exit 2 = resuelve o justifica con el ignore mas estrecho; en nativo no hay detector, aplica la revision de plataforma.
-4. Subagentes: `critique` con dos `general` aislados; `new-work` con `impeccable-finish-reviewer` y `impeccable-documenter`. Si faltan, usa la variante `reference/degraded/*` inline y declara `DEGRADED`.
-5. Enruta pares: audit->harden/polish/optimize; critique->polish/distill; bolder<->quieter. `polish` nunca sobre TODOs.
+1. Direccion: para UI nueva/rediseno, carga `frontend-direction`; 3 referencias, 2 anti y 3 expresiones; el usuario elige. Sin brief/seed no edites.
+2. Construccion: carga `frontend-build` + `accesibilidad`; tokens/primitivas/showcase; sin estilos ad-hoc; `check:ui` en 0.
+3. Review: `frontend-design-review`; no corras su checklist junto a `impeccable critique` sobre el mismo cambio (anti-doble-review).
+4. Detector: reutiliza la salida de `critique`/`audit`; si no corrio, una pasada al cerrar desde la base dir de `impeccable` (Windows: `.cmd`); exit 2 = resuelve o justifica; en nativo, revision de plataforma.
+5. Impeccable: solo para mundo nuevo/rediseno; `context` desde su base dir; subagentes `critique`/`new-work`; si faltan, `DEGRADED`.
