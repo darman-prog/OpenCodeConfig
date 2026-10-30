@@ -34,6 +34,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-28 | Pilot better-ui en Teiba | cerrada | ui | Press/transición en Composer; sombras/radio/icono rechazados | [015-pilot-better-ui-teiba.md](015-pilot-better-ui-teiba.md) | PASS; tests 32/32; detect `[]` |
 | 2026-10-28 | Adopcion de better-ui | cerrada | harness | Vendor, adaptador, ruteo opcional y pilot Teiba | [014-adopcion-better-ui.md](014-adopcion-better-ui.md) | 6/6 criterios exit 0; verify 20/20 |
 | 2026-10-29 | Pipeline frontend con identidad | cerrada | ui | Dirección, sistema, showcase y pilot SageView | [016-pipeline-frontend-identidad.md](016-pipeline-frontend-identidad.md) | 6/6 criterios; rating 4/5; verify 21/21 |
+| 2026-10-29 | Smokes filtrados por skill o cambios | cerrada | harness | `-Skill`/`-Changed`; matriz completa al cerrar ruteo | [017-smoke-filtrado.md](017-smoke-filtrado.md) | `-Skill frontend-build` 4/4; `-Changed` OK |
 
 ## Decisiones (ADR)
 

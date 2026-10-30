@@ -65,11 +65,11 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Guardarraíl | `scripts/harness-budget.ps1` | Exit 0 = todo en presupuesto (topes, contratos, probes y codificación) |
 | Verificación completa | `scripts/verify.ps1` | Guardarraíl + identidad repo/global + smokes de ruteo en un comando |
 | Smokes de ruteo | `scripts/smoke-routing.ps1` | 21 casos en runtime: 10 de gatillo + 11 adyacentes/UI; 21/21 PASS |
+| Smokes filtrados | `scripts/smoke-routing.ps1 -Skill` / `-Changed` | Itera solo las skills tocadas; si cambia `OPENCODE.md`, agentes o scripts de ruteo, corre los 21 |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Wrapper de `trace.py start`: crea el expediente y su fila en `INDEX.md` |
 | Trazabilidad | `.opencode/skills/documentacion/scripts/trace.py` | Cola, expedientes y registro; evidencia mecánica por criterio; viaja con `sync-global` |
 | Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
 | Probes de gatillo | `scripts/trigger-probes.json` | 49 casos (cubre las 38 skills + `customize-opencode`) |
-| Smokes de ruteo | `scripts/smoke-routing.ps1` | 21 casos en runtime: 10 de gatillo + 11 adyacentes/UI; 21/21 PASS |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate`, el MCP global de Stitch (declarado deshabilitado; se activa por sesión) y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
