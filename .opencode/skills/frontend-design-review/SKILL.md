@@ -35,6 +35,7 @@ Fuera de alcance de esta skill: la direccion estetica, tipografia, color, motion
 2. Verifica que se usen tokens (no valores hardcodeados) y que existan las variantes y estados del sistema.
 3. Si falta un componente, comprueba si uno existente se adapta; documenta la excepcion y su motivo.
 4. Si no hay `DESIGN.md` ni tokens/componentes, no inventes criterios: reporta "no visual system" y redirige a `document` o `document --seed`.
+5. Si existe `frontend-build`, úsalo como contrato: tokens, primitivas y cero estilos ad-hoc.
 
 **Durante el review:**
 1. Compara con la fuente de verdad aplicable (Figma/Storybook o repo).
@@ -72,7 +73,7 @@ Fuera de alcance de esta skill: la direccion estetica, tipografia, color, motion
 
 **Evaluate:**
 - Design system compliance: matches the source of truth (Figma/Storybook or repo tokens), uses design tokens.
-- Aesthetic direction: distinctive typography, cohesive colors, intentional motion.
+- Aesthetic direction: identidad reconocible, tipografía y color cohesivos, motion intencional; no solo compliance de tokens.
 - States and responsive: loading, empty, error, success, disabled/permisos; mobile-first, sin scroll horizontal y reflow a 200% de zoom.
 - Accessibility: cumple el checklist canonico de la skill `accesibilidad` (WCAG 2.2 AA).
 
@@ -87,6 +88,8 @@ Fuera de alcance de esta skill: la direccion estetica, tipografia, color, motion
 **Red flags:** Falta el disclaimer AI cuando aplica, errores opacos sin guia.
 
 ---
+
+Sin capturas desktop/móvil no hay veredicto: `Not verified` no es un pass. Si `check-ui-tokens` falla en los archivos del cambio, el veredicto es bloqueante.
 
 ## Review Output Format
 

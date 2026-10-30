@@ -47,6 +47,8 @@
   { "prompt": "ajustar los estados y el espaciado de un boton existente", "skill": "ui-ux", "keywords": ["estados", "UI"] },
   { "prompt": "crear un website de producto desde cero", "skill": "impeccable", "keywords": ["websites", "product UI"] },
   { "prompt": "pulir hover, sombras y radios de un componente", "skill": "better-ui", "keywords": ["Pulido visual", "sombras", "iconos"] },
+  { "prompt": "definir la direccion visual de una UI nueva", "skill": "frontend-direction", "keywords": ["Direccion visual", "3 propuestas", "anti-referencias"] },
+  { "prompt": "construir una pantalla con tokens y primitivas", "skill": "frontend-build", "keywords": ["sistema", "primitivas", "estilos ad-hoc"] },
   { "prompt": "ahorrar tokens usando grep y glob antes de read y delegando a explore", "skill": "uso-eficiente", "keywords": ["tokens", "grep/glob", "explore"] },
   { "prompt": "crear rama, hacer commit con Conventional Commits y abrir PR", "skill": "workflow", "keywords": ["ramas", "Conventional Commits", "PRs"] }
 ]

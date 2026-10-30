@@ -28,6 +28,8 @@ $cases = @(
   @{ prompt = "revisa el diseno de esta pantalla contra el design system"; skill = "frontend-design-review" },
   @{ prompt = "ajusta el espaciado de un boton existente"; skill = "ui-ux" },
   @{ prompt = "pule el hover, las sombras y los radios de un componente"; skill = "better-ui" },
+  @{ prompt = "define la direccion visual de una UI nueva"; skill = "frontend-direction" },
+  @{ prompt = "construye una pantalla usando tokens y primitivas"; skill = "frontend-build" },
   # Casos adyacentes: el prompt roza otra skill; debe declarar la correcta, no la evidentemente cercana.
   @{ prompt = "revisa la calidad del codigo de este modulo";       skill = "code-quality" },
   @{ prompt = "refactoriza este modulo con logica duplicada";      skill = "refactoring" },

@@ -17,6 +17,8 @@ Antes de la primera accion: identifica skills con la tabla, carga cada una con l
 | Crear, rediseñar o pulir UI visible/interactiva | `ui-ux`, `impeccable-doctrina`, `impeccable`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido) |
 | Ajustar UI existente sin rediseño | `ui-ux`, `accesibilidad` | `convenciones-frontend`, `better-ui` (pulido), `impeccable-doctrina` (detector), `impeccable` (si hay problema de sistema) |
 | Revisar o auditar UI existente (veredicto) | `frontend-design-review`, `accesibilidad` | `ui-ux`, `impeccable-doctrina` (detector), `impeccable` (solo /audit y /critique si hay que ejecutar) |
+| Dirección visual frontend (experimental) | `frontend-direction`, `accesibilidad` | `investigacion-web`, `impeccable` |
+| Construcción frontend con sistema (experimental) | `frontend-build`, `accesibilidad` | `convenciones-frontend`, `better-ui`, `impeccable` |
 | Medir UX con métricas (SUS, UMUX-Lite, ISO/IEC 25010/SQuaRE) | `evaluacion-experiencia` | `analisis-datos`, `frontend-design-review` |
 | Bug no trivial o intermitente | `debugging` | `testing` |
 | Refactor, deuda, code smells, tests o TDD | `refactoring`, `code-quality`, `testing`, `tdd` | — |

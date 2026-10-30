@@ -23,7 +23,7 @@ function Check($cond, $msg) { if (-not $cond) { $script:fail += $msg } }
 # sesion junto a AGENTS.md agnostico: el primero carga el Skill Gate, el segundo el contexto.
 $MAX_OPENCODE_MD_TOTAL = 75
 $MAX_AGENTS_MD         = 35
-# Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 39 descripciones.
+# Estimador chars/4 del coste fijo por sesion: OPENCODE.md + AGENTS.md + las 41 descripciones.
 # Tope con holgura sobre la medicion 2026-10-19 (2228 tokens).
 $MAX_TOKENS_INSTRUCCIONES = 4250
 $MAX_AGENTS_TOTAL = 400

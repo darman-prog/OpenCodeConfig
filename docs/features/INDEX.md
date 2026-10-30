@@ -13,6 +13,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 
 | Fecha | Cambio | Estado | Área | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|---|
+| 2026-10-29 | Pipeline frontend con identidad | borrador | ui | Pendiente de detallar | [016-pipeline-frontend-identidad.md](016-pipeline-frontend-identidad.md) | - |
 
 ## Cerradas
 
@@ -33,6 +34,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-28 | Auditoria de skills UI | cerrada | harness | Ruteo 3 filas, gate de estilo, 2 subagentes vendor | [013-auditoria-skills-ui.md](013-auditoria-skills-ui.md) | 8/8 criterios exit 0; verify 19/19 |
 | 2026-10-28 | Pilot better-ui en Teiba | cerrada | ui | Press/transición en Composer; sombras/radio/icono rechazados | [015-pilot-better-ui-teiba.md](015-pilot-better-ui-teiba.md) | PASS; tests 32/32; detect `[]` |
 | 2026-10-28 | Adopcion de better-ui | cerrada | harness | Vendor, adaptador, ruteo opcional y pilot Teiba | [014-adopcion-better-ui.md](014-adopcion-better-ui.md) | 6/6 criterios exit 0; verify 20/20 |
+| 2026-10-28 | Pipeline frontend con identidad | en-curso | ui | Direccion, sistema, showcase, pilot SageView | [016-pipeline-frontend-identidad.md](016-pipeline-frontend-identidad.md) | criterios 1-3,5; rating/poda pendientes |
 
 ## Decisiones (ADR)
 
@@ -45,6 +47,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-28 | Subagentes vendor de impeccable en OpenCode | vigente | UI y orquestación | [ADR-005](../adr/005-subagentes-vendor-impeccable.md) |
 | 2026-10-28 | Gate de autoridad visual antes de UI nueva | vigente | UI y proceso | [ADR-006](../adr/006-gate-autoridad-visual.md) |
 | 2026-10-28 | better-ui como capa de pulido opcional | vigente | UI y dependencias | [ADR-007](../adr/007-adopcion-better-ui.md) |
+| 2026-10-28 | Dirección y sistema antes de código para frontend | vigente | UI y proceso | [ADR-008](../adr/008-pipeline-frontend-identidad.md) |
 
 ## Reglas
 
