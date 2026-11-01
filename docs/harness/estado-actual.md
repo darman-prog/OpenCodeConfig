@@ -2,7 +2,7 @@
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
 > **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso) y su [referencia](pipeline-referencia.md) (detalle por sección); el historial por cambio vive en [changelog.md](changelog.md).
-> **Fecha:** 2026-10-14 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
+> **Fecha:** 2026-10-31 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
 ## 1. Números (verificados por el guardarraíl)
@@ -141,8 +141,9 @@ git status --short                                                              
 <a id="sec-8"></a>
 ## 8. Verificado y pendiente
 
-| Verificado (hasta 2026-10-17) | Evidencia |
+| Verificado (hasta 2026-10-31) | Evidencia |
 | --- | --- |
+| Integración ofimática (2026-10-31) | Paquete `.skill` fusionado en `habilidades-ofimaticas`: `plantilla-base.html` (A4, portada, `@page :first`), `html_to_pdf.py` (sin auto-install, `pdf_variant="pdf/a-3b"`, Python 3.8+) y `references/html-css-avanzado.md`; alias `.evitar-corte`/`.salto-pagina` en `reporte-print.html`; descripción y probe intactos; 8/8 criterios exit 0; sync identidad OK |
 | Recorte de tokens (2026-10-19) | 37 descripciones a ~110 caracteres y tabla del Skill Gate 31→18 filas sin perder nombres: coste fijo 3719 → 2228 (−40%), guardarraíl exit 0 y smokes 16/16 PASS |
 | Gate anti-slop y autoridad visual (2026-10-28) | Punto 7 en la DoD de `workflow`; `calidad-cierre` emite BLOQUEADO por `impeccable detect` exit 2 sin ignore; UI nueva sin `DESIGN.md` seed/scan ni bypass tambien bloquea; preset High-Craft opcional en `impeccable-doctrina/references/PRESET-LINEAR.md` |
 | Auditoría de skills UI (2026-10-28) | Ruteo en 3 filas, `ui-ux` alineado a criterios, review con WCAG, `impeccable context`/base dir, gate de autoridad visual, 2 subagentes vendor y ADR-005/006; guardarraíl 10 agentes/377 líneas |
@@ -182,6 +183,7 @@ git status --short                                                              
 
 | Pendiente | Detalle |
 | --- | --- |
+| Reinicio de TUI tras la integración ofimática | La config no es hot-reload: reiniciar para que la skill reescrita (plantilla-base, script y referencia) se recargue |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
 | Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` y 6 de UI): 21/21 PASS |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |

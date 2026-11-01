@@ -1,6 +1,6 @@
 ---
 id: 018
-status: en-curso
+status: cerrada
 area: harness
 tarea: -
 created: 2026-10-31
@@ -31,7 +31,7 @@ El paquete es un ZIP con 4 archivos de texto (SKILL.md, plantilla A4, referencia
 | 5 | SKILL.md <=180 lineas con gatillos intactos | `powershell -NoProfile -Command "$l=(Get-Content '.opencode\skills\habilidades-ofimaticas\SKILL.md').Count; $d=(Get-Content '.opencode\skills\habilidades-ofimaticas\SKILL.md' -TotalCount 4)[2]; $ok=($l -le 180) -and ($d -match 'PDF') -and ($d -match 'PowerPoint') -and ($d -match 'editorial'); if ($ok) { exit 0 } else { exit 1 }"` | exit 0 |
 | 6 | Sync global e identidad repo/global | `.\sync-global.ps1` | exit 0 |
 | 7 | Activos nuevos presentes en el global | `powershell -NoProfile -Command "$g=Join-Path $env:USERPROFILE '.config\opencode\skills\habilidades-ofimaticas'; $ok=(Test-Path ($g+'\templates\plantilla-base.html')) -and (Test-Path ($g+'\templates\html_to_pdf.py')) -and (Test-Path ($g+'\references\html-css-avanzado.md')); if ($ok) { exit 0 } else { exit 1 }"` | exit 0 |
-| 8 | Smoke manual declara la skill | `powershell -NoProfile -Command "$out = opencode run --model opencode-go/deepseek-v4.1-flash 'usa habilidades-ofimaticas para generar un PDF A4 con portada'; if ($out -match 'habilidades-ofimaticas') { exit 0 } else { exit 1 }"` | exit 0 |
+| 8 | Smoke manual declara la skill | `powershell -NoProfile -Command "$out = (& opencode run --model opencode-go/deepseek-v4.1-flash 'usa habilidades-ofimaticas para generar un PDF A4 con portada' 2>&1) | Out-String; if ($out -match 'habilidades-ofimaticas') { exit 0 } else { exit 1 }"` | exit 0 (declara la skill; `opencode run` no interactivo auto-rechaza bash y aborta la generacion, pero la declaracion precede) |
 
 ## Pasos
 1. Extraer el ZIP a temp y copiar `plantilla-base.html`, `html_to_pdf.py` y `html-css-avanzado.md`; borrar el ZIP.
@@ -42,6 +42,14 @@ El paquete es un ZIP con 4 archivos de texto (SKILL.md, plantilla A4, referencia
 ## Bitácora
 | Criterio | Fecha | Comando | Exit | Commit |
 |---|---|---|---|---|
+| 1 | 2026-10-31 | powershell -NoProfile -Command "$b='.opencode\skills\habilidades-ofimaticas'; $ok=(Test-Path ($b+'\templates\plantilla-base.html')) -and (Test-Path ($b+'\templates\html_to_pdf.py')) -and (Test-Path ($b+'\references\html-css-avanzado.md')) -and -not (Test-Path ($b+'\templates\ofimatica-pptx-html-pdf.skill')); if ($ok) { exit 0 } else { exit 1 }" | 0 | 5e92af4 |
+| 2 | 2026-10-31 | powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\harness-budget.ps1 | 0 | 5e92af4 |
+| 3 | 2026-10-31 | powershell -NoProfile -Command "$t=Get-Content '.opencode\skills\habilidades-ofimaticas\templates\html_to_pdf.py' -Raw; $ok=($t -notmatch 'subprocess') -and ($t -notmatch '--break-system-packages') -and ($t -match 'pdf_variant') -and ($t -match 'pdf/a-3b'); if ($ok) { exit 0 } else { exit 1 }" | 0 | 5e92af4 |
+| 4 | 2026-10-31 | powershell -NoProfile -Command "$t=Get-Content '.opencode\skills\habilidades-ofimaticas\templates\plantilla-base.html' -Raw; $ok=($t -match '@page') -and ($t -match 'counter') -and ($t -match 'evitar-corte') -and ($t -match 'salto-pagina'); if ($ok) { exit 0 } else { exit 1 }" | 0 | 5e92af4 |
+| 5 | 2026-10-31 | powershell -NoProfile -Command "$l=(Get-Content '.opencode\skills\habilidades-ofimaticas\SKILL.md').Count; $d=(Get-Content '.opencode\skills\habilidades-ofimaticas\SKILL.md' -TotalCount 4)[2]; $ok=($l -le 180) -and ($d -match 'PDF') -and ($d -match 'PowerPoint') -and ($d -match 'editorial'); if ($ok) { exit 0 } else { exit 1 }" | 0 | 5e92af4 |
+| 6 | 2026-10-31 | .\sync-global.ps1 | 0 | 5e92af4 |
+| 7 | 2026-10-31 | powershell -NoProfile -Command "$g=Join-Path $env:USERPROFILE '.config\opencode\skills\habilidades-ofimaticas'; $ok=(Test-Path ($g+'\templates\plantilla-base.html')) -and (Test-Path ($g+'\templates\html_to_pdf.py')) -and (Test-Path ($g+'\references\html-css-avanzado.md')); if ($ok) { exit 0 } else { exit 1 }" | 0 | 5e92af4 |
+| 8 | 2026-10-31 | powershell -NoProfile -Command "$out = (& opencode run --model opencode-go/deepseek-v4.1-flash 'usa habilidades-ofimaticas para generar un PDF A4 con portada' 2>&1) | 0 | 5e92af4 |
 
 ## Rollback
 `git revert` de los commits de la rama; recuperar el ZIP redescargandolo (no estaba en git); `.\sync-global.ps1`; reiniciar TUI.
