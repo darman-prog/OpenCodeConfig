@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Título del documento</title>
+<style>
+  /* ---------- Configuración de página (CSS Paged Media) ---------- */
+  @page {
+    size: A4;              /* usa "Letter" si el destino es EE. UU./LatAm que use carta */
+    margin: 2.2cm 2cm 2.4cm 2cm;
+
+    @top-center {
+      content: "Nombre del documento";
+      font-size: 8pt;
+      color: #8a8f98;
+    }
+    @bottom-right {
+      content: "Página " counter(page) " de " counter(pages);
+      font-size: 8pt;
+      color: #8a8f98;
+    }
+  }
+
+  /* La primera página normalmente no lleva cabecera/pie (es la portada) */
+  @page :first {
+    @top-center { content: none; }
+    @bottom-right { content: none; }
+  }
+
+  /* ---------- Tipografía y color base ---------- */
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #1c1f24;
+  }
+  h1, h2, h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #14213d;
+    line-height: 1.2;
+    /* evita que un título quede solo al final de una página */
+    break-after: avoid;
+  }
+  h1 { font-size: 26pt; margin-bottom: 0.3em; }
+  h2 { font-size: 16pt; margin-top: 1.4em; }
+  p, li { orphans: 3; widows: 3; }
+
+  /* ---------- Portada ---------- */
+  .portada {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    break-after: page;
+  }
+  .portada .subtitulo { color: #5a6472; font-size: 13pt; margin-top: 0.5em; }
+
+  /* ---------- Utilidades de maquetación ---------- */
+  .evitar-corte { break-inside: avoid; }   /* usar en tablas, tarjetas, bloques que no deben partirse */
+  .salto-pagina { break-before: page; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+  }
+  th, td {
+    padding: 6px 8px;
+    border-bottom: 1px solid #e2e5e9;
+    text-align: left;
+  }
+  th { color: #5a6472; font-weight: 600; text-transform: uppercase; font-size: 8.5pt; }
+</style>
+</head>
+<body>
+
+  <section class="portada">
+    <h1>Título del documento</h1>
+    <p class="subtitulo">Subtítulo o descripción breve — fecha</p>
+  </section>
+
+  <section>
+    <h2>Sección 1</h2>
+    <p>Contenido de ejemplo…</p>
+  </section>
+
+  <section class="salto-pagina">
+    <h2>Sección 2 (empieza en página nueva)</h2>
+    <div class="evitar-corte">
+      <table>
+        <thead><tr><th>Columna A</th><th>Columna B</th></tr></thead>
+        <tbody>
+          <tr><td>Dato 1</td><td>Dato 2</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</body>
+</html>
