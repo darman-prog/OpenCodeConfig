@@ -1,6 +1,6 @@
 # smoke-routing.ps1 — Verifica en runtime que cada prompt gatilla la skill esperada.
 #
-# Uso: .\scripts\smoke-routing.ps1 [-Model opencode-go/deepseek-v4.1-flash] [-Skill "frontend-*"] [-Changed]
+# Uso: .\scripts\smoke-routing.ps1 [-Model opencode-go/deepseek-v4.1-flash] [-Frontend] [-Skill "frontend-*"] [-Changed]
 # Cada caso corre `opencode run` una vez (modelo barato) y exige que la skill
 # esperada aparezca entre las declaradas. Exit 0 = todo PASS; exit 1 = hay FAILs.
 # Los casos espejan los gatillos de scripts/trigger-probes.json (verificacion estatica).
@@ -8,39 +8,47 @@
 param(
   [string]$Model = "opencode-go/deepseek-v4.1-flash",
   [string]$Skill = "",
+  [switch]$Frontend,
   [switch]$Changed
 )
 
 $ErrorActionPreference = "Stop"
 $Root = Split-Path -Parent $PSScriptRoot
 
-# Deriva las skills tocadas desde git. Devuelve $null cuando el cambio afecta
-# el ruteo (tabla, agentes o scripts de test) y hay que correr la matriz completa.
+# Atajo: las tres skills de frontend y sus 6 smokes.
+if ($Frontend -and -not $Skill) { $Skill = 'frontend-*' }
+
+# Deriva las skills tocadas desde git. Devuelve un modo explicito para distinguir
+# "sin cambios" (0 casos) de "cambio de ruteo" (matriz completa).
 function Get-ChangedSkills {
-  if (-not (Get-Command git -ErrorAction SilentlyContinue)) { return $null }
+  $full = @{ mode = 'full'; skills = @() }
+  if (-not (Get-Command git -ErrorAction SilentlyContinue)) { return $full }
   $root = git -C $Root rev-parse --show-toplevel 2>$null
-  if ($LASTEXITCODE -ne 0 -or -not $root) { return $null }
+  if ($LASTEXITCODE -ne 0 -or -not $root) { return $full }
 
   $files = @()
   $files += git -C $Root diff --name-only 2>$null
-  if ($LASTEXITCODE -ne 0) { return $null }
+  if ($LASTEXITCODE -ne 0) { return $full }
   $files += git -C $Root diff --name-only --cached 2>$null
-  if ($LASTEXITCODE -ne 0) { return $null }
+  if ($LASTEXITCODE -ne 0) { return $full }
   $files += git -C $Root ls-files --others --exclude-standard 2>$null
-  if ($LASTEXITCODE -ne 0) { return $null }
+  if ($LASTEXITCODE -ne 0) { return $full }
 
   $files = @($files | Where-Object { $_ } | ForEach-Object { $_ -replace '\\', '/' } | Sort-Object -Unique)
-  if ($files.Count -eq 0) { return @() }
+  if ($files.Count -eq 0) { return @{ mode = 'none'; skills = @() } }
 
   # Un cambio en la tabla, los agentes o los scripts de ruteo invalida el filtro.
   if ($files | Where-Object { $_ -match '^(OPENCODE\.md|scripts/(trigger-probes\.json|smoke-routing\.ps1|verify\.ps1)$|\.opencode/agents/)' }) {
-    return $null
+    return $full
   }
 
-  return @($files | ForEach-Object {
-    $m = [regex]::Match($_, '^\.opencode/skills/([^/]+)/')
-    if ($m.Success) { $m.Groups[1].Value }
-  } | Sort-Object -Unique)
+  return @{
+    mode = 'skills'
+    skills = @($files | ForEach-Object {
+      $m = [regex]::Match($_, '^\.opencode/skills/([^/]+)/')
+      if ($m.Success) { $m.Groups[1].Value }
+    } | Sort-Object -Unique)
+  }
 }
 
 $cases = @(
@@ -69,16 +77,19 @@ $cases = @(
   @{ prompt = "aplica TDD a este modulo nuevo";                    skill = "tdd" }
 )
 
-# -Skill tiene prioridad; -Changed solo se usa cuando no hay filtro explicito.
-$changedSkills = $null
-if (-not $Skill -and $Changed) { $changedSkills = Get-ChangedSkills }
+# -Skill/-Frontend tienen prioridad; -Changed solo se usa sin filtro explicito.
+$changed = $null
+if (-not $Skill -and $Changed) { $changed = Get-ChangedSkills }
 if ($Skill) {
   $filters = @($Skill -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
   $cases = @($cases | Where-Object { $case = $_; @($filters | Where-Object { $case.skill -like $_ }).Count -gt 0 })
   Write-Host "Filtro -Skill: $($filters -join ', ')"
-} elseif ($Changed -and $null -ne $changedSkills) {
-  $cases = @($cases | Where-Object { $changedSkills -contains $_.skill })
-  Write-Host "Filtro -Changed: $($changedSkills -join ', ')"
+} elseif ($Changed -and $changed.mode -eq 'skills') {
+  $cases = @($cases | Where-Object { $changed.skills -contains $_.skill })
+  Write-Host "Filtro -Changed: $($changed.skills -join ', ')"
+} elseif ($Changed -and $changed.mode -eq 'none') {
+  $cases = @()
+  Write-Host "Filtro -Changed: sin cambios; 0 casos."
 } elseif ($Changed) {
   Write-Host "Filtro -Changed: cambio de ruteo o git no disponible; matriz completa."
 }

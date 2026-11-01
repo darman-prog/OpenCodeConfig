@@ -1,9 +1,9 @@
 # verify.ps1 — Verificacion completa del harness en un comando.
 #
-# Uso: .\scripts\verify.ps1 [-SkipSmokes] [-Skill "frontend-*"] [-Changed]
+# Uso: .\scripts\verify.ps1 [-SkipSmokes] [-Frontend] [-Skill "frontend-*"] [-Changed]
 #   1. Guardarrail de presupuesto (fail-closed: exit 1 si hay violaciones).
 #   2. Identidad repo <-> global: mismas skills, mismo contenido (solo lee).
-#   3. Smokes de ruteo: matriz completa por defecto; -Skill/-Changed filtran.
+#   3. Smokes de ruteo: matriz completa por defecto; -Frontend/-Skill/-Changed filtran.
 #   4. Aviso de sesion desactualizada: la config no es hot-reload.
 #
 # Exit 0 = todo verde. Exit 1 = hay algo que arreglar.
@@ -11,6 +11,7 @@
 param(
   [switch]$SkipSmokes,
   [string]$Skill = "",
+  [switch]$Frontend,
   [switch]$Changed
 )
 
@@ -74,6 +75,7 @@ if ($SkipSmokes) {
   $smoke = Join-Path $Root "scripts\smoke-routing.ps1"
   $smokeArgs = @()
   if ($Skill) { $smokeArgs += @('-Skill', $Skill) }
+  if ($Frontend) { $smokeArgs += '-Frontend' }
   if ($Changed) { $smokeArgs += '-Changed' }
   & powershell -NoProfile -ExecutionPolicy Bypass -File $smoke @smokeArgs
   if ($LASTEXITCODE -ne 0) {
