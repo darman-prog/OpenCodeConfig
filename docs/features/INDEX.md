@@ -13,6 +13,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 
 | Fecha | Cambio | Estado | Área | Alcance | Registro | Evidencia |
 |---|---|---|---|---|---|---|
+| 2026-10-31 | Integracion de ofimatica PPTX y HTML a PDF | en-curso | harness | Pendiente de detallar | [018-integracion-ofimatica-pptx-html-pdf.md](018-integracion-ofimatica-pptx-html-pdf.md) | - |
 
 ## Cerradas
 
