@@ -23,7 +23,8 @@ $docs = @(
     @{ Path = 'docs\harness\estado-actual.md'; Name = 'estado-actual.md' },
     @{ Path = 'docs\harness\presupuestos.md'; Name = 'presupuestos.md' },
     @{ Path = 'docs\harness\pipeline.md'; Name = 'pipeline.md' },
-    @{ Path = 'docs\harness\pipeline-referencia.md'; Name = 'pipeline-referencia.md' }
+    @{ Path = 'docs\harness\pipeline-referencia.md'; Name = 'pipeline-referencia.md' },
+    @{ Path = 'docs\harness\perfiles.md'; Name = 'perfiles.md' }
 )
 $allowedStatus = @('vigente', 'pendiente', 'obsoleto', 'en_revision')
 $allowedConfidence = @('confirmado', 'supuesto', 'inferido')

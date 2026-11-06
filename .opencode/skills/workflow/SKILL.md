@@ -6,6 +6,7 @@ description: Git: ramas, Conventional Commits, PRs y Definition of Done.
 # Workflow
 
 - Preguntarle al usuario si mantener `main` protegida y trabajar en ramas `feat/`, `fix/`, `refactor/`, `test/` o `chore/` o seguir con la rama actual.
+- Respeta `AGENTS.md` §Perfil: `personal` permite rama opcional y push a main solo con OK explícito; `equipo` exige rama, PR, tests/lint/typecheck y `auditor` pre-merge.
 
 - Usa Conventional Commits: `feat:`, `fix:`, `refactor:`, `test:`, `docs:` y `chore:`.
 

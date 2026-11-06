@@ -11,6 +11,7 @@
 7. Runner: `dueño`, `siguiente` y `Handoffs`; si el último handoff sigue `abierto`, bloquea.
 8. Docs vivas: si el cambio tocó un documento del cerebro o del harness, actualiza `last_reviewed` y `source`.
 9. UI web: si el proyecto tiene Playwright, ejecuta `scripts/smoke-a11y.ps1`; `critical`, foco y contraste deben quedar en 0. Sin Playwright, `SKIP` no bloquea.
+10. Perfil: `equipo` exige tests/lint/typecheck y `auditor` pre-merge; `personal` aplica validación proporcional al riesgo.
 
 ## Salida obligatoria
 

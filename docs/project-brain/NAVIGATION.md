@@ -20,6 +20,7 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo 
 | [estado-actual.md](../harness/estado-actual.md) | Inventario vigente: agentes, skills, guardarraíl, sync, config global | "qué existe hoy", antes de tocar el harness | vigente |
 | [pipeline.md](../harness/pipeline.md) | El paso a paso operativo por actor (fases 1-5) | cómo se ejecuta una tarea | vigente |
 | [pipeline-referencia.md](../harness/pipeline-referencia.md) | Detalle por sección (routing, estados, permisos, fricciones) | cómo se ejecuta una tarea, quién delega a quién | vigente |
+| [perfiles.md](../harness/perfiles.md) | Perfiles `personal`/`equipo`: ramas, PR, tests, auditor y A11y | onboarding, cambio de proyecto o gates distintos | vigente |
 | [presupuestos.md](../harness/presupuestos.md) | Los 9 topes del harness y su porqué | antes de añadir líneas, palabras, archivos o mover skills de carpeta | vigente |
 | [changelog.md](../harness/changelog.md) | Historial de cambios del harness (append-only: un cambio por entrada) | "¿se hizo ya?", por qué algo cambió | vigente |
 | [notion.md](../harness/notion.md) | Reglas de sincronización con Notion vía MCP | perfil Notion activo y tarea en Notion | vigente |

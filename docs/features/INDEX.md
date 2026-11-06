@@ -43,6 +43,7 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-11-05 | Agentes V2 nativos | cerrada | harness | `permissions` V2 en los 10 agentes; guardarraíl y roster | [023-agentes-v2.md](023-agentes-v2.md) | debug agents OK; verify -SkipSmokes PASS |
 | 2026-11-05 | Docs vivas y feature runner | cerrada | harness | Metadata, `doc-drift`, `Runner` y handoffs | [024-docs-vivas-y-runner.md](024-docs-vivas-y-runner.md) | 4/4 criterios exit 0; verify -SkipSmokes PASS |
 | 2026-11-05 | Gate A11y minimo | cerrada | ui | Reporte axe/teclado/contraste, `SKIP` sin Playwright | [025-gate-a11y-minimo.md](025-gate-a11y-minimo.md) | 4/4 criterios exit 0; verify -SkipSmokes PASS |
+| 2026-11-05 | Perfiles de proyecto | cerrada | harness | `personal`/`equipo`; ramas, PR, tests, auditor y A11y | [026-perfiles-proyecto.md](026-perfiles-proyecto.md) | 4/4 criterios exit 0; verify -SkipSmokes PASS |
 
 ## Decisiones (ADR)
 

@@ -507,6 +507,8 @@ $agnosticText = Get-Content -LiteralPath $agnosticMd -Raw
 $openCodeTable = @($openCodeContent -split "`n" | Where-Object { $_ -match '^\| Tipo de tarea' })
 Check ($openCodeTable.Count -ge 1) "OPENCODE.md debe contener la tabla del Skill Gate"
 Check (-not (($agnosticText -split "`n") | Where-Object { $_ -match '^\| Tipo de tarea' })) "AGENTS.md no debe contener la tabla del Skill Gate (vive en OPENCODE.md)"
+$profileMatch = [regex]::Match($agnosticText, '(?ms)^## Perfil\s*\n\s*`?(personal|equipo)`?')
+Check ($profileMatch.Success) 'AGENTS.md debe declarar ## Perfil con personal|equipo'
 $globalCfgText = if (Test-Path -LiteralPath $GlobalConfig) { Get-Content -LiteralPath $GlobalConfig -Raw } else { "" }
 Check ($globalCfgText -match '"instructions"\s*:\s*\[[^\]]*OPENCODE\.md') 'el global debe inyectar OPENCODE.md en instructions'
 $projCfgPath = Join-Path $Root ".opencode\opencode.json"

@@ -6,6 +6,9 @@ OpenCode suma el global `~/.config/opencode/OPENCODE.md` (Skill Gate, estilo y a
 ## Stack
 Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un proyecto, el agente debe preguntar el stack al usuario (flujo en skill `uso-eficiente`, seccion "Onboarding de stack") y luego proponer `/init`.
 
+## Perfil
+`personal` (ver `docs/harness/perfiles.md`).
+
 ## Comandos
 - `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands/plugins al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (wrapper de `trace.py`)
 - Plugins: `.\scripts\smoke-plugins.ps1` (contrato V2) · `-Runtime` (RTK + notify con una sesion headless).

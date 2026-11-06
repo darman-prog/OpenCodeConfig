@@ -36,6 +36,7 @@ Si el proyecto destino **ya tiene `AGENTS.md`**:
 3. Actualiza SOLO estas secciones del agnóstico con lo descubierto en las preguntas:
    - `## Stack` → lenguaje, frameworks, gestor de paquetes detectado.
    - `## Comandos` → comandos clave del stack (dev server, test, build, lint).
+   - `## Perfil` → `personal` o `equipo`, según `docs/harness/perfiles.md`.
    - `OPENCODE.md` no se copia ni se edita: vive en el global y lo inyecta V2.
 4. **Preserva sin tocar**:
    - En `AGENTS.md`: `## Contexto y convivencia`, `## Manejo de .gitignore` y cualquier seccion custom que el proyecto ya tenga.
@@ -56,7 +57,7 @@ Verifica:
 - [ ] `.opencode/opencode.json` existe.
 - [ ] Perfiles MCP solo si el usuario los pidio (`opencode.qa.json` / `opencode.notion.json`); Stitch es global y no se copia.
 - [ ] `OPENCODE.md` no se copia: vive en `~/.config/opencode/OPENCODE.md` y V2 lo inyecta.
-- [ ] `AGENTS.md` agnóstico existe en raiz con Stack/Comandos actualizados y **≤35 lineas**.
+- [ ] `AGENTS.md` agnóstico existe en raiz con Stack/Comandos/Perfil actualizados y **≤35 lineas**.
 - [ ] `PRODUCT.md` y `DESIGN.md` generados en raiz.
 - [ ] `docs/project-brain/NAVIGATION.md` creado (template de skill `contexto-proyecto`) + documentos sembrados con metadata `confidence`.
 - [ ] NO existe `.opencode/node_modules` ni `.git` copiado.

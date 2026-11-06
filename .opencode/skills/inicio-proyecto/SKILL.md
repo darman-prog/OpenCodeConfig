@@ -16,6 +16,7 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - Bloque C: base de datos (PostgreSQL/MySQL/MongoDB/SQLite/otra), ORM si aplica, testing framework preferido.
    - Bloque D: estilo visual (minimalista/colorido/corporativo/gaming), componentes UI preferidos, necesidades de accesibilidad, animaciones.
    - Bloque E: alcance inicial (MVP/hackathon/produccion), prioridades (velocidad/calidad/ambas), tiene Figma/wireframes, tiene API externa.
+   - Bloque F: perfil de proyecto (`personal` o `equipo`, contrato en `docs/harness/perfiles.md`).
 2. **Copiar config del proyecto** (comandos exactos en `references/AGENTS-MERGE.md`):
    - Las skills y agentes del harness ya estan **globales** (via `sync-global.ps1` de la plantilla); NO se copian `.opencode/skills/` ni `.opencode/agents/` al proyecto.
    - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos V2 y compaction; sin `instructions`).
@@ -25,7 +26,7 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
    - `PRODUCT.md` desde su template. Para `DESIGN.md`, pregunta si define la direccion visual ahora: si sí, carga `impeccable` e `impeccable-doctrina` y ejecuta `document --seed` (workshop + 3 direcciones); si no, dejalo pendiente y el gate lo pedira en la primera tarea UI.
    - Si pide el preset High-Craft (`impeccable-doctrina/references/PRESET-LINEAR.md`), pasalo como restriccion al workshop de `document --seed`; es opcional, nunca default.
-   - `AGENTS.md`: merge por secciones (Stack/Comandos se actualizan con lo descubierto; resto se preserva). `OPENCODE.md` no se copia: vive en el global y V2 lo inyecta.
+   - `AGENTS.md`: merge por secciones (Stack/Comandos/Perfil se actualizan con lo descubierto; resto se preserva). `OPENCODE.md` no se copia: vive en el global y V2 lo inyecta.
    - `docs/project-brain/`: antes de sembrar, detecta si ya existe `NAVIGATION.md` en `docs/project-brain/` (o variante `Docs/project-brain/`, o el nombre anterior `INDEX.md`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
       - **Si NO existe**: siembra como hoy (`NAVIGATION.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
