@@ -2,6 +2,7 @@
 node_modules/
 __pycache__/
 *.pyc
+.vitest/
 
 # Archivos de trabajo locales
 *.log

@@ -18,14 +18,14 @@ Skill de onboarding. Pregunta, copia config del harness, genera docs base y deja
    - Bloque E: alcance inicial (MVP/hackathon/produccion), prioridades (velocidad/calidad/ambas), tiene Figma/wireframes, tiene API externa.
 2. **Copiar config del proyecto** (comandos exactos en `references/AGENTS-MERGE.md`):
    - Las skills y agentes del harness ya estan **globales** (via `sync-global.ps1` de la plantilla); NO se copian `.opencode/skills/` ni `.opencode/agents/` al proyecto.
-   - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos, compaction, instructions).
+   - `Copy-Item` de `opencode.json` template → `.opencode/opencode.json` del proyecto (permisos V2 y compaction; sin `instructions`).
     - Perfiles MCP opt-in: si el usuario quiere QA (Playwright) o Notion, copia `opencode.qa.json` / `opencode.notion.json` del template a `.opencode/`; si no, no los copies. Stitch es global y no se copia. Para activarlos, sigue `activacion-mcp`.
 3. **Generar docs**:
-   - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el `OPENCODE.md`/`AGENTS.md` del proyecto.
+   - **Verifica antes de escribir**: cada afirmación estructural que preserves o copies (stack, comandos, componentes, gitignore) contrastala contra la realidad (`git check-ignore`, `package.json`, glob de `src/`). Las afirmaciones falsas heredadas envenenan el `AGENTS.md` del proyecto.
    - **Ubicación del cerebro**: pregunta al usuario Docs/ vs docs/ ANTES de crear, mostrando el impacto del `.gitignore` existente (en Windows los patrones son case-insensitive: `/Docs` ignora también `docs/`).
    - `PRODUCT.md` desde su template. Para `DESIGN.md`, pregunta si define la direccion visual ahora: si sí, carga `impeccable` e `impeccable-doctrina` y ejecuta `document --seed` (workshop + 3 direcciones); si no, dejalo pendiente y el gate lo pedira en la primera tarea UI.
    - Si pide el preset High-Craft (`impeccable-doctrina/references/PRESET-LINEAR.md`), pasalo como restriccion al workshop de `document --seed`; es opcional, nunca default.
-   - `OPENCODE.md` + `AGENTS.md`: merge por secciones (Stack/Comandos del agnóstico se actualizan con lo descubierto; resto se preserva). Si no existen, copia el template y aplica el merge.
+   - `AGENTS.md`: merge por secciones (Stack/Comandos se actualizan con lo descubierto; resto se preserva). `OPENCODE.md` no se copia: vive en el global y V2 lo inyecta.
    - `docs/project-brain/`: antes de sembrar, detecta si ya existe `NAVIGATION.md` en `docs/project-brain/` (o variante `Docs/project-brain/`, o el nombre anterior `INDEX.md`):
      - **Si YA existe**: NO sembrar ni sobrescribir; leelo y deriva al protocolo de actualizacion incremental de la skill `contexto-proyecto`; reporta en el cierre los docs del cerebro que tocó el onboarding.
       - **Si NO existe**: siembra como hoy (`NAVIGATION.md` template de `contexto-proyecto` + 2-4 documentos con contenido real desde las respuestas, tipicamente `PRODUCT.md` de detalle, `ARCHITECTURE.md` inicial con `confidence: supuesto`, `DATA.md` si ya hay esquema). Datos sin evidencia llevan `confidence: supuesto`.
@@ -38,12 +38,12 @@ Si es la primera vez que usas el harness en esta máquina, el sync de skills/age
 
 | Dependencia | Por qué | Cómo verificar |
 | --- | --- | --- |
-| `opencode.jsonc` global | Permisos (`skill: allow`, `external_directory` allowlist) | `Test-Path ~/.config/opencode/opencode.jsonc` |
+| `opencode.jsonc` global | Permisos V2 (`permissions`, `external_directory` ask) e instrucciones globales | `Test-Path ~/.config/opencode/opencode.jsonc` |
 | Paquete `docx` | La skill `informe-docx` lo requiere en runtime | `npm ls -g docx` |
-| Plugin `@opencode-ai/plugin` | Notificaciones de escritorio | `npm ls -g @opencode-ai/plugin` |
+| Plugins locales V2 | RTK y notificaciones | `.\scripts\smoke-plugins.ps1` |
 | RTK (opcional) | Compresión de salidas bash | `rtk --version` |
 
-Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de usar el harness. El sync de `skills/`/`agents/`/`commands` no las instala.
+Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de usar el harness. El sync de `skills/`/`agents/`/`commands`/`plugins-src` no las instala.
 
 ## Reglas
 
@@ -51,7 +51,7 @@ Si falta alguna, instálala globalmente (`npm install -g docx`, etc.) antes de u
 - Skills y agentes ya son globales: si el proyecto destino los necesita y no los tiene, apunta al comando `.\sync-global.ps1` de la plantilla; no copies skills al proyecto. Los MCP opt-in se activan con `activacion-mcp`.
 - No crees sub-agentes nuevos; usa los existentes del harness.
 - No modifiques `impeccable-doctrina/SKILL.md` ni `impeccable/SKILL.md`.
-- No corras `/init`; el merge de `OPENCODE.md`+`AGENTS.md` lo reemplaza.
+- No corras `/init`; el merge de `AGENTS.md` lo reemplaza.
 - No copies `node_modules` ni `.git` del template.
 - El contenido del cerebro sigue las reglas de la skill `contexto-proyecto` (metadata
   de confianza, actualizacion solo tras cambio verificado).

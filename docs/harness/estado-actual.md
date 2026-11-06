@@ -21,21 +21,21 @@
 
 Un subagent no está en `Tab`: se lanza con `@` (manual) o lo delega un primario. Sus permisos son los suyos; no heredan nada de quien los llama.
 
-| Agente | Modo | Color | Puede lanzar (Task) | Edita | Líneas | Cuándo |
+| Agente | Modo | Color | Puede lanzar (subagent) | Edita | Líneas | Cuándo |
 | --- | --- | --- | --- | --- | --- | --- |
-| `build` | primary | `success` | los 10 subagents | código | 38 | Implementar features y bugs; orquesta |
-| `plan` | primary | `info` | `backend-expert`, `auditor`, `explore` | nada | 40 | Planificar; pre-flight con `auditor` |
-| `ui-ux` | subagent | `accent` | `explore`, `general`, 2 vendor | solo frontend | 43 | UI visible: criterios, implementar, revisar |
-| `impeccable-finish-reviewer` | subagent | — | nadie | nada | 30 | Review final de UI; no edita |
-| `impeccable-documenter` | subagent | — | nadie | `DESIGN.md` y sidecar | 26 | Documentar el mundo visual |
-| `backend-expert` | subagent | — | `explore` | nada | 31 | Dominio, invariantes y contratos (no da el plan) |
-| `auditor` | subagent | — | nadie | solo `*.md` | 41 | Revisión pre-merge y pre-flight de seguridad |
-| `quality` | subagent | — | nadie | código | 42 | Deuda, refactors, hotspots medidos |
-| `debugger` | subagent | — | nadie | código | 39 | Bugs no triviales con test de regresión |
-| `tester` | subagent | — | nadie | nada | 45 | E2E de las webs del proyecto |
+| `build` | primary | `#9ece6a` | los 10 subagents | código | 30 | Implementar features y bugs; orquesta |
+| `plan` | primary | `#7dcfff` | `backend-expert`, `auditor`, `explore` | nada | 38 | Planificar; pre-flight con `auditor` |
+| `ui-ux` | subagent | `#7aa2f7` | `explore`, `general`, 2 vendor | solo frontend | 37 | UI visible: criterios, implementar, revisar |
+| `impeccable-finish-reviewer` | subagent | — | nadie | nada | 17 | Review final de UI; no edita |
+| `impeccable-documenter` | subagent | — | nadie | `DESIGN.md` y sidecar | 15 | Documentar el mundo visual |
+| `backend-expert` | subagent | — | `explore` | nada | 27 | Dominio, invariantes y contratos (no da el plan) |
+| `auditor` | subagent | — | nadie | solo `*.md` | 26 | Revisión pre-merge y pre-flight de seguridad |
+| `quality` | subagent | — | nadie | código | 34 | Deuda, refactors, hotspots medidos |
+| `debugger` | subagent | — | nadie | código | 31 | Bugs no triviales con test de regresión |
+| `tester` | subagent | — | nadie | nada | 40 | E2E de las webs del proyecto |
 | `explore` | built-in | — | — | nada | del harness | Búsquedas amplias (no tiene `.md` aquí) |
 
-`bash` en todos: `"*": ask` con `git diff/log/status` en `allow`. `auditor` e `impeccable-finish-reviewer` además deniegan `*--output*`, `git apply/checkout/restore/stash` porque son de solo lectura. Por eso ves prompts de aprobación al ejecutar comandos.
+`shell` en todos: `"*": ask` con `git diff/log/status` en `allow`. `auditor` e `impeccable-finish-reviewer` además deniegan `*--output*`, `git apply/checkout/restore/stash` porque son de solo lectura. Por eso ves prompts de aprobación al ejecutar comandos.
 
 <a id="sec-3"></a>
 ## 3. Índice de skills
@@ -50,7 +50,7 @@ Fuente única: la tabla del Skill Gate en `OPENCODE.md` (no se copia aquí, por 
 | **Total** | **38** | | Lo cuenta `harness-budget.ps1` |
 
 las descripciones y 49 probes comprueban el ruteo literal de las 38 skills locales y `customize-opencode`
-El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`task` explícitos, allowlists válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en bash (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), cobertura 100% de probes de gatillo (bloque 6), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
+El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques numerados al final del archivo; los de contrato son: frontmatter fail-closed, budgets, `mode`/`permissions` explícitos, allowlists V2 válidas, roster coherente, `.gitattributes`, que **ni agentes ni skills** manden delegar en un primary, que el grafo de delegación sea **acíclico** (check 2f), que un agente de **solo lectura no tenga vector de escritura** en shell (check 2g), que ningún archivo del loader lleve **BOM** (check 2h), cobertura 100% de probes de gatillo (bloque 6), la convención de docs en `docs/harness`, `external_directory` sin `allow *` en el global y la **integridad de codificación** (bloque 11: mojibake y caracteres de control invisibles).
 
 <a id="sec-4"></a>
 ## 4. Índice de archivos
@@ -71,7 +71,7 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
 | Probes de gatillo | `scripts/trigger-probes.json` | 49 casos (cubre las 38 skills + `customize-opencode`) |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
-| Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `tui.json` | `opencode.jsonc` lleva `username`, `share`, `autoupdate`, el MCP global de Stitch (declarado deshabilitado; se activa por sesión) y la allowlist de `external_directory` (`*` ask + allow de las 2 carpetas del harness); el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
+| Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `cli.json` | `opencode.jsonc` V2 lleva `username`, `update`, `share`, `instructions` global (`OPENCODE.md`), MCP `servers.stitch` deshabilitado, `permissions` con `external_directory` ask y `experimental.todo`; el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
@@ -92,15 +92,15 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
    │
    ├─► trabaja: lee, edita, ejecuta comandos (tú apruebas los permisos)
    │
-   ├─► Task ──> subagent (su Paso 0 + sus skills) ──> informe ≤30 líneas ──┐
-   │              (edit: allow solo si su rol lo permite; bash: ask)      │
+   ├─► delega ──> subagent (su Paso 0 + sus skills) ──> informe ≤30 líneas ──┐
+   │              (edit: allow solo si su rol lo permite; shell: ask)      │
    │                                                                       │
    │◄──────────────────────────────────────────────────────────────────────┘
    │
    └─► Definition of Done (skill workflow) ──> commit por paso ──> resumen a ti
 ```
 
-Claves: el subagent **no** te habla a ti (hablas con el primario) · no puede invocar a otro agente (`task: deny`) · si necesitas algo backend siendo `ui-ux`, lo reporta y `build` lo ejecuta.
+Claves: el subagent **no** te habla a ti (hablas con el primario) · no puede invocar a otro agente (`subagent * deny`) · si necesitas algo backend siendo `ui-ux`, lo reporta y `build` lo ejecuta.
 
 <a id="sec-6"></a>
 ## 6. Por qué la TUI importa cuando cambias el harness
@@ -121,7 +121,7 @@ Claves: el subagent **no** te habla a ti (hablas con el primario) · no puede in
   REINICIAR LA TUI   ← aquí es donde se aplica el cambio
         │
         ▼
-  verificas en la TUI: Tab (2 primarios) · @ (subagent) · log de Task
+  verificas en la TUI: Tab (2 primarios) · @ (subagent) · log de subagent
 ```
 
 La TUI carga la config **al arrancar** y no la recarga en caliente: sin ese reinicio, estás viendo el harness anterior aunque los archivos ya estén bien.
@@ -172,13 +172,13 @@ git status --short                                                              
 | RTK humo con agente | `npx vitest run` → `rtk vitest`, salida `PASS (1) FAIL (0)` |
 | RTK métricas gate (baseline) | `rtk gain --daily` → 69,3% ahorro total (35,6K tokens) · 2026-10-03: 78,5% · `rtk gain --recalls` → 33%/50% ("-", sin datos suficientes) · `opencode stats` → 344 sesiones, $90.01 |
 | RTK filtros documentados | `uso-eficiente`: regla general `rtk <herramienta>` + excepción `git` · `testing`: orden de invocación + tabla medida (93,5% playwright / 83,9% vitest / 0,8% `npm run e2e`) |
-| Paridad repo ↔ global | Espejo exacto en skills/agents/commands (111 archivos, MD5 idénticos) |
+| Paridad repo ↔ global | Mismos skills/plugins y texto normalizado (CRLF/LF no cuenta) |
 | Skill evaluacion-experiencia | Guardarraíl exit 0 (38 skills), auditor APROBADO (anti-duplicación), sync global exit 0 y smoke `opencode run` PASS ("Skills: evaluacion-experiencia"); reinicio de TUI pendiente |
 | Auditoría de los 8 subagentes | Informe en `docs/harness/auditoria-subagentes.md`: 0 solapes graves, 1 bypass de escritura corregido, 3 prescripciones genéricas relajadas, 3 handoffs completados, 0 agentes nuevos |
 | Bypass de escritura de `auditor` | `git diff --output=<archivo>` en runtime → cae en `ask` y **el archivo no se crea**; `git status` y `git diff --stat` siguen funcionando |
 | Checks 2f (ciclos) y 2g (solo lectura) | Fixtures negativos exit 1 (`ui-ux` ↔ `quality`; `auditor` sin `*--output*: deny`) y repo real exit 0 |
 | Smokes de agentes (`opencode run --agent`) | `plan` carga sin editar · `backend-expert` da invariantes **sin plan numerado** · `quality` omite `performance`/`code-clue` justificando · `debugger` marca hipótesis y cita `seguridad`. `--agent` verificado (`> plan · deepseek-v4.1-flash`) |
-| Plugins versionados | `.opencode/plugins/rtk.ts` + `notify-windows.js` en el repo con LF fijado en `.gitattributes`; hash RTK `2D8CEF48…` intacto |
+| Plugins versionados | `.opencode/plugins-src/rtk.ts` + `notify-windows.js` con contrato V2 (`export default { id, setup }`); runtime único en `~/.config/opencode/plugins/`; `scripts/smoke-plugins.ps1 -Runtime` PASS |
 | Skills invisibles por BOM | 6 `SKILL.md` con BOM UTF-8 heredado; 5 no se publicaban (`arquitectura`, `despliegue`, `documentacion`, `observabilidad`, `workflow`). BOM fuera + check 2h + sync global; `opencode run` carga las 5 |
 
 | Pendiente | Detalle |
@@ -190,8 +190,8 @@ git status --short                                                              
 | Reinicio de TUI tras la simplificación | La config (`instructions`, deny) no es hot-reload: reiniciar para que apliquen `OPENCODE.md` y el deny de `GEMINI.md` |
 | Reinicio de TUI tras la auditoría UI | La config no es hot-reload: reiniciar para cargar el ruteo, el gate y los 2 agentes nuevos |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
-| `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=task` |
-| Wiring del global en otra máquina | `plugins/` ya está versionado, pero `sync-global.ps1` espeja solo `skills`/`agents`/`commands`: añadir `plugins` al espejo o documentar el bootstrap manual. `package.json`/`node_modules` del global siguen siendo locales |
+| `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=subagent` |
+| Wiring del global en otra máquina | `sync-global.ps1` ya espeja `plugins-src` → `plugins/` y `verify.ps1` comprueba el contrato V2. `package.json`/`node_modules` del global siguen siendo locales |
 | Humos F0–F6 tras el cambio de agentes | Repetir Tab = 2 primarios · `@` responde · denegaciones de `auditor` visibles |
 | RTK gate 2026-10-12 | Baseline registrada (69,3% ahorro total). Cierra el 12-10 con `rtk gain --daily` + `rtk gain --recalls` + `opencode stats` antes/después; <5% ahorro → desinstalar |
 | Alcance del harness | **Solo la plantilla**: este repo es la fuente; los proyectos que lo consumen reciben las skills por el global y migran su esquema con la guia cuando toque (no hay migracion masiva pendiente) |
@@ -201,7 +201,7 @@ git status --short                                                              
 
 Riesgo aceptado (decisión del usuario): el contenido de los prompts va al proveedor del modelo que se elija; `command-code` (`api.commandcode.ai`) está configurado por el usuario y se considera de confianza.
 
-Riesgo aceptado (decisión del usuario, 2026-10-15): `notify-windows.js` existe en `.opencode/plugins/` (versionado) y en el global; solo este repo lo carga 2 veces (doble toast/sonido cosmético, nada roto). Ubicación canónica sin decidir.
+Riesgo resuelto (2026-11-05): los plugins viven en `.opencode/plugins-src/` como fuente y en `~/.config/opencode/plugins/` como único runtime; ya no hay doble carga desde el proyecto.
 
 <a id="sec-9"></a>
 ## 9. Cómo se mantiene este doc

@@ -9,7 +9,7 @@ Skill transversal. Se activa en toda tarea para evitar derroche de tokens.
 
 ## 1. Reglas activas del harness
 
-- Si no existe: informa en una linea, crea `OPENCODE.md` minimo (Skill Gate, estilo de respuesta, agentes) y verifica `"instructions": ["OPENCODE.md"]` en `opencode.json`.
+- Si falta el global `~/.config/opencode/OPENCODE.md`: avisa en 1 linea y sigue con `./AGENTS.md`. Nunca crees `OPENCODE.md` en el proyecto; por proyecto solo existe `AGENTS.md`.
 - Si existe, leelo al inicio y no re-explores el repo.
 - Si "Stack" sigue siendo el placeholder de la plantilla: pregunta con `question` (frontend / backend / BD / gestor / testing), escribe las respuestas en "Stack" y "Comandos", confirma en una linea y sugiere `/init`.
 

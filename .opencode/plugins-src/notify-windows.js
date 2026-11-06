@@ -2,23 +2,32 @@
  * Notificaciones de escritorio nativas de Windows para OpenCode.
  *
  * Por que existe: OpenCode delega las notificaciones al terminal (OSC 777).
- * Windows Terminal 1.24 no soporta esa secuencia (el soporte esta en main,
- * PR microsoft/terminal#20012, y cuando salga exigira
- * compatibility.allowOSC777=true), asi que el toast nativo nunca aparece.
- * Este plugin emite el toast por WinRT y solo cuando el terminal que hospeda
- * la sesion no esta en primer plano.
+ * Windows Terminal 1.24 no soporta esa secuencia, asi que el toast nativo nunca
+ * aparece. Este plugin emite el toast por WinRT y solo cuando el terminal que
+ * hospeda la sesion no esta en primer plano.
  *
- * Eventos cubiertos: fin de sesion principal (session.idle) y pedidos de
- * permiso (permission.asked de la API v2 / permission.updated de la v1).
- * El toast lleva <audio> propio para no depender del sonido de la TUI
- * (attention.sound): sin ese nodo WinRT lo muestra mudo por defecto.
+ * V2: escucha session.execution.* (session.idle no es fiable) y permission.asked.
  */
 
+import { appendFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 
 // AppID de PowerShell: permite mostrar el toast sin instalar ni registrar nada.
 const APP_ID =
   "{1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\\WindowsPowerShell\\v1.0\\powershell.exe";
+
+const DEBUG_EVENTS = process.env.OPENCODE_PLUGIN_DEBUG === "1";
+const DEBUG_FILE = process.env.OPENCODE_PLUGIN_DEBUG_FILE;
+
+// La sonda escribe solo cuando el smoke define OPENCODE_PLUGIN_DEBUG_FILE.
+function debug(message) {
+  if (!DEBUG_FILE) return;
+  try {
+    appendFileSync(DEBUG_FILE, `${new Date().toISOString()} [notify-windows] ${message}\n`);
+  } catch {
+    // La sonda nunca debe romper el plugin.
+  }
+}
 
 const PS_SCRIPT = `
 $ErrorActionPreference = 'Stop'
@@ -68,7 +77,6 @@ const TERM_PATTERN = (() => {
 function notify(title, body) {
   try {
     const encoded = Buffer.from(PS_SCRIPT, "utf16le").toString("base64");
-    // Spawn directo, sin detached: detached + stdio:ignore no arranca el hijo en Bun.
     const child = spawn(
       "powershell.exe",
       ["-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-EncodedCommand", encoded],
@@ -97,36 +105,80 @@ function notify(title, body) {
   }
 }
 
-export const WindowsNotifyPlugin = async () => {
-  console.log("[notify-windows] plugin cargado");
+function propsOf(event) {
+  return event?.properties ?? event?.data ?? {};
+}
 
-  // sessionID -> parentID: permite ignorar el done de sesiones hijas (subagentes).
-  const parents = new Map();
+function sessionIdOf(event) {
+  const props = propsOf(event);
+  return props.sessionID ?? props.session?.id ?? props.id;
+}
 
-  return {
-    event: async ({ event }) => {
-      const props = event?.properties ?? {};
+function parentIdOf(event) {
+  const props = propsOf(event);
+  return props.info?.parentID ?? props.session?.parentID ?? props.parentID;
+}
 
-      if (event?.type === "session.created" || event?.type === "session.updated") {
-        if (props.sessionID) parents.set(props.sessionID, props.info?.parentID);
-        return;
+export default {
+  id: "notify-windows",
+  setup(ctx) {
+    console.log("[notify-windows] plugin loaded");
+    debug("setup start");
+    const controller = new AbortController();
+    // sessionID -> parentID: permite ignorar el done de sesiones hijas (subagentes).
+    const parents = new Map();
+    const notified = new Set();
+
+    const finishSession = (sessionID, status) => {
+      if (!sessionID || notified.has(sessionID)) return;
+      if (parents.get(sessionID)) return; // subagente: el done del principal llega aparte
+      notified.add(sessionID);
+      const body =
+        status === "failed"
+          ? "Sesion fallida"
+          : status === "interrupted"
+            ? "Sesion interrumpida"
+            : "Sesion completada";
+      debug(`notify session=${sessionID} body=${body}`);
+      notify("OpenCode", body);
+    };
+
+    void (async () => {
+      for await (const event of ctx.event.subscribe({ signal: controller.signal })) {
+        const type = event?.type ?? "";
+        const props = propsOf(event);
+        const sessionID = sessionIdOf(event);
+        debug(`event ${type} session=${sessionID ?? "-"} props=${JSON.stringify(props).slice(0, 240)}`);
+        if (DEBUG_EVENTS) {
+          console.log(`[notify-windows] event ${type}`, JSON.stringify(props).slice(0, 400));
+        }
+
+        if (type === "session.created" || type === "session.updated") {
+          if (sessionID) parents.set(sessionID, parentIdOf(event));
+          continue;
+        }
+
+        if (type === "session.deleted") {
+          if (sessionID) parents.delete(sessionID);
+          continue;
+        }
+
+        if (
+          type === "session.execution.succeeded" ||
+          type === "session.execution.failed" ||
+          type === "session.execution.interrupted"
+        ) {
+          finishSession(sessionID, type.split(".").pop());
+          continue;
+        }
+
+        if (type === "permission.asked" || type === "permission.updated") {
+          const kind = props.permission ?? props.type ?? "una herramienta";
+          debug(`notify permission session=${sessionID ?? "-"} kind=${kind}`);
+          notify("OpenCode", `Pide permiso para: ${kind}`);
+        }
       }
-
-      if (event?.type === "session.deleted") {
-        parents.delete(props.sessionID);
-        return;
-      }
-
-      if (event?.type === "session.idle") {
-        if (parents.get(props.sessionID)) return; // subagente: el done del principal llega aparte
-        notify("OpenCode", "Sesion completada");
-        return;
-      }
-
-      if (event?.type === "permission.asked" || event?.type === "permission.updated") {
-        const kind = props.permission ?? props.type ?? "una herramienta";
-        notify("OpenCode", `Pide permiso para: ${kind}`);
-      }
-    },
-  };
+    })().catch(() => {});
+    return () => controller.abort();
+  },
 };

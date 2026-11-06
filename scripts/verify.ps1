@@ -3,8 +3,9 @@
 # Uso: .\scripts\verify.ps1 [-SkipSmokes] [-Frontend] [-Skill "frontend-*"] [-Changed]
 #   1. Guardarrail de presupuesto (fail-closed: exit 1 si hay violaciones).
 #   2. Identidad repo <-> global: mismas skills, mismo contenido (solo lee).
-#   3. Smokes de ruteo: matriz completa por defecto; -Frontend/-Skill/-Changed filtran.
-#   4. Aviso de sesion desactualizada: la config no es hot-reload.
+#   3. Plugins V2: contrato, espejo global y sin copias duplicadas.
+#   4. Smokes de ruteo: matriz completa por defecto; -Frontend/-Skill/-Changed filtran.
+#   5. Aviso de sesion desactualizada: la config no es hot-reload.
 #
 # Exit 0 = todo verde. Exit 1 = hay algo que arreglar.
 
@@ -25,7 +26,7 @@ Write-Host "VERIFICACION DEL HARNESS"
 Write-Host "=" * 60
 
 # ── 1) Guardarrail de presupuesto ─────────────────────────────────────────
-Write-Host "`n[1/3] Guardarrail de presupuesto..."
+Write-Host "`n[1/4] Guardarrail de presupuesto..."
 $budget = Join-Path $Root "scripts\harness-budget.ps1"
 & powershell -NoProfile -ExecutionPolicy Bypass -File $budget
 if ($LASTEXITCODE -ne 0) {
@@ -36,7 +37,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # ── 2) Identidad repo <-> global (solo lee) ───────────────────────────────
-Write-Host "`n[2/3] Identidad repo <-> global..."
+Write-Host "`n[2/4] Identidad repo <-> global..."
 $repoSkills = Join-Path $Root ".opencode\skills"
 $globalSkills = Join-Path $globalDir "skills"
 if (-not (Test-Path -LiteralPath $globalSkills)) {
@@ -67,8 +68,19 @@ if (-not (Test-Path -LiteralPath $globalSkills)) {
   }
 }
 
-# ── 3) Smokes de ruteo ───────────────────────────────────────────────────
-Write-Host "`n[3/3] Smokes de ruteo..."
+# ── 3) Plugins V2: contrato y espejo global ───────────────────────────────
+Write-Host "`n[3/4] Plugins V2..."
+$pluginSmoke = Join-Path $Root "scripts\smoke-plugins.ps1"
+& powershell -NoProfile -ExecutionPolicy Bypass -File $pluginSmoke
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "  FAIL: plugin V2 con contrato o espejo incorrecto (arriba)."
+  $fail++
+} else {
+  Write-Host "  PASS: contrato V2 y espejo global."
+}
+
+# ── 4) Smokes de ruteo ───────────────────────────────────────────────────
+Write-Host "`n[4/4] Smokes de ruteo..."
 if ($SkipSmokes) {
   Write-Host "  OMITIDOS (-SkipSmokes)."
 } else {
@@ -88,8 +100,8 @@ if ($SkipSmokes) {
 
 # ── Aviso de sesion desactualizada ────────────────────────────────────────
 Write-Host ""
-Write-Host "Recordatorio: la config no es hot-reload. Si cambiaste AGENTS.md,"
-Write-Host "OPENCODE.md, las skills o .opencode/opencode.json, reinicia OpenCode."
+Write-Host "Recordatorio: V2 recarga config, agentes, skills y plugins al guardar."
+Write-Host "Si no ves el cambio, reinicia la TUI o ejecuta: opencode service restart."
 
 Write-Host ""
 Write-Host "=" * 60
@@ -97,5 +109,5 @@ if ($fail -gt 0) {
   Write-Host "VERIFICACION FALLIDA: $fail comprobacion(es) con errores."
   exit 1
 }
-Write-Host "VERIFICACION OK: guardarrail, identidad global y smokes en verde."
+Write-Host "VERIFICACION OK: guardarrail, identidad global, plugins y smokes en verde."
 exit 0

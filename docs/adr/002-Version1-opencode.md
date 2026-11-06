@@ -1,5 +1,7 @@
 # ADR-002 — OpenCode V1.19.3 en vez de V2 (API de plugins incompatible)
 
+> **Estado:** reemplazado por [ADR-010](010-migracion-opencode-v2.md) (2026-11-05).
+
 ## Contexto
 La instalación pasó a la V2 de `@opencode/cli`. Esa versión cambió la API de plugins: los dos plugins del harness (`notify-windows.js` y `rtk.ts`) dejaron de funcionar, y con ellos la notificación de escritorio y la compresión de salidas de tests. El harness depende de ambos para operar con coste de contexto bajo. La V1.19.3 (`opencode-ai`) mantiene la API que leen los plugins actuales.
 

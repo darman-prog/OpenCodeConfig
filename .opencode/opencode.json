@@ -1,46 +1,42 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "instructions": ["OPENCODE.md"],
   "default_agent": "build",
   "mcp": {
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "-y", "@playwright/mcp"],
-      "enabled": false
+    "servers": {
+      "playwright": {
+        "type": "local",
+        "command": ["npx", "-y", "@playwright/mcp"],
+        "disabled": true
+      }
     }
   },
   "compaction": {
     "auto": true,
-    "prune": true,
-    "reserved": 8000
+    "keep": {
+      "tokens": 8000
+    },
+    "buffer": 8000
   },
   "tool_output": {
     "max_lines": 200,
     "max_bytes": 20480
   },
-  "permission": {
-    "edit": "allow",
-    "bash": {
-      "*": "ask",
-      "git diff*": "allow",
-      "git status*": "allow",
-      "git log*": "allow"
-    },
-    "skill": {
-      "*": "allow"
-    },
-    "read": {
-      "*": "allow",
-      "*.env": "deny",
-      "*.env.*": "deny",
-      "*.env.example": "allow",
-      "*GEMINI.md": "deny",
-      "*gemini.md": "deny"
-    },
-    "glob": {
-      "*": "allow",
-      "*GEMINI.md": "deny",
-      "*gemini.md": "deny"
-    }
-  }
+  "permissions": [
+    { "action": "external_directory", "resource": "*", "effect": "ask" },
+    { "action": "edit", "resource": "*", "effect": "allow" },
+    { "action": "shell", "resource": "*", "effect": "ask" },
+    { "action": "shell", "resource": "git diff *", "effect": "allow" },
+    { "action": "shell", "resource": "git status *", "effect": "allow" },
+    { "action": "shell", "resource": "git log *", "effect": "allow" },
+    { "action": "skill", "resource": "*", "effect": "allow" },
+    { "action": "read", "resource": "*", "effect": "allow" },
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env.*", "effect": "deny" },
+    { "action": "read", "resource": "*.env.example", "effect": "allow" },
+    { "action": "read", "resource": "*GEMINI.md", "effect": "deny" },
+    { "action": "read", "resource": "*gemini.md", "effect": "deny" },
+    { "action": "glob", "resource": "*", "effect": "allow" },
+    { "action": "glob", "resource": "*GEMINI.md", "effect": "deny" },
+    { "action": "glob", "resource": "*gemini.md", "effect": "deny" }
+  ]
 }

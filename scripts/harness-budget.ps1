@@ -64,7 +64,7 @@ $tokEst = [math]::Round(($tokChars + $tokDesc) / 4)
 Check ($tokEst -le $MAX_TOKENS_INSTRUCCIONES) "tope de tokens chars/4: estimado $tokEst (tope $MAX_TOKENS_INSTRUCCIONES)"
 
 # 2) Agentes: topes (se pagan por invocacion) + contrato de roles y permisos
-$BUILTIN_SUBAGENTS = @('explore', 'general', 'scout', 'title', 'summary', 'compaction')
+$BUILTIN_SUBAGENTS = @('explore', 'general')
 $VALID_MODES      = @('primary', 'subagent', 'all')
 $agentsTotal = 0
 $agentCount  = 0
@@ -94,24 +94,42 @@ Get-ChildItem -LiteralPath $agentsDir -Filter *.md | ForEach-Object {
     Check ($mode -in $VALID_MODES) "agente $name sin 'mode:' explicito y valido (primary|subagent|all; el default es all): '$mode'"
     $agentMode[$name] = $mode
 
-    # Sin 'task:' explicito el permiso queda en el default documentado: allow (fail-open).
-    $taskLine = $fm | Select-String -Pattern '^\s+task:\s*(.+?)\s*$' | Select-Object -First 1
-    $taskVal = if ($null -ne $taskLine) { $taskLine.Matches[0].Groups[1].Value.Trim() } else { '' }
-    Check ($taskVal -ne '') "agente $name sin 'task:' explicito en permission (el default es allow)"
-
-    foreach ($tm in [regex]::Matches($taskVal, '"([^"]+)"\s*:')) {
-        $target = $tm.Groups[1].Value
-        if ($target -ne '*' -and $target -notmatch '[\*\?]') {
-            $allowlists += [pscustomobject]@{ From = $name; To = $target }
+    # V2 exige 'permissions' (array ordenado); 'permission' V1 queda prohibido.
+    $legacyPerm = $fm | Select-String -Pattern '^permission:' | Select-Object -First 1
+    Check ($null -eq $legacyPerm) "agente $name usa 'permission:' V1; migra a 'permissions:' V2"
+    $permLine = $fm | Select-String -Pattern '^permissions:\s*(.+?)\s*$' | Select-Object -First 1
+    Check ($null -ne $permLine) "agente $name sin 'permissions:' explicito en el frontmatter"
+    $rules = @()
+    if ($null -ne $permLine) {
+        $permVal = $permLine.Matches[0].Groups[1].Value.Trim()
+        # El harness usa una regla compacta por mapa: { action, resource, effect }.
+        foreach ($m in [regex]::Matches($permVal, '\{\s*action:\s*"([^"]+)"\s*,\s*resource:\s*"([^"]+)"\s*,\s*effect:\s*"([^"]+)"\s*\}')) {
+            $rules += [pscustomobject]@{ Action = $m.Groups[1].Value; Resource = $m.Groups[2].Value; Effect = $m.Groups[3].Value }
         }
     }
+    Check ($rules.Count -gt 0) "agente $name con 'permissions:' sin reglas parseables (action/resource/effect)"
+    foreach ($r in $rules) {
+        Check ($r.Action -ne 'bash') "agente $name usa action 'bash' (V1); en V2 es 'shell'"
+        Check ($r.Action -ne 'task') "agente $name usa action 'task' (V1); en V2 es 'subagent'"
+    }
+    $subagentDeny = @($rules | Where-Object { $_.Action -eq 'subagent' -and $_.Resource -eq '*' -and $_.Effect -eq 'deny' })
+    Check ($subagentDeny.Count -ge 1) "agente $name sin 'subagent * deny' (el default de V2 es allow)"
+    foreach ($r in @($rules | Where-Object { $_.Action -eq 'subagent' -and $_.Effect -eq 'allow' -and $_.Resource -ne '*' })) {
+        $allowlists += [pscustomobject]@{ From = $name; To = $r.Resource }
+    }
 
-    # Un subagent no puede delegar en un primary: los primarios no son invocables por Task.
+$colors = $fm | Select-String -Pattern '^color:\s*(.+?)\s*$' | Select-Object -First 1
+    if ($colors) {
+        $colorHex = $colors.Matches[0].Groups[1].Value.Trim()
+        Check ($colorHex -match '^"?#[0-9a-fA-F]{6}"?$') "agente $name con 'color:' invalido para V2 (exige hex de 6): '$colorHex'"
+    }
+
+    # Un subagent no puede delegar en un primary: los primarios no son invocables por subagent.
     if ($mode -eq 'subagent') {
         $body = ($lines -join "`n")
         $bad = @([regex]::Matches($body, 'delega(?:ndo)?\s+(?:en\s+|a\s+)?`(build|plan|ui-ux|backend-expert)`') |
             ForEach-Object { $_.Groups[1].Value })
-        Check ($bad.Count -eq 0) "el subagent $name dice que delega en $(($bad | Sort-Object -Unique) -join ', '), que no es invocable por Task"
+        Check ($bad.Count -eq 0) "el subagent $name dice que delega en $(($bad | Sort-Object -Unique) -join ', '), que no es invocable por subagent"
     }
 }
 Check ($agentsTotal -le $MAX_AGENTS_TOTAL) "agentes suman $agentsTotal lineas (tope $MAX_AGENTS_TOTAL)"
@@ -119,16 +137,16 @@ Check ($agentsTotal -le $MAX_AGENTS_TOTAL) "agentes suman $agentsTotal lineas (t
 # 2b) Allowlists de task: cada destino existe y es invocable
 foreach ($a in $allowlists) {
     if ($BUILTIN_SUBAGENTS -contains $a.To) { continue }
-    Check ($agentMode.ContainsKey($a.To)) "la allowlist task de $($a.From) nombra '$($a.To)', que no existe como agente"
+    Check ($agentMode.ContainsKey($a.To)) "la allowlist subagent de $($a.From) nombra '$($a.To)', que no existe como agente"
     if ($agentMode.ContainsKey($a.To)) {
-        Check ($agentMode[$a.To] -in @('subagent', 'all')) "la allowlist task de $($a.From) nombra a $($a.To) (mode: $($agentMode[$a.To])), que no es invocable por Task"
+        Check ($agentMode[$a.To] -in @('subagent', 'all')) "la allowlist subagent de $($a.From) nombra a $($a.To) (mode: $($agentMode[$a.To])), que no es invocable por subagent"
     }
 }
 
 # 2c) Roster de OPENCODE.md coherente con los mode reales
 $rosterSrc = Get-Content -LiteralPath $openCodeMd -Raw
 $roster = @{}
-($rosterSrc -split "`n") | Where-Object { $_ -match 'Primarios \(Tab\)|Subagentes \(Task/@\)' } | ForEach-Object {
+($rosterSrc -split "`n") | Where-Object { $_ -match 'Primarios \(Tab\)|Subagentes \(' } | ForEach-Object {
     $kind = if ($_ -match 'Primarios') { 'primary' } else { 'subagent' }
     foreach ($nm in [regex]::Matches($_, '`([^`]+)`')) { $roster[$nm.Groups[1].Value] = $kind }
 }
@@ -151,14 +169,14 @@ if (Test-Path -LiteralPath $attrs) {
 }
 
 # 2e) Las skills (y sus references) tampoco pueden mandar a delegar en un primary:
-#     un primary no es invocable por Task, asi que la instruccion es imposible.
+#     un primary no es invocable por subagent, asi que la instruccion es imposible.
 $skillMdScope = @(Get-ChildItem -LiteralPath $skillRoots -Recurse -File -Filter *.md)
 $delPattern = '(?i)(delega\w*|lanza\w*|invoca\w*|consulta\w*|re-?evalua\w*|usa el agente)\s*(?:en\s+|a\s+|con\s+)?`(build|plan)`'
 foreach ($hit in @($skillMdScope | Select-String -Pattern $delPattern)) {
     $rel = $hit.Path.Substring($Root.Length).TrimStart('\')
     $verb = $hit.Matches[0].Groups[1].Value
     $target = $hit.Matches[0].Groups[2].Value
-    Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por Task"
+    Check $false "skill '$rel' manda a delegar en el primary '$target' ($verb): los primarios no son invocables por subagent"
 }
 
 # 2f) El grafo de delegacion es aciclico: un agente no puede alcanzar a si mismo
@@ -183,7 +201,7 @@ foreach ($src in $graph.Keys) {
     }
 }
 
-# 2g) Un agente que se declara de solo lectura no puede escribir por bash.
+# 2g) Un agente que se declara de solo lectura no puede escribir por shell.
 #     Un allowlist tipo "git diff*" incluye "git diff --output=<archivo>", que escribe.
 foreach ($name in @($agentMode.Keys)) {
     $md = Join-Path $agentsDir "$name.md"
@@ -197,7 +215,7 @@ foreach ($name in @($agentMode.Keys)) {
     }
     $fm = $fmLines -join "`n"
     if ($fm -notmatch 'solo lectura') { continue }
-    Check ($fm -match '"\*--output\*":\s*deny') "$name se declara de solo lectura pero no bloquea '--output' en bash (podria escribir con git diff --output)"
+    Check ($fm -match 'resource:\s*"\*--output\*"\s*,\s*effect:\s*"deny"') "$name se declara de solo lectura pero no bloquea '--output' en shell (podria escribir con git diff --output)"
 }
 
 # 2h) Sin BOM: el loader no publica el frontmatter si el archivo empieza con U+FEFF
@@ -394,18 +412,16 @@ $brainLegacy = Join-Path $Root "docs\project-brain\INDEX.md"
 Check (Test-Path -LiteralPath $brainNavigation) "falta docs\project-brain\NAVIGATION.md (mapa de lectura del cerebro)"
 Check (-not (Test-Path -LiteralPath $brainLegacy)) "docs\project-brain\INDEX.md ya no debe existir: el mapa se llama NAVIGATION.md"
 
-# 9) Permisos del global: external_directory no puede abrir todo el disco
+# 9) Permisos del global (V2): external_directory no puede abrir todo el disco.
 # (si el global aun no existe no hay politica que policar; si existe, se exige la allowlist)
 if (Test-Path -LiteralPath $GlobalConfig) {
     $cfg = Get-Content -LiteralPath $GlobalConfig -Raw
-    $m = [regex]::Match($cfg, '"external_directory"\s*:\s*(\{[^}]*\}|"[^"]*")')
-    Check $m.Success "el global debe declarar permission.external_directory (no se encontro el bloque)"
-    if ($m.Success) {
-        if ($m.Groups[1].Value -notmatch '^\{') {
-            Check ($m.Groups[1].Value -notmatch '^"\s*allow\s*"$') 'external_directory no puede ser el shorthand "allow"'
-        } else {
-            Check (-not ($m.Groups[1].Value -match '"\*"\s*:\s*"allow"')) 'external_directory no puede llevar "*": "allow" (anula las allowlists internas de opencode)'
-        }
+    $perm = [regex]::Match($cfg, '"permissions"\s*:\s*\[(.*?)\]', [System.Text.RegularExpressions.RegexOptions]::Singleline)
+    Check $perm.Success "el global debe declarar el array permissions (V2)"
+    if ($perm.Success) {
+        $rules = $perm.Groups[1].Value
+        Check ($rules -match '"action"\s*:\s*"external_directory"\s*,\s*"resource"\s*:\s*"\*"\s*,\s*"effect"\s*:\s*"ask"') 'external_directory "*" debe pedir permiso (ask)'
+        Check (-not ($rules -match '"action"\s*:\s*"external_directory"\s*,\s*"resource"\s*:\s*"\*"\s*,\s*"effect"\s*:\s*"allow"')) 'external_directory "*" no puede ser allow (anula las allowlists internas)'
     }
 } else {
     Write-Host "Nota: no existe $GlobalConfig; se omite el check de external_directory"
@@ -483,23 +499,63 @@ foreach ($f in $mojibakeScope) {
 }
 Check ($ctrl.Count -eq 0) ("caracteres de control invisibles en " + $ctrl.Count + " archivo(s): " + (($ctrl | Select-Object -First 5) -join ', '))
 
-# 12) Instrucciones del harness: OPENCODE.md = Skill Gate + estilo + roster;
-#     AGENTS.md = contexto agnostico. El deny de GEMINI.md se conserva como defensa:
+# 12) Instrucciones del harness (V2): OPENCODE.md se inyecta desde el global;
+#     AGENTS.md = contexto agnostico y lo descubre V2. El proyecto no declara OPENCODE.md.
+#     El deny de GEMINI.md se conserva como defensa:
 #     si alguien deja un GEMINI.md en la raiz, OpenCode no lo lee.
 $agnosticText = Get-Content -LiteralPath $agnosticMd -Raw
 $openCodeTable = @($openCodeContent -split "`n" | Where-Object { $_ -match '^\| Tipo de tarea' })
 Check ($openCodeTable.Count -ge 1) "OPENCODE.md debe contener la tabla del Skill Gate"
 Check (-not (($agnosticText -split "`n") | Where-Object { $_ -match '^\| Tipo de tarea' })) "AGENTS.md no debe contener la tabla del Skill Gate (vive en OPENCODE.md)"
+$globalCfgText = if (Test-Path -LiteralPath $GlobalConfig) { Get-Content -LiteralPath $GlobalConfig -Raw } else { "" }
+Check ($globalCfgText -match '"instructions"\s*:\s*\[[^\]]*OPENCODE\.md') 'el global debe inyectar OPENCODE.md en instructions'
 $projCfgPath = Join-Path $Root ".opencode\opencode.json"
 $projCfgText = Get-Content -LiteralPath $projCfgPath -Raw
-$instrMatch = [regex]::Match($projCfgText, '"instructions"\s*:\s*\[(.*?)\]', [System.Text.RegularExpressions.RegexOptions]::Singleline)
-Check $instrMatch.Success 'opencode.json debe declarar "instructions" (lista de ficheros de reglas)'
-if ($instrMatch.Success) {
-    $instrList = $instrMatch.Groups[1].Value
-    Check ($instrList -match '"OPENCODE\.md"') 'instructions debe incluir "OPENCODE.md"'
-    Check ($instrList -notmatch '"AGENTS\.md"') 'instructions no debe listar "AGENTS.md" (el auto-descubrimiento duplicaria la inyeccion)'
+$projInstr = [regex]::Match($projCfgText, '"instructions"\s*:\s*\[(.*?)\]', [System.Text.RegularExpressions.RegexOptions]::Singleline)
+Check (-not ($projInstr.Success -and $projInstr.Groups[1].Value -match 'OPENCODE\.md')) 'opencode.json del proyecto no debe inyectar OPENCODE.md (vive en el global)'
+Check ($projCfgText -match '"permissions"\s*:') 'opencode.json debe usar permissions V2'
+Check ($projCfgText -notmatch '"permission"\s*:') 'opencode.json no debe usar permission V1'
+Check ($projCfgText -notmatch '"prune"\s*:') 'compaction.prune ya no existe en V2'
+Check ($projCfgText -match '"keep"\s*:\s*\{[^}]*"tokens"\s*:\s*8000') 'compaction.keep.tokens debe ser 8000'
+Check ($projCfgText -match '"buffer"\s*:\s*8000') 'compaction.buffer debe ser 8000'
+Check ($globalCfgText -match '"todo"\s*:\s*true') 'experimental.todo debe estar activo en el global'
+Check ($projCfgText -match '"action"\s*:\s*"read"\s*,\s*"resource"\s*:\s*"\*GEMINI\.md"\s*,\s*"effect"\s*:\s*"deny"') "permissions.read debe denegar GEMINI.md (defensa: ese fichero no es de este harness)"
+
+# 12b) Theme V2: 'base' y 'dark' o 'light' en JSON (V2):
+#      esquema V1 (defs + theme) y hace que los tokens caigan al default.
+    $themesDirs = @(Join-Path $Root ".opencode\themes")
+    if (Test-Path -LiteralPath $GlobalConfig) {
+        $themesDirs += [IO.Path]::GetDirectoryName($GlobalConfig) + "\themes"
+    }
+    foreach ($themesDir in $themesDirs) {
+        if (-not (Test-Path -LiteralPath $themesDir)) { continue }
+        foreach ($themeFile in (Get-ChildItem -LiteralPath $themesDir -Filter *.json -ErrorAction SilentlyContinue)) {
+            try {
+                $themeJson = Get-Content -LiteralPath $themeFile.FullName -Raw | ConvertFrom-Json
+                Check ($themeJson.base -ne $null) ("theme sin 'base' (formato V2): " + $themeFile.FullName)
+                Check ($themeJson.dark -ne $null -or $themeJson.light -ne $null) ("theme sin 'dark' o 'light': " + $themeFile.FullName)
+            } catch {
+                Check $false ("theme no parsea como JSON: " + $themeFile.FullName)
+            }
+        }
+    }
+
+# 12c) Plugins V2: fuente en plugins-src, default export con id y setup.
+#      El runtime vive solo en el global; el proyecto no debe cargar copias duplicadas.
+$pluginsSrc = Join-Path $Root ".opencode\plugins-src"
+if (Test-Path -LiteralPath $pluginsSrc) {
+    foreach ($pluginFile in @(Get-ChildItem -LiteralPath $pluginsSrc -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.ts', '.js') })) {
+        $pluginText = Get-Content -LiteralPath $pluginFile.FullName -Raw
+        Check ($pluginText -match '(?m)^\s*id:\s*["'']') "plugin $($pluginFile.Name) sin 'id:'"
+        Check ($pluginText -match '(?m)^\s*(?:async\s+)?setup\s*\(') "plugin $($pluginFile.Name) sin 'setup('"
+        Check (-not ($pluginText -match '(?m)^\s*export\s+const\s+')) "plugin $($pluginFile.Name) usa export con nombre (V1); V2 exige default"
+    }
 }
-Check (($projCfgText -match '"read"') -and ($projCfgText -match '\*GEMINI\.md"\s*:\s*"deny"')) "permission.read debe denegar GEMINI.md (defensa: ese fichero no es de este harness)"
+$projPlugins = Join-Path $Root ".opencode\plugins"
+if (Test-Path -LiteralPath $projPlugins) {
+    $loosePlugins = @(Get-ChildItem -LiteralPath $projPlugins -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in @('.ts', '.js') })
+    Check ($loosePlugins.Count -eq 0) "el proyecto no debe cargar plugins locales; usa plugins-src + sync global"
+}
 
 # 13) Trazabilidad portable: el CLI valida backlog, expedientes y registro.
 #     No se reimplementa aqui: una sola definicion de "registro correcto".

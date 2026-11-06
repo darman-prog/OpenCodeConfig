@@ -78,7 +78,7 @@ flowchart TD
 ```mermaid
 flowchart TD
     U["Tab: build / plan"] --> PR["Primarios<br/>build / plan"]
-    PR --> DG{"Se delega por Task?"}
+    PR --> DG{"Se delega por subagent?"}
     DG --> |"si"| SA["Subagentes<br/>ui-ux / backend-expert / auditor / tester / quality / debugger / explore"]
     U --> |"@ manual"| SA
     SA --> RP["Reporte: hallazgos con severidad<br/>no tocan features"]

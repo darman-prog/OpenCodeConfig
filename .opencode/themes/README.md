@@ -13,8 +13,8 @@ Documentación de los temas definidos en este directorio.
 
 **Archivo:** `darmandev.json`
 **Inspiración:** Tokyo Night Storm
-**Creado:** 2026-09-29
-**Activación:** `~/.config/opencode/tui.json` → `"theme": "darmandev"`
+**Creado:** 2026-09-29 · **Actualizado a formato V2:** 2026-11-05
+**Activación (V2):** `~/.config/opencode/cli.json` → `"theme": { "name": "darmandev", "mode": "dark" }`
 
 ### Objetivo
 
@@ -217,8 +217,12 @@ terminal anfitrión, no con este tema.
 
 - La extensión debe ser `.json`. El loader de temas usa el glob `*.json`; no
   reconoce `.jsonc` aunque el formato lo soportaría.
-- `tui.json` y `tui.jsonc`, en cambio, sí aceptan ambas extensiones.
-- El nombre del tema en `tui.json` es el nombre del archivo sin extensión.
+- **V2 (2026-11-05):** el tema usa `base` + `dark` (solo modo oscuro).
+  Para claro, añadir una sección `light` con paleta propia; V2.
+- El nombre del tema en `cli.json` es el nombre del archivo sin extensión.
+- El documentado aquí describe el esquema V1 (`defs` + `theme`) como
+  referencia histórica; los equivalentes V2 están en las secciones V2 del
+  archivo (`base.syntax`, `base.markdown`, `base.categorical`, etc.).
 
 
 

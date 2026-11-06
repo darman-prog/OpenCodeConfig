@@ -36,19 +36,27 @@ El trabajo abierto vive en `BACKLOG.md`; al cerrar, su fila se borra y queda est
 | 2026-10-29 | Pipeline frontend con identidad | cerrada | ui | Dirección, sistema, showcase y pilot SageView | [016-pipeline-frontend-identidad.md](016-pipeline-frontend-identidad.md) | 6/6 criterios; rating 4/5; verify 21/21 |
 | 2026-10-29 | Smokes filtrados por skill o cambios | cerrada | harness | `-Skill`/`-Changed`; matriz completa al cerrar ruteo | [017-smoke-filtrado.md](017-smoke-filtrado.md) | `-Skill frontend-build` 4/4; `-Changed` OK |
 | 2026-10-31 | Integracion de ofimatica PPTX y HTML a PDF | cerrada | harness | Fusion en skill manual; plantilla-base, script y referencia | [018-integracion-ofimatica-pptx-html-pdf.md](018-integracion-ofimatica-pptx-html-pdf.md) | 8/8 criterios exit 0; sync identidad OK |
+| 2026-11-04 | Cero-friccion OPENCODE global | cerrada | harness | Paso 0 global + sync + guia solo-AGENTS | [019-cero-friccion-opencode-global.md](019-cero-friccion-opencode-global.md) | 4/4 criterios exit 0; verify OK |
+| 2026-11-05 | Theme V2 y colores de agentes | cerrada | harness | `darmandev` en base+dark; hex en agentes | [020-theme-v2-colores-agentes.md](020-theme-v2-colores-agentes.md) | debug agents con hex; JSON OK; sin avisos de theme |
+| 2026-11-05 | Plugins V2 y smoke de eventos | cerrada | harness | RTK + notify con contrato V2; fuente espejo | [021-plugins-v2.md](021-plugins-v2.md) | smoke estático y runtime PASS; verify OK |
+| 2026-11-05 | Config nativa V2 | cerrada | harness | instructions global, permissions, compaction y MCP | [022-config-v2-nativa.md](022-config-v2-nativa.md) | debug config OK; verify -SkipSmokes PASS |
+| 2026-11-05 | Agentes V2 nativos | cerrada | harness | `permissions` V2 en los 10 agentes; guardarraíl y roster | [023-agentes-v2.md](023-agentes-v2.md) | debug agents OK; verify -SkipSmokes PASS |
 
 ## Decisiones (ADR)
 
 | Fecha | Decisión | Estado | Ámbito | Registro |
 |---|---|---|---|---|
 | 2026-09-28 | RTK como dependencia de máquina | vigente | Rendimiento/costes del harness | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) |
-| 2026-10-18 | OpenCode V1.19.3 (la V2 rompe los plugins) | vigente | Versión del runtime | [ADR-002](../adr/002-Version1-opencode.md) |
+| 2026-10-18 | OpenCode V1.19.3 (la V2 rompe los plugins) | reemplazado por ADR-010 | Versión del runtime | [ADR-002](../adr/002-Version1-opencode.md) |
+| 2026-11-05 | Theme `darmandev` en formato V2 | vigente | Theme del harness | [020-theme-v2-colores-agentes.md](020-theme-v2-colores-agentes.md) |
 | 2026-10-19 | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | vigente | Persistencia local y privacidad | [ADR-003](../adr/003-retencion-respaldos-opencode.md) |
 | 2026-10-22 | Trazabilidad portable: backlog, expediente y bitácora mecánica | vigente | Documentación y auditoría | [ADR-004](../adr/004-trazabilidad-portable.md) |
 | 2026-10-28 | Subagentes vendor de impeccable en OpenCode | vigente | UI y orquestación | [ADR-005](../adr/005-subagentes-vendor-impeccable.md) |
 | 2026-10-28 | Gate de autoridad visual antes de UI nueva | vigente | UI y proceso | [ADR-006](../adr/006-gate-autoridad-visual.md) |
 | 2026-10-28 | better-ui como capa de pulido opcional | vigente (referencia; ver 008) | UI y dependencias | [ADR-007](../adr/007-adopcion-better-ui.md) |
 | 2026-10-28 | Dirección y sistema antes de código para frontend | vigente | UI y proceso | [ADR-008](../adr/008-pipeline-frontend-identidad.md) |
+| 2026-11-04 | OPENCODE solo global, AGENTS por proyecto | vigente | Harness y proceso | [ADR-009](../adr/009-cero-friccion-opencode-global.md) |
+| 2026-11-05 | OpenCode V2 con plugins V2 y fuente espejo | vigente | Runtime y plugins | [ADR-010](../adr/010-migracion-opencode-v2.md) |
 
 ## Reglas
 

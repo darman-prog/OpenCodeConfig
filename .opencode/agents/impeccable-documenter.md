@@ -1,18 +1,7 @@
 ---
 description: Documenta DESIGN.md y su sidecar desde el mundo construido; no implementa.
 mode: subagent
-permission:
-  edit:
-    "*": deny
-    "DESIGN.md": allow
-    ".impeccable/design.json": allow
-  bash:
-    "*": ask
-    "git diff*": allow
-    "git log*": allow
-    "git status*": allow
-  task: deny
-  skill: allow
+permissions: [{ action: "edit", resource: "*", effect: "deny" }, { action: "edit", resource: "DESIGN.md", effect: "allow" }, { action: "edit", resource: ".impeccable/design.json", effect: "allow" }, { action: "shell", resource: "*", effect: "ask" }, { action: "shell", resource: "git diff*", effect: "allow" }, { action: "shell", resource: "git log*", effect: "allow" }, { action: "shell", resource: "git status*", effect: "allow" }, { action: "subagent", resource: "*", effect: "deny" }, { action: "skill", resource: "*", effect: "allow" }]
 ---
 
 Eres impeccable-documenter. Registras el sistema visual construido; no implementas.

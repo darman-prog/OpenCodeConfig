@@ -1,13 +1,14 @@
 # AGENTS.md
 
 Archivo de contexto agnóstico del repo: válido para cualquier agente (humano o IA).
-OpenCode suma `OPENCODE.md` (Skill Gate, estilo de respuesta y agentes).
+OpenCode suma el global `~/.config/opencode/OPENCODE.md` (Skill Gate, estilo y agentes). Este `AGENTS.md` es el único fichero de reglas por proyecto.
 
 ## Stack
 Ver `.opencode/` para skills y config. Si esta seccion sigue vacia al iniciar un proyecto, el agente debe preguntar el stack al usuario (flujo en skill `uso-eficiente`, seccion "Onboarding de stack") y luego proponer `/init`.
 
 ## Comandos
-- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (wrapper de `trace.py`)
+- `opencode` (TUI) · `/init` (regenerar este archivo si cambia el stack) · `.\sync-global.ps1` (sincronizar skills/agentes/commands/plugins al harness global; reiniciar TUI despues) · `.\scripts\new-feature.ps1` (wrapper de `trace.py`)
+- Plugins: `.\scripts\smoke-plugins.ps1` (contrato V2) · `-Runtime` (RTK + notify con una sesion headless).
 - Trazabilidad: `python` 3.8+ y `trace.py` de la skill `documentacion` (`init`, `task`, `start`, `record`, `close`, `drop`, `check`, `adopt`).
 
 ## Contexto

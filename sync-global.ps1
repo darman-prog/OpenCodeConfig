@@ -6,13 +6,13 @@
 # Que hace:
 #   1. Corre el guardarrail de presupuesto (fail-closed).
 #   2. Dry-run: enumera que se purgaria en skills/, agents/ y commands/ y PARA si hay algo.
-#   3. Copia esas 3 carpetas con /MIR (purga acotada: dentro de ellas borra lo obsoleto).
-#      NO toca la config global: opencode.json(c), tui.json, plugins/, package.json,
-#      node_modules/ y los perfiles qa/notion quedan intactos.
-#   4. Verifica que el global sea espejo del repo (mismos SKILL.md, mismo contenido).
+#   3. Copia esas 3 carpetas con /MIR (purga acotada: dentro de ellas borra lo obsoleto)
+#      y espeja plugins-src/ en el global plugins/. NO toca la config global:
+#      opencode.json(c), cli.json, package.json, node_modules/ y los perfiles qa/notion.
+#   4. Verifica que el global sea espejo del repo (mismos SKILL.md y plugins, mismo contenido).
 #   5. Trunca opencode.log si supera 10 MB (mantiene las trazas locales pequenas).
 #
-# Los cambios en agentes/skills requieren REINICIAR OpenCode (la config no es hot-reload).
+# OpenCode V2 recarga config, agentes, skills y plugins al guardar; si no lo ves, reinicia la TUI.
 
 param([switch]$ForcePurge)
 
@@ -20,6 +20,8 @@ $ErrorActionPreference = "Stop"
 $src = Join-Path $PSScriptRoot ".opencode"
 $dst = Join-Path $env:USERPROFILE ".config\opencode"
 $SUBFOLDERS = @('skills', 'agents', 'commands')
+$PLUGINS_SRC = Join-Path $src 'plugins-src'
+$PLUGINS_DST = Join-Path $dst 'plugins'
 
 # [1] Guardarrail de presupuesto: valida la plantilla ANTES de sincronizar.
 $budgetScript = Join-Path $PSScriptRoot "scripts\harness-budget.ps1"
@@ -95,6 +97,16 @@ foreach ($sub in $SUBFOLDERS) {
     robocopy $s $d /MIR /XD node_modules __pycache__ /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS
     if ($LASTEXITCODE -ge 8) { throw "robocopy $sub fallo con exit $LASTEXITCODE" }
 }
+# El canonico global vive fuera del proyecto para cero-friccion.
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot "OPENCODE.md") -Destination (Join-Path $dst "OPENCODE.md") -Force
+
+# Plugins V2: el proyecto carga solo el espejo global para no duplicar IDs.
+# Copia sin /MIR: conserva plugins globales ajenos a plugins-src.
+if (Test-Path -LiteralPath $PLUGINS_SRC) {
+    New-Item -ItemType Directory -Force -Path $PLUGINS_DST | Out-Null
+    robocopy $PLUGINS_SRC $PLUGINS_DST /E /XD node_modules __pycache__ /COPY:DAT /R:2 /W:1 /NFL /NDL /NJH /NJS
+    if ($LASTEXITCODE -ge 8) { throw "robocopy plugins fallo con exit $LASTEXITCODE" }
+}
 
 # [4] Identidad repo <-> global: mismos SKILL.md, mismo contenido.
 # Se compara texto normalizado (CRLF/LF no cuenta): el unico diff posible es de contenido.
@@ -113,6 +125,19 @@ $repoSkills | ForEach-Object {
 $globalCount = (Get-ChildItem -LiteralPath (Join-Path $dst 'skills') -Recurse -Filter SKILL.md).Count
 if ($globalCount -ne $repoSkills.Count) {
     $desajustes += "el global tiene $globalCount SKILL.md y el repo $($repoSkills.Count) (sobran o faltan)"
+}
+# Barrera 3: cada plugin de plugins-src debe existir igual en el global.
+# Los plugins globales extra no se comparan ni se borran.
+if (Test-Path -LiteralPath $PLUGINS_SRC) {
+    $repoPlugins = @(Get-ChildItem -LiteralPath $PLUGINS_SRC -Recurse -File)
+    $repoPlugins | ForEach-Object {
+        $rel = $_.FullName.Substring($PLUGINS_SRC.Length).TrimStart('\')
+        $target = Join-Path $PLUGINS_DST $rel
+        if (-not (Test-Path -LiteralPath $target)) { $desajustes += "falta en el global: plugins/$rel"; return }
+        $a = ((Get-Content -LiteralPath $_.FullName -Raw) -replace "`r`n", "`n")
+        $b = ((Get-Content -LiteralPath $target -Raw) -replace "`r`n", "`n")
+        if ($a -ne $b) { $desajustes += "difiere del repo: plugins/$rel" }
+    }
 }
 if ($desajustes.Count -gt 0) {
     $desajustes | ForEach-Object { Write-Host " - $_" }
@@ -136,7 +161,7 @@ if (Test-Path -LiteralPath $logFile) {
 }
 
 # [5b] WARN: dependencias globales que el sync no instala.
-# El sync espeja skills/agents/commands. Las dependencias globales (docx, plugin)
+# El sync espeja skills/agents/commands y plugins-src. Las dependencias globales (docx, plugin)
 # quedan fuera de su alcance; si faltan, las skills que las necesitan fallan en runtime.
 $globalPkg = Join-Path $dst "package.json"
 if (Test-Path -LiteralPath $globalPkg) {
@@ -197,6 +222,7 @@ if ($problemas) {
 $skills = (Get-ChildItem -LiteralPath (Join-Path $dst "skills") -Recurse -Filter SKILL.md).Count
 $agents = (Get-ChildItem -LiteralPath (Join-Path $dst "agents") -File).Count
 $cmds = (Get-ChildItem -LiteralPath (Join-Path $dst "commands") -File).Count
-Write-Host "OK: skills=$skills agentes=$agents commands=$cmds en $dst | identidad: OK"
-Write-Host "Reinicia OpenCode para que recargue skills y agentes."
+$plugins = if (Test-Path -LiteralPath $PLUGINS_DST) { @(Get-ChildItem -LiteralPath $PLUGINS_DST -Recurse -File).Count } else { 0 }
+Write-Host "OK: skills=$skills agentes=$agents commands=$cmds plugins=$plugins en $dst | identidad: OK"
+Write-Host "OpenCode V2 recarga al guardar; si no ves los cambios, reinicia la TUI."
 exit 0

@@ -1,20 +1,7 @@
 ---
 description: Revisa el resultado final de una UI contra el brief, el craft-floor y las capturas; no edita.
 mode: subagent
-permission:
-  edit: deny
-  bash:
-    "*": ask
-    "git diff*": allow
-    "git log*": allow
-    "git status*": allow
-    "*--output*": deny
-    "git apply*": deny
-    "git checkout*": deny
-    "git restore*": deny
-    "git stash*": deny
-  task: deny
-  skill: allow
+permissions: [{ action: "edit", resource: "*", effect: "deny" }, { action: "shell", resource: "*", effect: "ask" }, { action: "shell", resource: "git diff*", effect: "allow" }, { action: "shell", resource: "git log*", effect: "allow" }, { action: "shell", resource: "git status*", effect: "allow" }, { action: "shell", resource: "*--output*", effect: "deny" }, { action: "shell", resource: "git apply*", effect: "deny" }, { action: "shell", resource: "git checkout*", effect: "deny" }, { action: "shell", resource: "git restore*", effect: "deny" }, { action: "shell", resource: "git stash*", effect: "deny" }, { action: "subagent", resource: "*", effect: "deny" }, { action: "skill", resource: "*", effect: "allow" }]
 ---
 
 Eres impeccable-finish-reviewer. Revisas una UI terminada; no implementas ni editas.

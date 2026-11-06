@@ -2,6 +2,9 @@
 
 Instrucciones de OpenCode para este repo. Complementa a `AGENTS.md` (agnóstico: contexto, stack y comandos).
 
+## Alcance global (cero-fricción)
+Canónico en `~/.config/opencode/OPENCODE.md` (fuente = plantilla). Fuera de la plantilla nunca se busca ni crea en el proyecto; por proyecto solo `AGENTS.md`. Sin global, avisa en 1 línea y sigue con `AGENTS.md`.
+
 ## Skill Gate (obligatorio antes de leer, buscar o editar)
 
 Antes de la primera accion: identifica skills con la tabla, carga cada una con la herramienta `skill` (este archivo NO sustituye a la skill) y declara en tu primer mensaje `Skills: <cargadas>`; si omites una candidata, `omitida <nombre>: <motivo>`. Si coinciden varias señales, combina sus skills; carga solo las obligatorias al inicio y las opcionales cuando apliquen. Toda escritura o modificación de código carga `code-clue`, sin que el usuario tenga que pedir comentarios.
@@ -44,10 +47,10 @@ Canonica en la skill `workflow` (lint/typecheck/tests, diff, secretos, cambios e
 ## Tokens y contexto
 Reglas en la skill `uso-eficiente`; detalle en `.opencode/skills/uso-eficiente/references/TOKEN-SAVING.md` (leerlo en exploracion amplia). Este archivo y `AGENTS.md` se inyectan en cada sesión.
 Al compactar, conserva la lista de ficheros modificados, los comandos de test y las decisiones abiertas: sin eso, el resumen pierde lo que importa.
-La compactacion automatica esta activa (prune: true, reserved: 8000): midela antes de cambiarla.
+La compactacion automatica esta activa (keep: 8000 tokens, buffer: 8000): midela antes de cambiarla.
 
 ## Agentes
 - Primarios (Tab): `build`, `plan`.
-- Subagentes (Task/@): `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica), `auditor`, `tester`, `quality`, `debugger`, `explore`, `impeccable-finish-reviewer`, `impeccable-documenter`. Salvo `ui-ux`, no invocan a nadie: reportan y quien los delego decide.
+- Subagentes (subagent/@): `ui-ux` (frontend, edita), `backend-expert` (solo analiza y planifica), `auditor`, `tester`, `quality`, `debugger`, `explore`, `impeccable-finish-reviewer`, `impeccable-documenter`. Salvo `ui-ux`, no invocan a nadie: reportan y quien los delego decide.
 - `calidad-cierre` es el gate de cierre (delegable); no sustituye `testing`, `seguridad`, `auditor` ni las skills de diseño.
 - Modelos se asignan manualmente por agente.
