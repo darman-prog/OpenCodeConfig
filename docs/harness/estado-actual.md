@@ -1,17 +1,23 @@
+---
+status: vigente
+last_reviewed: 2026-11-05
+confidence: confirmado
+source: guardarraíl 2026-11-05 + commit cb0649c
+---
 # Estado actual del harness — OpenCode
 
 > **Para quién:** dev junior con TDAH — tablas y diagramas; leer en 5 min.
 > **Para qué:** saber qué existe hoy y cómo se mueve una tarea. Complementa al [pipeline](pipeline.md) (cómo se ejecuta paso a paso) y su [referencia](pipeline-referencia.md) (detalle por sección); el historial por cambio vive en [changelog.md](changelog.md).
-> **Fecha:** 2026-10-31 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
+> **Fecha:** 2026-11-05 · **Estado:** vigente. Las cifras salen de la salida del guardarraíl, nunca de memoria.
 
 <a id="sec-1"></a>
 ## 1. Números (verificados por el guardarraíl)
 
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
-| `OPENCODE.md` | 53 líneas | 75 | Skill Gate + estilo + roster; se inyecta en cada sesión |
-| `AGENTS.md` agnóstico | 19 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
-| Agentes | 10 archivos · 377 líneas | 400 | Se pagan por invocación |
+| `OPENCODE.md` | 56 líneas | 75 | Skill Gate + estilo + roster; se inyecta en cada sesión |
+| `AGENTS.md` agnóstico | 21 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
+| Agentes | 10 archivos · 295 líneas | 400 | Se pagan por invocación |
 | Skills | 38 `SKILL.md` en `.opencode/skills` (una sola raiz) |
 | Specs (historia) | 4 (`001`, `002`, `003`, `004`) | sin tope ni validación desde el 2026-09-25 | `004` es runbook one-off de instalación |
 | Fin de línea | LF en índice y carpeta | — | Fijado en `.gitattributes` |
@@ -153,7 +159,7 @@ git status --short                                                              
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
-| Guardarraíl en verde | `OPENCODE.md` 53/75 + `AGENTS.md` 19/35 · agentes 377/400 · skills 38 (una sola raiz) · 49 probes |
+| Guardarraíl en verde | `OPENCODE.md` 56/75 + `AGENTS.md` 21/35 · agentes 295/400 · skills 38 (una sola raiz) · 49 probes |
 | Simplificación OpenCode-only (2026-10-18) | una sola raiz de skills (`.opencode/skills`, 38); sin `skills.paths` ni espejo `~/.agents/skills`; el deny de `GEMINI.md` queda como defensa; A/B de tokens no concluyente (medición descartada) |
 | Probes de routing | 49 casos definidos; cobertura 100% validada por el guardarraíl (bloque 6); incluyen producto, code-clue, investigación web, datos, automatización, MCP (Notion, Playwright, Stitch), protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS), dirección y construcción frontend y feature-spec DDR |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |

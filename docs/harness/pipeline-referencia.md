@@ -1,3 +1,9 @@
+---
+status: vigente
+last_reviewed: 2026-11-05
+confidence: confirmado
+source: pipeline V2 verificado en el repo el 2026-11-05
+---
 # Referencia del pipeline — OpenCode
 
 <a id="sec-ref"></a>
@@ -27,7 +33,7 @@
 <details><summary><b>Fase 4 — Subagentes validan</b></summary>
 
 - `tester` (E2E browser), `auditor` (revision contra skills), `quality` (refactor/perf), `debugger` (causa raiz) — `OPENCODE.md` §Agentes.
-- Los subagentes **reportan o corrigen lo suyo**; ninguno implementa features ni invoca a otro agente (`task: deny`).
+- Los subagentes **reportan o corrigen lo suyo**; ninguno implementa features ni invoca a otro agente (`subagent * deny`).
 </details>
 <details><summary><b>Fase 5 — Gates y cierre</b></summary>
 
@@ -191,12 +197,12 @@ flowchart LR
 
 | Nivel | Agentes | Que editan | Referencia |
 | --- | --- | --- | --- |
-| Base (todo agente) | los 10 | `edit` segun rol, `bash: ask` + git read `allow`, `skill: allow`, `task` segun rol | frontmatter de cada `.md` |
+| Base (todo agente) | los 10 | `edit` segun rol, `shell: ask` + git read `allow`, `skill: allow`, `subagent` segun rol | frontmatter de cada `.md` |
 | Implementan codigo | `build`, `quality`, `debugger` | codigo ✓ | frontmatter de `build.md`, `quality.md`, `debugger.md` |
 | Solo frontend | `ui-ux` | codigo frontend ✓ | frontmatter de `ui-ux.md` |
 | Solo docs | `auditor` | solo `*.md` | frontmatter de `auditor.md` |
 | Nunca editan | `plan`, `backend-expert`, `tester` | nada (deny) | frontmatter de `plan.md`, `tester.md`, `backend-expert.md` |
-| Quien delega | `build` → los 7 subagents · `plan` → `backend-expert`, `auditor`, `explore` · subagents → nadie | `permission.task` | `task:` del frontmatter |
+| Quien delega | `build` → los 10 subagents · `plan` → `backend-expert`, `auditor`, `explore` · subagents → nadie | `permissions` (action `subagent`) | `permissions:` del frontmatter |
 
 - Cada agente refuerza el Skill Gate en su "Paso 0" (8 archivos, mismo texto).
 - Playwright y Notion solo se activan con sus perfiles opt-in (`opencode.qa.json`, `opencode.notion.json`); Stitch está en la config global pero `enabled:false` y se activa por sesión con `OPENCODE_CONFIG` (`opencode.stitch.json`). `activacion-mcp` describe cómo iniciarlos. Ningún otro MCP es global.

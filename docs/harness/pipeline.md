@@ -1,3 +1,9 @@
+---
+status: vigente
+last_reviewed: 2026-11-05
+confidence: confirmado
+source: pipeline V2 verificado en el repo el 2026-11-05
+---
 # Pipeline de ejecucion de tareas — OpenCode
 
 <a id="sec-1"></a>
@@ -45,7 +51,7 @@ flowchart LR
 | 4 · Valida | E2E, revision contra skills, refactor/perf y causa raiz | `tester` · `auditor` · `quality` · `debugger` |
 | 5 · Cierra | Criterios, cierre del backlog, actualizacion del cerebro y commit propuesto | `calidad-cierre` · `contexto-proyecto` · `workflow` |
 
-El trabajo abierto vive en `docs/features/BACKLOG.md`; `trace.py` crea el expediente y registra la evidencia por criterio (contrato: `documentacion/references/TRACE.md`).
+El trabajo abierto vive en `docs/features/BACKLOG.md`; `trace.py` crea el expediente, registra la evidencia por criterio y valida `Runner`/`Handoffs` (contrato: `documentacion/references/TRACE.md`).
 
 ## Ver mas
 

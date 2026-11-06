@@ -1,3 +1,9 @@
+---
+status: vigente
+last_reviewed: 2026-11-05
+confidence: confirmado
+source: guardarraíl 2026-11-05 + commit cb0649c
+---
 # Presupuestos del harness
 
 > **Para quién:** dev junior con TDAH — cifras y su porqué; leer en 1 min.

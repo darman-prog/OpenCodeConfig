@@ -27,4 +27,7 @@ Estados: `borrador` → `aprobada` → `en-curso` → `bloqueada` (con la duda e
 - Un criterio sin `Comando` no se puede verificar: `record` lo rechaza.
 - La bitácora se escribe al ejecutar, no al final: hechos, no relatos.
 - `Rollback` es obligatorio: comando o pasos exactos para deshacer.
+- Mientras la spec esté abierta, `Runner` declara `estado`, `dueño`, `paso` y `siguiente`. `dueño` es el agente que tiene la pelota ahora.
+- Cada handoff real entre agentes añade una fila en `Handoffs`. Un handoff `abierto` impide que `calidad-cierre` dé `APROBADO`.
+- `ultimo_handoff` referencia la última fila (`H-001`, `H-002`...) o `-`.
 - Objetivo y Contexto en lenguaje llano; el detalle técnico va en Pasos y Bitácora.

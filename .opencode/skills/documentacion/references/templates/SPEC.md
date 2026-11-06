@@ -24,6 +24,20 @@ updated: {{DATE}}
 |---|---|---|---|
 | 1 |  |  |  |
 
+## Runner
+| Campo | Valor |
+|---|---|
+| estado | {{STATUS}} |
+| dueño | - |
+| paso | 0/N |
+| siguiente | - |
+| bloqueado_por | - |
+| ultimo_handoff | - |
+
+## Handoffs
+| Fecha | De | A | Accion | Evidencia | Estado |
+|---|---|---|---|---|---|
+
 ## Pasos
 1. 
 

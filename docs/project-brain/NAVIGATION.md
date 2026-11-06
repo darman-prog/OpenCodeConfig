@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-10-18
+last_reviewed: 2026-11-05
 confidence: confirmado
-source: harness verificado en el repo el 2026-10-18 (guardarraíl exit 0; ver ../harness/changelog.md)
+source: commit cb0649c + revision 2026-11-05
 ---
 
 # Contexto del proyecto — HarnessConfig (plantilla de OpenCode)
@@ -30,13 +30,15 @@ Este repo no es una app: su conocimiento vive en `docs/harness/` y este mapa lo 
 | [features/](../features/) | Registro DDR: [INDEX.md](../features/INDEX.md) con specs y tarjetas; cola de trabajo abierto en [BACKLOG.md](../features/BACKLOG.md) | definir, reanudar o cerrar una feature | vigente |
 | [features/BACKLOG.md](../features/BACKLOG.md) | Trabajo abierto por área: `pendiente`, `en-curso`, `bloqueada` | "¿qué falta por hacer?" | vigente |
 | [ADR-001](../adr/001-rtk-dependencia-de-maquina.md) | RTK como dependencia de máquina | integración o cambio de RTK | vigente |
-| [ADR-002](../adr/002-Version1-opencode.md) | OpenCode V1.19.3 (la V2 rompe los plugins) | subir/bajar de versión de OpenCode | vigente |
+| [ADR-002](../adr/002-Version1-opencode.md) | OpenCode V1.19.3 (reemplazado por V2) | histórico: no usar para decidir la versión | reemplazado por ADR-010 |
 | [ADR-003](../adr/003-retencion-respaldos-opencode.md) | Respaldos de `opencode.db`: fuera del repo, sin credenciales y verificados | archivar o restaurar el historial de sesiones | vigente |
 | [ADR-004](../adr/004-trazabilidad-portable.md) | Trazabilidad portable: backlog, expediente y bitácora mecánica | reanudar o auditar un cambio | vigente |
 | [ADR-005](../adr/005-subagentes-vendor-impeccable.md) | Subagentes vendor de impeccable en OpenCode | tocar `critique`, `new-work` o el roster | vigente |
 | [ADR-006](../adr/006-gate-autoridad-visual.md) | Gate de autoridad visual antes de UI nueva | crear o rediseñar UI sin `DESIGN.md` | vigente |
 | [ADR-007](../adr/007-adopcion-better-ui.md) | better-ui como capa de pulido opcional | pulir UI con recetas externas | vigente (referencia; ver 008) |
 | [ADR-008](../adr/008-pipeline-frontend-identidad.md) | Dirección y sistema antes de código para frontend | crear o rediseñar UI con identidad | vigente |
+| [ADR-009](../adr/009-cero-friccion-opencode-global.md) | OPENCODE solo global, AGENTS por proyecto | entender la inyección de reglas | vigente |
+| [ADR-010](../adr/010-migracion-opencode-v2.md) | OpenCode V2 con plugins V2 y fuente espejo | tocar versión, plugins o sync | vigente |
 
 ## Reglas del cerebro
 

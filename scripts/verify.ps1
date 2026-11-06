@@ -4,8 +4,9 @@
 #   1. Guardarrail de presupuesto (fail-closed: exit 1 si hay violaciones).
 #   2. Identidad repo <-> global: mismas skills, mismo contenido (solo lee).
 #   3. Plugins V2: contrato, espejo global y sin copias duplicadas.
-#   4. Smokes de ruteo: matriz completa por defecto; -Frontend/-Skill/-Changed filtran.
-#   5. Aviso de sesion desactualizada: la config no es hot-reload.
+#   4. Doc drift: metadata, enlaces, ADR y cifras vigentes.
+#   5. Smokes de ruteo: matriz completa por defecto; -Frontend/-Skill/-Changed filtran.
+#   6. Aviso de sesion desactualizada: la config no es hot-reload.
 #
 # Exit 0 = todo verde. Exit 1 = hay algo que arreglar.
 
@@ -26,7 +27,7 @@ Write-Host "VERIFICACION DEL HARNESS"
 Write-Host "=" * 60
 
 # ── 1) Guardarrail de presupuesto ─────────────────────────────────────────
-Write-Host "`n[1/4] Guardarrail de presupuesto..."
+Write-Host "`n[1/5] Guardarrail de presupuesto..."
 $budget = Join-Path $Root "scripts\harness-budget.ps1"
 & powershell -NoProfile -ExecutionPolicy Bypass -File $budget
 if ($LASTEXITCODE -ne 0) {
@@ -37,7 +38,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 # ── 2) Identidad repo <-> global (solo lee) ───────────────────────────────
-Write-Host "`n[2/4] Identidad repo <-> global..."
+Write-Host "`n[2/5] Identidad repo <-> global..."
 $repoSkills = Join-Path $Root ".opencode\skills"
 $globalSkills = Join-Path $globalDir "skills"
 if (-not (Test-Path -LiteralPath $globalSkills)) {
@@ -69,7 +70,7 @@ if (-not (Test-Path -LiteralPath $globalSkills)) {
 }
 
 # ── 3) Plugins V2: contrato y espejo global ───────────────────────────────
-Write-Host "`n[3/4] Plugins V2..."
+Write-Host "`n[3/5] Plugins V2..."
 $pluginSmoke = Join-Path $Root "scripts\smoke-plugins.ps1"
 & powershell -NoProfile -ExecutionPolicy Bypass -File $pluginSmoke
 if ($LASTEXITCODE -ne 0) {
@@ -79,8 +80,19 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host "  PASS: contrato V2 y espejo global."
 }
 
-# ── 4) Smokes de ruteo ───────────────────────────────────────────────────
-Write-Host "`n[4/4] Smokes de ruteo..."
+# ── 4) Doc drift: metadata, enlaces, ADR y cifras ─────────────────────────
+Write-Host "`n[4/5] Doc drift..."
+$drift = Join-Path $Root "scripts\doc-drift.ps1"
+& powershell -NoProfile -ExecutionPolicy Bypass -File $drift -Strict
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "  FAIL: hay documentacion desactualizada (arriba)."
+  $fail++
+} else {
+  Write-Host "  PASS: docs alineadas con el repo."
+}
+
+# ── 5) Smokes de ruteo ───────────────────────────────────────────────────
+Write-Host "`n[5/5] Smokes de ruteo..."
 if ($SkipSmokes) {
   Write-Host "  OMITIDOS (-SkipSmokes)."
 } else {
@@ -109,5 +121,5 @@ if ($fail -gt 0) {
   Write-Host "VERIFICACION FALLIDA: $fail comprobacion(es) con errores."
   exit 1
 }
-Write-Host "VERIFICACION OK: guardarrail, identidad global, plugins y smokes en verde."
+Write-Host "VERIFICACION OK: guardarrail, identidad global, plugins, doc drift y smokes en verde."
 exit 0

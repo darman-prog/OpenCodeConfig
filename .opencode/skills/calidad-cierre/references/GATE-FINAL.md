@@ -8,6 +8,8 @@
 4. Regresiones y edge cases proporcionales a riesgo.
 5. Capas, contratos, migraciones y seguridad cuando correspondan.
 6. Validaciones: tests, lint, typecheck, build o revisión manual; identifica lo no ejecutado.
+7. Runner: `dueño`, `siguiente` y `Handoffs`; si el último handoff sigue `abierto`, bloquea.
+8. Docs vivas: si el cambio tocó un documento del cerebro o del harness, actualiza `last_reviewed` y `source`.
 
 ## Salida obligatoria
 

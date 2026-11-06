@@ -321,6 +321,38 @@ def _bitacora(spec_text):
     return [split_row(line) for line in lines[start:end]]
 
 
+def _runner(spec_text):
+    lines = spec_text.splitlines()
+    start, end = table_after_heading(lines, "## Runner", "| Campo | Valor")
+    if start is None:
+        return {}
+    out = {}
+    for line in lines[start:end]:
+        cells = split_row(line)
+        if len(cells) >= 2:
+            out[cells[0].strip().lower()] = cells[1].strip()
+    return out
+
+
+def _handoffs(spec_text):
+    lines = spec_text.splitlines()
+    start, end = table_after_heading(lines, "## Handoffs", "| Fecha | De")
+    if start is None:
+        return []
+    rows = []
+    for line in lines[start:end]:
+        cells = split_row(line)
+        # La tabla tiene 6 columnas; la cabecera ya la excluye table_after_heading.
+        if len(cells) >= 6 and cells[0] and cells[0].lower() != "fecha":
+            rows.append(cells)
+    return rows
+
+
+def _open_handoffs(spec_text):
+    return [row for row in _handoffs(spec_text)
+            if len(row) >= 6 and row[5].strip().lower() == "abierto"]
+
+
 def _git_sha(repo):
     try:
         out = subprocess.run(["git", "-C", str(repo), "rev-parse", "--short", "HEAD"],
@@ -391,6 +423,11 @@ def cmd_close(args):
         fail("criterios sin evidencia exit 0: " + ", ".join(missing))
     if "## Rollback" not in text or not text.split("## Rollback", 1)[1].split("##", 1)[0].strip():
         fail("Rollback vacio: escribe como deshacer el cambio")
+    if not _runner(text):
+        fail("la spec no tiene bloque Runner")
+    open_handoffs = _open_handoffs(text)
+    if open_handoffs:
+        fail("handoffs abiertos: " + ", ".join(row[2] + "->" + row[3] for row in open_handoffs))
     text = set_frontmatter(text, "status", "cerrada")
     text = set_frontmatter(text, "updated", today())
     write_atomic(spec, text)
@@ -498,6 +535,19 @@ def cmd_check(args):
             errors.append("%s: falta area" % rec.name)
         if not rmeta.get("tarea"):
             errors.append("%s: falta tarea" % rec.name)
+        if status != "cerrada":
+            runner = _runner(rtext)
+            if not runner:
+                errors.append("%s: falta bloque Runner" % rec.name)
+            else:
+                if not runner.get("dueño"):
+                    errors.append("%s: Runner sin dueño" % rec.name)
+                if not runner.get("siguiente"):
+                    errors.append("%s: Runner sin siguiente" % rec.name)
+            for handoff in _handoffs(rtext):
+                state = handoff[5].strip().lower()
+                if state not in ("abierto", "cerrado"):
+                    errors.append("%s: handoff con estado invalido (%r)" % (rec.name, state))
         if status == "cerrada":
             if rec.name not in index_text:
                 errors.append("%s: cerrada y no aparece en INDEX.md" % rec.name)

@@ -1,8 +1,8 @@
 ---
 status: vigente
-last_reviewed: 2026-10-22
+last_reviewed: 2026-11-05
 confidence: confirmado
-source: verificado contra el repo el 2026-10-22
+source: commit cb0649c + revision 2026-11-05
 ---
 
 # Arquitectura del harness

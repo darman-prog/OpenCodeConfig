@@ -60,6 +60,7 @@ trace.py adopt  [--default-area sin-clasificar] [--dry-run] [--repo .]
 - Backlog: `pendiente`, `en-curso`, `bloqueada`. No existe `hecha`: al cerrar, la fila se borra y queda el expediente.
 - Expediente: `borrador`, `aprobada`, `en-curso`, `bloqueada`, `cerrada`.
 - `bloqueada` en el expediente exige una duda abierta escrita en `Contexto` o `Cierre`.
+- Mientras el expediente no esté `cerrada`, `Runner` debe declarar `dueño` y `siguiente`. `Handoffs` registra cada entrega real entre agentes; `close` rechaza cualquier handoff en `abierto`.
 
 ## Evidencia (anti-alucinación)
 
