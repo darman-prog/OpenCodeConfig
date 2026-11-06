@@ -7,7 +7,7 @@ source: pipeline V2 verificado en el repo el 2026-11-05
 # Pipeline de ejecucion de tareas — OpenCode
 
 <a id="sec-1"></a>
-> **Fecha:** 2026-09-19 · **Actualizado:** 2026-10-22 (flujo corto; el detalle vive en [pipeline-referencia.md](pipeline-referencia.md)) · **Estado:** vigente · **Para quien:** dev junior con TDAH — leer en 2 min.
+> **Fecha:** 2026-09-19 · **Actualizado:** 2026-11-05 (flujo corto; el detalle vive en [pipeline-referencia.md](pipeline-referencia.md)) · **Estado:** vigente · **Para quien:** dev junior con TDAH — leer en 2 min.
 > **Estado del harness:** los 2 primarios son `build` y `plan`; `ui-ux` y `backend-expert` son subagents. Inventario vigente en [estado-actual.md](estado-actual.md); topes en [presupuestos.md](presupuestos.md).
 > Regla de esta doc: **enlazar, no copiar**. La tabla del Skill Gate vive en `OPENCODE.md`; las referencias usan seccion, no linea.
 

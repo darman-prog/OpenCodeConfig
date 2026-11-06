@@ -79,14 +79,14 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Perfil de proyecto | `AGENTS.md` §Perfil + `docs/harness/perfiles.md` | `personal` o `equipo`; ajusta ramas, PR, tests y auditor sin relajar seguridad |
 | Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
 | Probes de gatillo | `scripts/trigger-probes.json` | 49 casos (cubre las 38 skills + `customize-opencode`) |
-| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
+| Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales; V2 recarga al guardar y, si no, reinicia la TUI |
 | Config global (fuera del repo, sin commits) | `~/.config/opencode/opencode.jsonc`, `cli.json` | `opencode.jsonc` V2 lleva `username`, `update`, `share`, `instructions` global (`OPENCODE.md`), MCP `servers.stitch` deshabilitado, `permissions` con `external_directory` ask y `experimental.todo`; el proveedor vigente es `opencode-go`, nativo de OpenCode, que lee la credencial de `auth.json` — por eso no hay bloque `provider` y `commandcode` quedó fuera; **nunca** la borra el sync |
 | Trazas locales | `~/.local/share/opencode/log/opencode.log` | El sync lo trunca si supera 10 MB; el histórico de julio-2026 quedó en `opencode-historico-2026-07-03_a_2026-09-24.log.bak` |
 | Compresión de salidas bash (dependencia de **máquina global**, fuera del repo) | `rtk.exe` en PATH · `~/.config/opencode/plugins/rtk.ts` · `%APPDATA%\rtk\config.toml` | RTK v0.50.0 via plugin OpenCode; comprime solo test/lint/builds; excluye `git`/`powershell`/`opencode`/`ollama`; telemetría off; recall sqlite 4 días; decisión y riesgos en `docs/adr/001-rtk-dependencia-de-maquina.md`; **nunca** la borra el sync |
 | Fin de línea | `.gitattributes` | `*.md`, `*.ps1`, `*.json`, `*.jsonc` en LF |
 | Specs | `docs/specs/001-004` | Archivo histórico: 001-003; `004` = runbook one-off |
 | Features | `docs/features/NNN-<slug>.md` | Spec para cambio auditable y tarjeta para el resto (umbral canonico: `documentacion` §docs/features); plantillas en `documentacion/references/templates/` |
-| Pipeline | `docs/harness/pipeline.md` (52 líneas) + `docs/harness/pipeline-referencia.md` (229) | Flujo de 5 fases y detalle por sección (routing, estados, permisos, fricciones) |
+| Pipeline | `docs/harness/pipeline.md` (59 líneas) + `docs/harness/pipeline-referencia.md` (235) | Flujo de 5 fases y detalle por sección (routing, estados, permisos, fricciones) |
 | Presupuestos | `docs/harness/presupuestos.md` | Fuente única de los topes del guardarraíl |
 | Historial | `docs/harness/changelog.md` | Append-only: una entrada por cambio |
 
@@ -127,13 +127,13 @@ Claves: el subagent **no** te habla a ti (hablas con el primario) · no puede in
   .\sync-global.ps1   (plantilla → ~/.config/opencode; exige el guardarraíl)
         │
         ▼
-  REINICIAR LA TUI   ← aquí es donde se aplica el cambio
+  V2 recarga al guardar; si no, reinicia la TUI
         │
         ▼
   verificas en la TUI: Tab (2 primarios) · @ (subagent) · log de subagent
 ```
 
-La TUI carga la config **al arrancar** y no la recarga en caliente: sin ese reinicio, estás viendo el harness anterior aunque los archivos ya estén bien.
+La TUI de V2 recarga config, agentes, skills y plugins al guardar. Si no ves el cambio, reinicia la TUI o ejecuta `opencode service restart`.
 
 <a id="sec-7"></a>
 ## 7. Comandos
@@ -192,12 +192,9 @@ git status --short                                                              
 
 | Pendiente | Detalle |
 | --- | --- |
-| Reinicio de TUI tras la integración ofimática | La config no es hot-reload: reiniciar para que la skill reescrita (plantilla-base, script y referencia) se recargue |
 | Humos F0–F6 en la TUI | Tab = 2 primarios · `@` responde · `build` delega a `ui-ux` · `plan` consulta a `auditor` · 4 denegaciones · repetir en TUI los smokes ya PASS por `opencode run` (evaluacion-experiencia y ciclo DDR) |
 | Smokes N2–N6 | Cubiertos por `scripts/smoke-routing.ps1` (casos `analisis-datos`, `automatizacion`, `activacion-mcp`, `criterio-proyecto`, `ingenieria-software` y 6 de UI): 21/21 PASS |
 | Smoke ciclo DDR (2026-10-14) | `.\sync-global.ps1 -ForcePurge` exit 0 con identidad OK (38 skills) · smoke `opencode run "retomar la feature multi-sesion X en docs/features"` → declaro `documentacion` + `ingenieria-software` (fila nueva del Skill Gate, tope 75) · spec 001 cerrada con evidencia en `docs/features/` |
-| Reinicio de TUI tras la simplificación | La config (`instructions`, deny) no es hot-reload: reiniciar para que apliquen `OPENCODE.md` y el deny de `GEMINI.md` |
-| Reinicio de TUI tras la auditoría UI | La config no es hot-reload: reiniciar para cargar el ruteo, el gate y los 2 agentes nuevos |
 | S5: prioridad de `rtk` | El agente conoce el filtro pero lidera con el script npm; decidir si se refuerza la redacción de `uso-eficiente` o se acepta |
 | `logLevel: WARN` | Se aplica **después** de los humos: elimina las líneas con comandos bash del log, pero también la evidencia `permission=subagent` |
 | Wiring del global en otra máquina | `sync-global.ps1` ya espeja `plugins-src` → `plugins/` y `verify.ps1` comprueba el contrato V2. `package.json`/`node_modules` del global siguen siendo locales |

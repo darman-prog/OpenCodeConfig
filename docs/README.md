@@ -16,7 +16,7 @@
 **Glosario (7 palabras):** feature = unidad de trabajo; backlog = lo que falta; espec = su expediente auditable; tarjeta = su registro en una sesión; ADR = decisión irreversible; guía = procedimiento; changelog = historial.
 
 **Verde** = el guardarraíl pasa (topes, contratos, probes) y los smokes de ruteo responden; no dice si tu producto es correcto.
-**Tras cambiar skills o config:** `.\sync-global.ps1` y reinicia OpenCode (la config no es hot-reload); `.\scripts\verify.ps1` comprueba todo.
+**Tras cambiar skills o config:** `.\sync-global.ps1`; V2 recarga al guardar y, si no ves el cambio, reinicia la TUI o ejecuta `opencode service restart`. `.\scripts\verify.ps1` comprueba todo.
 
 **Regla:** la documentación del harness vive en `docs/harness/`, nunca dentro de `.opencode/`
 (runtime: agentes, skills y commands). Excepción aceptada: cada skill puede llevar su propio

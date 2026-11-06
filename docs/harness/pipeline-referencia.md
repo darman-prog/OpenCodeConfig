@@ -8,7 +8,7 @@ source: pipeline V2 verificado en el repo el 2026-11-05
 
 <a id="sec-ref"></a>
 > **Para que:** detalle por seccion del [pipeline](pipeline.md) (flujo corto). Secciones 3-10, con las mismas anclas que antes del split.
-> **Actualizado:** 2026-10-19 (split desde pipeline.md).
+> **Actualizado:** 2026-11-05 (split desde pipeline.md).
 
 ## 2. Fases en detalle
 
