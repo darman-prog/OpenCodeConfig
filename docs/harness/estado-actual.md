@@ -16,7 +16,7 @@ source: guardarraíl 2026-11-05 + commit cb0649c
 | Métrica | Valor | Tope | Nota |
 | --- | --- | --- | --- |
 | `OPENCODE.md` | 56 líneas | 75 | Skill Gate + estilo + roster; se inyecta en cada sesión |
-| `AGENTS.md` agnóstico | 21 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
+| `AGENTS.md` agnóstico | 22 líneas | 35 | Contexto, stack y comandos; también se inyecta (auto-descubrimiento) |
 | Agentes | 10 archivos · 295 líneas | 400 | Se pagan por invocación |
 | Skills | 38 `SKILL.md` en `.opencode/skills` (una sola raiz) |
 | Specs (historia) | 4 (`001`, `002`, `003`, `004`) | sin tope ni validación desde el 2026-09-25 | `004` es runbook one-off de instalación |
@@ -73,7 +73,9 @@ El guardarraíl (`scripts/harness-budget.ps1`) agrupa sus checks en bloques nume
 | Smokes de ruteo | `scripts/smoke-routing.ps1` | 21 casos en runtime: 10 de gatillo + 11 adyacentes/UI; 21/21 PASS |
 | Smokes filtrados | `scripts/smoke-routing.ps1 -Skill` / `-Changed` | Itera solo las skills tocadas; si cambia `OPENCODE.md`, agentes o scripts de ruteo, corre los 21 |
 | Scaffolding DDR | `scripts/new-feature.ps1` | Wrapper de `trace.py start`: crea el expediente y su fila en `INDEX.md` |
-| Trazabilidad | `.opencode/skills/documentacion/scripts/trace.py` | Cola, expedientes y registro; evidencia mecánica por criterio; viaja con `sync-global` |
+| Trazabilidad | `.opencode/skills/documentacion/scripts/trace.py` | Cola, expedientes y registro; evidencia mecánica por criterio; Runner/Handoffs; viaja con `sync-global` |
+| Docs vivas | `scripts/doc-drift.ps1` | Metadata, enlaces, ADR reemplazados y cifras reales; `-Strict` bloquea |
+| Gate A11y | `scripts/smoke-a11y.ps1` | axe crítico, teclado/foco y contraste desde reporte; `SKIP` sin Playwright |
 | Backlog | `docs/features/BACKLOG.md` | Trabajo abierto por área (`pendiente`, `en-curso`, `bloqueada`); al cerrar, la fila se borra |
 | Probes de gatillo | `scripts/trigger-probes.json` | 49 casos (cubre las 38 skills + `customize-opencode`) |
 | Sincronización | `sync-global.ps1` | Plantilla → `~/.config/opencode`; dry-run de purga, WARN de dependencias globales y exige reiniciar la TUI |
@@ -159,7 +161,7 @@ git status --short                                                              
 | Ciclo DDR feature-spec (2026-10-14) | Plantilla 45 líneas (formato visual, tope 45); umbral ">1 sesión o ≥2 agentes" redirigido en plan/build/calidad-cierre/contexto-proyecto/pipeline (9 hits `docs/features`); fila nueva del Skill Gate + tope AGENTS.md 70→75; pre-flight de `auditor` APROBADO con 4 WARNING de coherencia cerrados; `docs/features/001` cerrada como dogfood |
 | Remediación de complementación | 7 huecos de backend cerrados: `proteccion-datos` (nueva), realtime y jobs en `api-backend`, TLS/DNS/topología/cache en `infraestructura`; probes 16 → 21 |
 | Mojibake corregido | 6 archivos del harness con doble codificación UTF-8 → 1252 → UTF-8; escaneo final de 145 archivos: 0 con la firma |
-| Guardarraíl en verde | `OPENCODE.md` 56/75 + `AGENTS.md` 21/35 · agentes 295/400 · skills 38 (una sola raiz) · 49 probes |
+| Guardarraíl en verde | `OPENCODE.md` 56/75 + `AGENTS.md` 22/35 · agentes 295/400 · skills 38 (una sola raiz) · 49 probes |
 | Simplificación OpenCode-only (2026-10-18) | una sola raiz de skills (`.opencode/skills`, 38); sin `skills.paths` ni espejo `~/.agents/skills`; el deny de `GEMINI.md` queda como defensa; A/B de tokens no concluyente (medición descartada) |
 | Probes de routing | 49 casos definidos; cobertura 100% validada por el guardarraíl (bloque 6); incluyen producto, code-clue, investigación web, datos, automatización, MCP (Notion, Playwright, Stitch), protección de datos, TLS, DNS, cache, jobs, evaluación de experiencia (SUS), dirección y construcción frontend y feature-spec DDR |
 | Smoke de rutas nuevas (`opencode run`, no TUI) | **S1–S4 PASS**: GDPR → `proteccion-datos` · websockets → `api-backend` · TLS → `infraestructura` · worker → `api-backend` + `code-clue` |

@@ -50,4 +50,5 @@ description: Accesibilidad WCAG 2.2 AA: semantica, teclado, lectores de pantalla
 - Pasar la pagina usando SOLO teclado antes de mirar el mouse.
 - Un lector de pantalla real (NVDA/VoiceOver) en los flujos criticos, no solo en el componente aislado.
 - `axe` o Lighthouse en CI para lo automatico; lo que axe no ve (orden de foco, sentido del alt, jerarquia) se revisa manual (agente `tester`).
+- Gate minimo del harness: [GATE-A11Y.md](references/GATE-A11Y.md) + `scripts/smoke-a11y.ps1` (SKIP si el proyecto no tiene Playwright).
 - `prefers-reduced-motion` respetado en toda animacion.

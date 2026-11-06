@@ -18,7 +18,7 @@
    - `OPENCODE.md` no se copia: vive en el global `~/.config/opencode/OPENCODE.md` (lo pone `sync-global.ps1`).
 2. **Config**: en `.opencode/opencode.json` no declares `instructions`: V2 auto-descubre `AGENTS.md` y el global inyecta `OPENCODE.md`. No hace falta `skills.paths`: la raíz por defecto es `.opencode/skills`.
 3. **Skills**: copia `.opencode/skills/` (o deja que el global las aporte con `sync-global.ps1`). Nada de `.agents/skills/`.
-4. **Guardarraíl y verificación**: copia `scripts/harness-budget.ps1`, `scripts/verify.ps1`, `scripts/smoke-routing.ps1`, `scripts/smoke-plugins.ps1`, `scripts/doc-drift.ps1` y `docs/harness/presupuestos.md`; el guardarraíl debe dar exit 0.
+4. **Guardarraíl y verificación**: copia `scripts/harness-budget.ps1`, `scripts/verify.ps1`, `scripts/smoke-routing.ps1`, `scripts/smoke-plugins.ps1`, `scripts/smoke-a11y.ps1`, `scripts/doc-drift.ps1` y `docs/harness/presupuestos.md`; el guardarraíl debe dar exit 0.
 5. **Verifica**: `.\scripts\verify.ps1` (guardarraíl + identidad global + smokes de ruteo). Los smokes leen las skills del proyecto: si el proyecto no tiene `.opencode/skills/`, usa `-SkipSmokes` (el global aporta las skills en cualquier caso).
 6. **Recarga**: V2 recarga config, agentes, skills y plugins al guardar; si no ves el cambio, reinicia la TUI o ejecuta `opencode service restart`.
 
